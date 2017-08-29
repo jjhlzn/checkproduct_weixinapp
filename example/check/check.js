@@ -2,7 +2,7 @@ let service = require('../service').Service;
 
 Page({
   data: {
-
+    uploadedCount: 0,
     radioItems: [
       { name: '通过', value: '0' },
       { name: '不通过', value: '1', checked: true }
@@ -47,43 +47,139 @@ Page({
     console.log("long tap image");
   },
 
-  bindSubmitTap: function(e) {
-    console.log("submit tap");
-    //上传图片，使用对话框提示，图片上传完之后，提交验货结果
-    this.data.files.forEach(function(file) {
-      console.log(file);
-      wx.uploadFile({
-        url: service.uploadFileUrl(), //仅为示例，非真实的接口地址
-        filePath: file,
-        name: 'file',
-        formData: {},
-        success: function (res) {
-          var data = res.data
-          //do something
-          console.log(res);
-        },
-        fail: function (err) {
-          console.log("err: ", err);
-        }
-      })
-    });
+  checkBeforeTap: function(){
+    return true;
+  },
 
-    /*
-    wx.uploadFile({
-      url: service.uploadFileUrl(), //仅为示例，非真实的接口地址
-      filePath: this.data.files[0],
-      name: 'file',
-      formData: {
-        'user': 'test'
-      },
+  submitCheckRequest: function() {
+    wx.showLoading({
+      title: '提交验货结果',
+    })
+    wx.request({
+      url: service.checkProductUrl(),
       success: function (res) {
-        var data = res.data
-        //do something
-        console.log(res);
+        wx.hideLoading();
+        if (res.data.status == 0) {
+          
+          wx.showModal({
+            content: '提交成功',
+            showCancel: false,
+            success: function (res) {
+              //把审核的结果传递回前一个页面
+              let pages = getCurrentPages();
+              let curPage = pages[pages.length - 2];
+              let data= curPage.data
+              console.log("data: ", data);
+
+              if (res.confirm) {
+                console.log('用户点击确定')
+                wx.navigateBack({
+                  checkResult: {
+                    result: true
+                  }
+                });
+              }
+            }
+          });
+
+          
+        } else {
+          wx.showModal({
+            content: '提交失败',
+            showCancel: false,
+            success: function (res) {
+              if (res.confirm) {
+                console.log('用户点击确定')
+              }
+            }
+          });
+        }
       },
       fail: function (err) {
-        console.log("err: ", err);
+        wx.showModal({
+          content: '提交失败',
+          showCancel: false,
+          success: function (res) {
+            if (res.confirm) {
+              console.log('用户点击确定')
+            }
+          }
+        });
       }
-    })*/
+    })
+  },
+
+  handleImageUploadFail: function() {
+    wx.showToast({
+      title: '图片上传失败',
+      duration: 5000
+    })
+  },
+
+  bindSubmitTap: function(e) {
+    if (!this.checkBeforeTap()) {
+      return false;
+    }
+
+    console.log("submit tap");
+    var self = this;
+
+    //上传图片，使用对话框提示，图片上传完之后，提交验货结果
+    let imageCount = this.data.files.length;
+
+    if (imageCount > 0) {
+      wx.showLoading({
+        title: '正在上传图片( ' + 1 + '/' + imageCount  +' )',
+      })
+      
+      this.uploadFiles(this.data.files);
+    }
+  
+  },
+
+  uploadFiles: function(files) {
+    this.data.uploadedCount = 0;
+    var i = 0;
+    for( i =  0; i < files.length && i < 5; i++) {
+      this.uploadFile(files, i);
+    }
+  },
+
+  uploadFile: function(files, index) {
+    var self = this;
+
+    wx.uploadFile({
+      url: service.uploadFileUrl(), //仅为示例，非真实的接口地址
+      filePath: files[index],
+      name: 'file',
+      formData: {},
+      success: function (res) {
+        console.log(res);
+        let json = JSON.parse(res.data)
+        if (json.status != 0) {
+          self.handleImageUploadFail();
+          return;
+        }
+
+        self.data.uploadedCount++;
+        console.log('完成第' + self.data.uploadedCount + '张');
+
+        if (self.data.uploadedCount == files.length) {
+          self.submitCheckRequest();
+        } else {
+          wx.showLoading({
+            title: '正在上传图片( ' + (self.data.uploadedCount + 1) + '/' + files.length + ' )',
+          })
+          let next = index + 5;
+          if (next < files.length ) {
+            this.uploadFile(files, index + 5)
+          }
+        }
+      },
+      fail: function (err) {
+        console.log(err);
+        self.handleImageUploadFail();
+      }
+    })
   }
 });

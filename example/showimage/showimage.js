@@ -1,18 +1,34 @@
 // showimage.js
+let service = require('../service').Service;
+
 Page({
 
   /**
    * 页面的初始数据
    */
   data: {
-  
+    checkItem: {
+      
+    }
   },
 
   /**
    * 生命周期函数--监听页面加载
    */
   onLoad: function (options) {
-  
+    console.log('options: ', options);
+    
+    var checkItem = options;
+    checkItem.imageUrl = service.getCheckFileUrl() + '?id='+options.id + '&fileid=' + options.fileid;
+    this.setData({
+      checkItem: checkItem
+    })
+
+    console.log("imageUrl: ", this.data.checkItem.imageUrl);
+    wx.showLoading({
+      title: '图片加载中',
+    })
+    
   },
 
   /**
@@ -81,6 +97,14 @@ Page({
    */
   onShareAppMessage: function () {
   
+  },
+
+  bindImageLoadSuccess: function() {
+    wx.hideLoading()
+  },
+
+  bindImageLoadError: function() {
+    wx.hideLoading()
   }
 })
 

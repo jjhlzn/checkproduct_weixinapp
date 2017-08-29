@@ -1,46 +1,83 @@
 // checkitem.js
+let service = require('../service').Service;
+
 Page({
 
   /**
    * 页面的初始数据
    */
   data: {
-  
+   checkItem: {
+     id: "",
+     content: "",
+     files: [],
+     checkResult: {}
+   }
   },
 
   /**
    * 生命周期函数--监听页面加载
    */
   onLoad: function (options) {
-  
+    var self = this;
+    console.log("onload");
+    wx.showLoading({
+      title: '加载中',
+    })
+    wx.request({
+      url: service.getCheckItemUrl(),
+      data: options,
+      header: {
+        'content-type': 'application/json'
+      },
+      complete: function(res) {
+         wx.hideLoading()
+         console.log(res);
+         if (res.data.status != 0) {
+           wx.showToast({
+             title: '加载失败',
+           })
+           return;
+         }
+         self.setData({
+           checkItem: res.data.item
+         })
+      },
+      fail: function(err) {
+        wx.hideLoading()
+        wx.showToast({
+          title: '加载失败',
+        })
+      }
+    })
   },
 
   /**
    * 生命周期函数--监听页面初次渲染完成
    */
   onReady: function () {
-  
+    console.log("onReady");
   },
 
   /**
    * 生命周期函数--监听页面显示
    */
   onShow: function () {
-  
+    console.log("onShow");
   },
 
   /**
    * 生命周期函数--监听页面隐藏
    */
   onHide: function () {
-  
+    console.log("onHide");
   },
 
   /**
    * 生命周期函数--监听页面卸载
    */
   onUnload: function () {
-  
+    console.log("onUnload");
   },
 
   /**
@@ -72,14 +109,34 @@ Page({
   },
 
   bindFileTap: function(e) {
+    console.log(e)
+    /*
+    let fileId = e.currentTarget.dataset.fileId;
+    console.log(fileId);
+    let url = '../showimage/showimage?id=' + this.data.checkItem.id + '&fileid=' + fileId;
+    console.log("url: ", url);
     wx.navigateTo({
-      url: '../showimage/showimage',
+      url: url,
+    })*/
+
+    var url2 = service.getCheckFileUrl();
+    console.log("url: ", url2);
+    wx.previewImage({
+      current: url2, // 当前显示图片的http链接
+      urls: [url2] // 需要预览的图片http链接列表
     })
   },
 
   bindFileTap2: function(e) {
     wx.navigateTo({
       url: '../showdocument/showdocument',
+    })
+  },
+
+  bindViewImagesTap: function(e) {
+    let images = this.data.checkItem.checkResult.images;
+    wx.navigateTo({
+      url: '../checkimages/checkimages?images='+JSON.stringify(images),
     })
   }
 })

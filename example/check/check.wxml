@@ -59,11 +59,11 @@
                                     <view class="weui-uploader__file-content">50%</view>
                                 </view>
                                 -->
-
-                            </view>
-                            <view class="weui-uploader__input-box">
+                              <view class="weui-uploader__input-box">
                                 <view class="weui-uploader__input" bindtap="chooseImage"></view>
+                              </view>
                             </view>
+                            
                         </view>
             </view>
         </view>

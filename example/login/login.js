@@ -14,7 +14,17 @@ Page({
    * 生命周期函数--监听页面加载
    */
   onLoad: function (options) {
-  
+    /*
+    wx.reLaunch({
+      url: '../notchecklist/notchecklist',
+    }); */
+    let loginUser = wx.getStorageSync('loginUser');
+    console.log('loginUser: ', loginUser);
+    if (loginUser) {
+      wx.reLaunch({
+        url: '../notchecklist/notchecklist',
+      });
+    }
   },
 
   /**
@@ -83,37 +93,43 @@ Page({
       header: { 
         'content-type': 'application/json'
       },
-      success: function (res) {
-        console.log(res.data)
+      success: function (res) { 
+        console.log("success");
+        console.log(res)
         var status = res.data.status;
-        wx.hideLoading()
-        if (status == 0) {
-          wx.navigateTo({
-            url: '../notchecklist/notchecklist',
-          });
-        } else {
+        if (status != 0) {
           wx.showModal({
             content: res.data.errorMessage,
             showCancel: false,
             success: function (res) {
+              console.log(res);
               if (res.confirm) {
                 console.log('用户点击确定')
               }
             }
           });
+          return;
         }
+        wx.setStorageSync('loginUser', res.data.user)
+        wx.reLaunch({
+          url: '../notchecklist/notchecklist',
+        });
       },
       fail: function(res) {
-        wx.hideLoading()
+        console.log("fail");
         wx.showModal({
           content: '服务器出错',
           showCancel: false,
           success: function (res) {
+            console.log(res);
             if (res.confirm) {
               console.log('用户点击确定')
             }
           }
         });
+      },
+      complete: function(res) {
+        wx.hideLoading()
       }
     })
   }
