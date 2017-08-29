@@ -75,4 +75,10 @@ Page({
       checkerIndex: e.detail.value
     })
   },
+
+  bindSaveTap: function(e) {
+    wx.navigateBack({
+      
+    })
+  }
 })

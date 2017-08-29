@@ -41,7 +41,7 @@
         </view>
 
         <view class="weui-btn-area">
-            <button class="weui-btn" type="primary" bindtap="showTopTips">查找</button>
+            <button class="weui-btn" type="primary" bindtap="bindSearchTap">查找</button>
         </view>
     </view>
 
