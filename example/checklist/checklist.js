@@ -15,7 +15,7 @@ Page({
    */
   onLoad: function (options) {
 
-
+ 
     var self = this;
     wx.showLoading({
       title: '加载验货列表',
@@ -97,6 +97,12 @@ Page({
     console.log("id: ", id);
     wx.navigateTo({
       url: '../checkitem/checkitem?id=' + id,
+    })
+  },
+
+  bindSearchTap: function (e) {
+    wx.navigateTo({
+      url: '../search/search',
     })
   }
 })

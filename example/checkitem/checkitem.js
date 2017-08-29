@@ -141,5 +141,11 @@ Page({
     wx.navigateTo({
       url: '../checkimages/checkimages?images='+JSON.stringify(images),
     })
+  },
+
+  bindProductTap: function(e) {
+    wx.navigateTo({
+      url: '../checkproduct/checkproduct',
+    })
   }
 })

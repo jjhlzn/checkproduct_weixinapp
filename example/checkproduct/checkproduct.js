@@ -4,23 +4,23 @@ Page({
   data: {
     uploadedCount: 0,
     radioItems: [
-      { name: '完成', value: '0' },
-      { name: '未完成', value: '1', checked: true }
+      { name: '合格', value: '0' },
+      { name: '不合格', value: '1', checked: true }
     ],
 
     files: []
   },
   radioChange: function (e) {
-        console.log('radio发生change事件，携带value值为：', e.detail.value);
+    console.log('radio发生change事件，携带value值为：', e.detail.value);
 
-        var radioItems = this.data.radioItems;
-        for (var i = 0, len = radioItems.length; i < len; ++i) {
-            radioItems[i].checked = radioItems[i].value == e.detail.value;
-        }
+    var radioItems = this.data.radioItems;
+    for (var i = 0, len = radioItems.length; i < len; ++i) {
+      radioItems[i].checked = radioItems[i].value == e.detail.value;
+    }
 
-        this.setData({
-            radioItems: radioItems
-        });
+    this.setData({
+      radioItems: radioItems
+    });
   },
 
   chooseImage: function (e) {
@@ -47,11 +47,11 @@ Page({
     console.log("long tap image");
   },
 
-  checkBeforeTap: function(){
+  checkBeforeTap: function () {
     return true;
   },
 
-  submitCheckRequest: function() {
+  submitCheckRequest: function () {
     wx.showLoading({
       title: '提交验货结果',
     })
@@ -60,7 +60,7 @@ Page({
       success: function (res) {
         wx.hideLoading();
         if (res.data.status == 0) {
-          
+
           wx.showModal({
             content: '提交成功',
             showCancel: false,
@@ -68,7 +68,7 @@ Page({
               //把审核的结果传递回前一个页面
               let pages = getCurrentPages();
               let curPage = pages[pages.length - 2];
-              let data= curPage.data
+              let data = curPage.data
               console.log("data: ", data);
 
               if (res.confirm) {
@@ -82,7 +82,7 @@ Page({
             }
           });
 
-          
+
         } else {
           wx.showModal({
             content: '提交失败',
@@ -109,14 +109,14 @@ Page({
     })
   },
 
-  handleImageUploadFail: function() {
+  handleImageUploadFail: function () {
     wx.showToast({
       title: '图片上传失败',
       duration: 5000
     })
   },
 
-  bindSubmitTap: function(e) {
+  bindSubmitTap: function (e) {
     if (!this.checkBeforeTap()) {
       return false;
     }
@@ -129,23 +129,23 @@ Page({
 
     if (imageCount > 0) {
       wx.showLoading({
-        title: '正在上传图片( ' + 1 + '/' + imageCount  +' )',
+        title: '正在上传图片( ' + 1 + '/' + imageCount + ' )',
       })
-      
+
       this.uploadFiles(this.data.files);
     }
-  
+
   },
 
-  uploadFiles: function(files) {
+  uploadFiles: function (files) {
     this.data.uploadedCount = 0;
     var i = 0;
-    for( i =  0; i < files.length && i < 5; i++) {
+    for (i = 0; i < files.length && i < 5; i++) {
       this.uploadFile(files, i);
     }
   },
 
-  uploadFile: function(files, index) {
+  uploadFile: function (files, index) {
     var self = this;
 
     wx.uploadFile({
@@ -171,7 +171,7 @@ Page({
             title: '正在上传图片( ' + (self.data.uploadedCount + 1) + '/' + files.length + ' )',
           })
           let next = index + 5;
-          if (next < files.length ) {
+          if (next < files.length) {
             this.uploadFile(files, index + 5)
           }
         }

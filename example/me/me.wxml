@@ -12,6 +12,11 @@
           <view class="weui-cell__ft">技术部</view>
       </view>
 
+      <view class="weui-cell">
+          <view class="weui-cell__bd">权限</view>
+          <view class="weui-cell__ft">验货管理员</view>
+      </view>
+
 
   </view>
 

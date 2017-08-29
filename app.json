@@ -1,8 +1,6 @@
 {
   "pages": [
     "example/index",
-
-    
     "example/login/login",
     "example/notchecklist/notchecklist",
     "example/checkitem/checkitem",
@@ -14,9 +12,10 @@
     "example/me/me",
     "example/checkimages/checkimages",
     "example/search/search",
-    "example/assignchecker/assignchecker"
+    "example/assignchecker/assignchecker",
+    "example/checkproduct/checkproduct"
   ],
-  "tabBar": { 
+  "tabBar": {
     "list": [
       {
         "pagePath": "example/notchecklist/notchecklist",
