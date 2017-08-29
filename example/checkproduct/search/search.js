@@ -1,11 +1,12 @@
-// example/showdocument/showdocument.js
+// search.js
 Page({
 
   /**
    * 页面的初始数据
    */
   data: {
-  
+    startDate: '2017-08-01',
+    endDate: '2017-08-31'
   },
 
   /**

@@ -1,4 +1,4 @@
-// example/showdocument/showdocument.js
+// me.js
 Page({
 
   /**
@@ -12,7 +12,7 @@ Page({
    * 生命周期函数--监听页面加载
    */
   onLoad: function (options) {
-  
+    
   },
 
   /**
@@ -26,7 +26,10 @@ Page({
    * 生命周期函数--监听页面显示
    */
   onShow: function () {
-  
+    console.log("onshow: 我")
+    wx.setNavigationBarTitle({
+      title: '我'
+    })
   },
 
   /**
@@ -62,5 +65,12 @@ Page({
    */
   onShareAppMessage: function () {
   
+  },
+
+  bindLogoutTap: function() {
+    wx.setStorageSync('loginUser', undefined);
+    wx.reLaunch({
+      url: '../login/login',
+    })
   }
 })

@@ -1,0 +1,25 @@
+/* notchecklist.wxss */
+
+.notAssign  {
+  color: green;
+}
+
+.checkItemCell {
+  width: 33%;
+}
+
+.checkItemCellCenter {
+  width: 33%;
+  text-align: center;
+}
+
+.checkItemCellLeft {
+  width: 33%;
+   text-align: left;
+}
+
+.checkItemCellRight {
+  width: 33%;
+   text-align: right;
+}
+

@@ -1,0 +1,29 @@
+<view class="page">
+    <view class="page__bd">
+        <view class="weui-article">
+            <view class="weui-article__h1">验货单</view>
+             <view class="weui-article__p">
+                  {{checkItem.content}}
+             </view>
+        </view>
+
+        
+
+        <view class="weui-btn-area" wx:if="{{checkItem.checkResult}}">
+          <view> 验货结果： pass </view>
+          <br/>
+          <view>验货意见： xxxxxxxx</view>
+          <br/>
+          <button class="weui-btn" type="default" plain="true" bindtap="bindViewImagesTap">查看验货图片</button>
+
+        </view>
+
+        <view class="weui-btn-area">
+          <button id="checkfile_{{index}}" data-file-id="{{index}}" wx:key="{{index}}" class="weui-btn mini-btn" type="primary" size="mini" plain="true" bindtap="bindFileTap" wx:for="{{checkItem.files}}">验货文件{{index+1}}</button>
+        </view>
+
+        <view class="weui-btn-area" >
+           <button class="weui-btn" type="primary" bindtap="bindCheckTap">验货</button>
+        </view>
+    </view>
+</view>

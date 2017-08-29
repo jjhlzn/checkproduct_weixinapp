@@ -1,11 +1,16 @@
-// example/showdocument/showdocument.js
+// assignchecker.js
 Page({
 
   /**
    * 页面的初始数据
    */
   data: {
-  
+    checkers: [
+      '张三',
+      '李四',
+      '王五'
+    ],
+    checkerIndex: 0
   },
 
   /**
@@ -62,5 +67,12 @@ Page({
    */
   onShareAppMessage: function () {
   
-  }
+  },
+
+  bindCheckerChange: function (e) {
+    
+    this.setData({
+      checkerIndex: e.detail.value
+    })
+  },
 })
