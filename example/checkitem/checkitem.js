@@ -11,7 +11,10 @@ Page({
      id: "",
      content: "",
      files: [],
-     checkResult: {}
+     checkResult: {},
+     properties: [
+       
+     ]
    }
   },
 

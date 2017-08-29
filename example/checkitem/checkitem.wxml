@@ -1,21 +1,36 @@
 <view class="page">
     <view class="page__bd">
-        <view class="weui-article">
-            <view class="weui-article__h1">验货单</view>
-             <view class="weui-article__p">
-                  {{checkItem.content}}
-             </view>
+        <view class="weui-cells__title">验货单属性</view>
+        <view class="weui-cells weui-cells_after-title">
+            <view class="weui-cell" wx:key="1" wx:for="{{checkItem.properties}}">
+                <view class="weui-cell__bd">{{item.title}}</view>
+                <view class="weui-cell__ft">{{item.value}}</view>
+            </view>
         </view>
 
+        <view class="weui-cells__title">商品</view>
+        <view class="weui-cells weui-cells_after-title">
+            <navigator url="" class="weui-cell weui-cell_access" wx:key="product_1" hover-class="weui-cell_active" wx:for="{{checkItem.products}}">
+                <view class="weui-cell__bd">{{item.name}}</view>
+                <view class="weui-cell__ft weui-cell__ft_in-access"></view>
+            </navigator>
+            
+        </view>
         
-
-        <view class="weui-btn-area" wx:if="{{checkItem.checkResult}}">
-          <view> 验货结果： pass </view>
-          <br/>
-          <view>验货意见： xxxxxxxx</view>
-          <br/>
-          <button class="weui-btn" type="default" plain="true" bindtap="bindViewImagesTap">查看验货图片</button>
-
+        <view class="weui-cells__title">验货结果</view>
+        <view class="weui-cells weui-cells_after-title">
+          <view class="weui-cell">
+            <view class="weui-cell__bd">验货状态</view>
+            <view class="weui-cell__ft">已完成</view>
+          </view>
+          <view class="weui-cell">
+            <view class="weui-cell__bd">验货备注</view>
+            <view class="weui-cell__ft"></view>
+          </view>
+           <navigator url="" class="weui-cell weui-cell_access" hover-class="weui-cell_active" bindtap="bindViewImagesTap">
+                <view class="weui-cell__bd">验货图片</view>
+                <view class="weui-cell__ft weui-cell__ft_in-access"></view>
+            </navigator>
         </view>
 
         <view class="weui-btn-area">
@@ -23,7 +38,7 @@
         </view>
 
         <view class="weui-btn-area" >
-           <button class="weui-btn" type="primary" bindtap="bindCheckTap">验货</button>
+           <button class="weui-btn" type="primary" bindtap="bindCheckTap">整单验货</button>
         </view>
     </view>
 </view>
