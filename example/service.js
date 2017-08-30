@@ -2,7 +2,7 @@
 
 class Service {
   constructor() {
-   this.isTest = false;
+   this.isTest = true;
    if (this.isTest) {
      this.http = "http";
      this.host = "test2.hengdianworld.com";

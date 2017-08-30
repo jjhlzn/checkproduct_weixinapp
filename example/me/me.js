@@ -67,6 +67,13 @@ Page({
   
   },
 
+  /**
+ * 下拉刷新处理
+ */
+  onPullDownRefresh: function () {
+    wx.stopPullDownRefresh()
+  },
+
   bindLogoutTap: function() {
     wx.setStorageSync('loginUser', undefined);
     wx.reLaunch({

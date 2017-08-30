@@ -91,6 +91,13 @@ Page({
 
   },
 
+  /**
+   * 下拉刷新处理
+   */
+  onPullDownRefresh: function () {
+    wx.stopPullDownRefresh()
+  },
+
   bindItemTap: function (e) {
     console.log("item: ", e);
     let id = e.currentTarget.dataset.id;

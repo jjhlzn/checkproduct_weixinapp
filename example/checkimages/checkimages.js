@@ -44,7 +44,14 @@ Page({
       current: url2, // 当前显示图片的http链接
       urls: [url2] // 需要预览的图片http链接列表
     }) */
-  }
+  },
+
+  /**
+ * 下拉刷新处理
+ */
+  onPullDownRefresh: function () {
+    wx.stopPullDownRefresh()
+  },
 })
 
 

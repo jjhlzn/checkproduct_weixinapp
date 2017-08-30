@@ -181,5 +181,12 @@ Page({
         self.handleImageUploadFail();
       }
     })
-  }
+  },
+
+  /**
+ * 下拉刷新处理
+ */
+  onPullDownRefresh: function () {
+    wx.stopPullDownRefresh()
+  },
 });

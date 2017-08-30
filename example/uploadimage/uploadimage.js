@@ -24,5 +24,12 @@ Page({
 
   bindLongImageTap: function (e) {
     console.log("long tap image");
-  }
+  },
+
+  /**
+ * 下拉刷新处理
+ */
+  onPullDownRefresh: function () {
+    wx.stopPullDownRefresh()
+  },
 });

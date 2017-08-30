@@ -147,5 +147,12 @@ Page({
     wx.navigateTo({
       url: '../checkproduct/checkproduct',
     })
-  }
+  },
+
+  /**
+ * 下拉刷新处理
+ */
+  onPullDownRefresh: function () {
+    wx.stopPullDownRefresh()
+  },
 })
