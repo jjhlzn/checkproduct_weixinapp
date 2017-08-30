@@ -7,26 +7,29 @@ Page({
    * 页面的初始数据
    */
   data: {
+    loading: false,
+    totalCount: 0,
     items: []
   },
 
-  /**
-   * 生命周期函数--监听页面加载
-   */
-  onLoad: function (options) {
-
- 
+  loadData: function() {
     var self = this;
-    wx.showLoading({
-      title: '加载验货列表',
-    })
+    if (this.data.loading) {
+      console.log("正在加载数据中")
+      return;
+    }
+    
+    self.setData({loading: true});
+    self.data.loading = true;
     wx.request({
       url: service.getCheckListUrl(),
       header: {
         'content-type': 'application/ json'
       },
       success: function (res) {
-        self.setData({ items: res.data.items });
+        let items = self.data.items;
+        items.push.apply(items, res.data.items);
+        self.setData({ items: items, totalCount: res.data.totalCount });
       },
       fail: function (err) {
         console.error(err)
@@ -35,9 +38,16 @@ Page({
         })
       },
       complete: function () {
-        wx.hideLoading()
+        self.setData({ loading: false });
       }
     })
+  },
+
+  /**
+   * 生命周期函数--监听页面加载
+   */
+  onLoad: function (options) {
+    this.loadData()
   },
 
   /**
@@ -74,14 +84,22 @@ Page({
    * 页面相关事件处理函数--监听用户下拉动作
    */
   onPullDownRefresh: function () {
-
+    console.log("onPullDownRefresh called")
+    let self = this;
+    if (this.data.items.length < this.data.totalCount) {
+      this.loadData();
+    }
   },
 
   /**
    * 页面上拉触底事件的处理函数
    */
   onReachBottom: function () {
-
+    console.log("onReachBottom called")
+    let self = this;
+    if (this.data.items.length < this.data.totalCount) {
+      this.loadData();
+    }
   },
 
   /**

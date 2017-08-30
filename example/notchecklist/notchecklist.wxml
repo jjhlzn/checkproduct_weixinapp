@@ -31,6 +31,13 @@
                       <view class="flex-view-item checkItemCellRight">{{item.checker}}  </view>
                     </view>  
                 </view>
+
+                <view > 
+                  <view class="weui-loadmore" wx:if="{{loading}}">
+                      <view class="weui-loading"></view>
+                      <view class="weui-loadmore__tips">正在加载</view>
+                  </view>
+                </view>
             </view>
         </view>
        
