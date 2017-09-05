@@ -13,7 +13,7 @@ class Service {
      this.host = "10.211.55.3";
      this.port = 80;
      this.prefix = '.aspx'
-   }
+   } 
     
   }
    loginUrl() {

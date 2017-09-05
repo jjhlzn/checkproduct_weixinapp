@@ -105,7 +105,6 @@ Page({
   },
 
   bindCheckTap: function() {
-    console.log("check tap");
     wx.navigateTo({
       url: '../check/check',
     })
@@ -145,7 +144,7 @@ Page({
 
   bindProductTap: function(e) {
     wx.navigateTo({
-      url: '../checkproduct/checkproduct',
+      url: '../product/product?item=' + JSON.stringify(this.data.checkItem),
     })
   },
 

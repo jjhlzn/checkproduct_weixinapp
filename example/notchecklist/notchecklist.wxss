@@ -2,6 +2,7 @@
 
 .notAssign  {
   color: green;
+  background: #c9f2c4;
 }
 
 .checkItemCell {

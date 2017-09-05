@@ -13,7 +13,8 @@
     "example/checkimages/checkimages",
     "example/search/search",
     "example/assignchecker/assignchecker",
-    "example/checkproduct/checkproduct"
+    "example/checkproduct/checkproduct",
+    "example/product/product"
   ],
   "tabBar": {
     "list": [

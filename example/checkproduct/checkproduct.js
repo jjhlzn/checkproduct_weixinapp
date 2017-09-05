@@ -121,7 +121,6 @@ Page({
       return false;
     }
 
-    console.log("submit tap");
     var self = this;
 
     //上传图片，使用对话框提示，图片上传完之后，提交验货结果

@@ -122,7 +122,6 @@ Page({
   bindItemTap: function(e) {
 
     let id = e.currentTarget.dataset.id;
-    console.log("id: ", id);
 
     let item = this.getItem(id);
     console.log("item:", item);

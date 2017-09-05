@@ -10,10 +10,11 @@
 
         <view class="weui-cells__title">商品</view>
         <view class="weui-cells weui-cells_after-title">
-            <navigator url="" bindtap="bindProductTap" class="weui-cell weui-cell_access" wx:key="product_1" hover-class="weui-cell_active" wx:for="{{checkItem.products}}">
-                <view class="weui-cell__bd">{{item.name}}</view>
-                <view class="weui-cell__ft weui-cell__ft_in-access"></view>
-            </navigator>
+            <view url="" bindtap="bindProductTap" class="weui-cell weui-cell_access" wx:key="product_1" hover-class="weui-cell_active" wx:for="{{checkItem.products}}">
+                <view class="weui-cell__bd">{{item.productNo}}({{item.name}})</view>
+                <!-- <view class="weui-cell__ft weui-cell__ft_in-access"></view> -->
+                 <view class="weui-cell__ft weui-cell__ft_in-access" >{{item.checkResult}}</view>
+            </view>
             
         </view>
         
@@ -27,10 +28,10 @@
             <view class="weui-cell__bd">验货备注</view>
             <view class="weui-cell__ft"></view>
           </view>
-           <navigator url="" class="weui-cell weui-cell_access" hover-class="weui-cell_active" bindtap="bindViewImagesTap">
+           <view url="" class="weui-cell weui-cell_access" hover-class="weui-cell_active" bindtap="bindViewImagesTap">
                 <view class="weui-cell__bd">验货图片</view>
                 <view class="weui-cell__ft weui-cell__ft_in-access"></view>
-            </navigator>
+            </view>
         </view>
 
         <view class="weui-btn-area">

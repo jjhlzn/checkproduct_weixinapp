@@ -1,0 +1,94 @@
+// example/product/product.js
+Page({
+
+  /**
+   * 页面的初始数据
+   */
+  data: {
+    checkItem: {},
+    product: {
+      id: "",
+      checkResult: {},
+      properties: [
+
+      ]
+    }
+  },
+
+  /**
+   * 生命周期函数--监听页面加载
+   */
+  onLoad: function (options) {
+    if (options.item) {
+      let checkItem = JSON.parse(options.item);
+      this.setData({
+        checkItem: checkItem,
+        product: checkItem.products[0]
+      });
+
+    }
+    
+  },
+
+  /**
+   * 生命周期函数--监听页面初次渲染完成
+   */
+  onReady: function () {
+  
+  },
+
+  /**
+   * 生命周期函数--监听页面显示
+   */
+  onShow: function () {
+  
+  },
+
+  /**
+   * 生命周期函数--监听页面隐藏
+   */
+  onHide: function () {
+  
+  },
+
+  /**
+   * 生命周期函数--监听页面卸载
+   */
+  onUnload: function () {
+  
+  },
+
+  /**
+   * 页面相关事件处理函数--监听用户下拉动作
+   */
+  onPullDownRefresh: function () {
+  
+  },
+
+  /**
+   * 页面上拉触底事件的处理函数
+   */
+  onReachBottom: function () {
+  
+  },
+
+  /**
+   * 用户点击右上角分享
+   */
+  onShareAppMessage: function () {
+  
+  },
+
+  bindViewImagesTap: function() {
+    let images = this.data.checkItem.checkResult.images;
+    wx.navigateTo({
+      url: '../checkimages/checkimages?images=' + JSON.stringify(images),
+    })
+  },
+
+  bindCheckTap: function() {
+    wx.navigateTo({
+      url: '../check/check',
+    })
+  }
+})
