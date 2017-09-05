@@ -24,11 +24,11 @@
             <view class="weui-cell__bd">验货状态</view>
             <view class="weui-cell__ft">已完成</view>
           </view>
-          <view class="weui-cell">
-            <view class="weui-cell__bd">验货备注</view>
-            <view class="weui-cell__ft"></view>
+          <view class="flex-row weui-cell" style="display: flex;flex-direction: row; align-items: left; justify-content: space-between;">
+            <view class="weui-cell__bd flexCellTitle">验货备注</view>
+            <view class="weui-cell__ft flexCellContent"> 张小龙亲手操刀的微信小程序半年度复盘总结，全都在这里，唯一一份! .... 肯德基的发现，用户在用餐时的心理是求快求好.</view>
           </view>
-           <view url="" class="weui-cell weui-cell_access" hover-class="weui-cell_active" bindtap="bindViewImagesTap">
+           <view  url="" class="weui-cell weui-cell_access" hover-class="weui-cell_active" bindtap="bindViewImagesTap">
                 <view class="weui-cell__bd">验货图片</view>
                 <view class="weui-cell__ft weui-cell__ft_in-access"></view>
             </view>

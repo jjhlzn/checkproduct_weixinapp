@@ -8,6 +8,11 @@
       </view>
 
       <view class="weui-cell">
+          <view class="weui-cell__bd">姓名</view>
+          <view class="weui-cell__ft">张三</view>
+      </view>
+
+      <view class="weui-cell">
           <view class="weui-cell__bd">部门</view>
           <view class="weui-cell__ft">技术部</view>
       </view>
