@@ -9,11 +9,17 @@ Page({
   data: {
     loading: false,
     totalCount: 0,
-    items: []
+    items: [],
+    request: {
+      pageNo: 0,
+      pageSize: 10
+    },
+    isLoadAll: false
   },
 
-  loadData: function() {
+  loadData: function(pageNo) {
     var self = this;
+    self.data.request.pageNo = pageNo;
     if (this.data.loading) {
       console.log("正在加载数据中")
       return;
@@ -23,6 +29,9 @@ Page({
     self.data.loading = true;
     wx.request({
       url: service.getCheckListUrl(),
+      data: {
+        request: self.data.request
+      },
       header: {
         'content-type': 'application/ json'
       },
@@ -47,7 +56,7 @@ Page({
    * 生命周期函数--监听页面加载
    */
   onLoad: function (options) {
-    this.loadData()
+    this.loadData(0)
   },
 
   /**
@@ -84,11 +93,8 @@ Page({
    * 页面相关事件处理函数--监听用户下拉动作
    */
   onPullDownRefresh: function () {
-    console.log("onPullDownRefresh called")
-    let self = this;
-    if (this.data.items.length < this.data.totalCount) {
-      this.loadData();
-    }
+    console.log("onPullDownRefresh called");
+    this.getMoreData();
   },
 
   /**
@@ -96,9 +102,15 @@ Page({
    */
   onReachBottom: function () {
     console.log("onReachBottom called")
+    this.getMoreData();
+  },
+
+  getMoreData() {
     let self = this;
     if (this.data.items.length < this.data.totalCount) {
-      this.loadData();
+      this.loadData(self.data.request.pageNo + 1);
+    } else {
+      this.setData({isLoadAll: true});
     }
   },
 
@@ -113,7 +125,10 @@ Page({
    * 下拉刷新处理
    */
   onPullDownRefresh: function () {
-    wx.stopPullDownRefresh()
+    let self = this;
+    this.setData({ items: [] });
+    this.loadData(0);
+    wx.stopPullDownRefresh();
   },
 
   bindItemTap: function (e) {

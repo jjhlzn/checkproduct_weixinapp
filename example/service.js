@@ -3,17 +3,25 @@
 class Service {
   constructor() {
    this.isTest = true;
-   if (this.isTest) {
+   this.isLocal = true;
+   if (this.isLocal) {
      this.http = "http";
-     this.host = "test2.hengdianworld.com";
-     this.port = 3003;
+     this.host = "localhost";
+     this.port = 16623;
      this.prefix = '.aspx'
    } else {
-     this.http = "http";
-     this.host = "10.211.55.3";
-     this.port = 80;
-     this.prefix = '.aspx'
-   } 
+    if (this.isTest) {
+      this.http = "http";
+      this.host = "test2.hengdianworld.com";
+      this.port = 3003;
+      this.prefix = '.aspx'
+    } else {
+      this.http = "http";
+      this.host = "10.211.55.3";
+      this.port = 80;
+      this.prefix = '.aspx'
+    } 
+   }
     
   }
    loginUrl() {
