@@ -17,6 +17,8 @@ Page({
     isLoadAll: false
   },
 
+  
+
   loadData: function(pageNo) {
     var self = this;
     self.data.request.pageNo = pageNo;
@@ -38,7 +40,11 @@ Page({
       success: function (res) {
         let items = self.data.items;
         items.push.apply(items, res.data.items);
+        console.log("res:", res);
         self.setData({ items: items, totalCount: res.data.totalCount });
+        if (items.length === res.data.totalCount) {
+          self.setData({isLoadAll: true});
+        }
       },
       fail: function (err) {
         console.error(err)
@@ -126,7 +132,7 @@ Page({
    */
   onPullDownRefresh: function () {
     let self = this;
-    this.setData({ items: [] });
+    this.setData({ items: [], isLoadAll: false });
     this.loadData(0);
     wx.stopPullDownRefresh();
   },

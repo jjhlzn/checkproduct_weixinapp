@@ -17,3 +17,15 @@
   width: 33%;
    text-align: right;
 }
+
+.loadAllCell {
+  margin-top: 10px;
+  height: 10px;
+}
+
+.noDataCell {
+  margin-top: 30px;
+  height: 10px;
+  margin-bottom: 20px;
+}
+
