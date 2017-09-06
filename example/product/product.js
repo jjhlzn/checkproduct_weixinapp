@@ -93,7 +93,7 @@ Page({
 
   bindCheckTap: function() {
     wx.navigateTo({
-      url: '../check/check',
+      url: '../checkproduct/checkproduct',
     })
   }
 })
