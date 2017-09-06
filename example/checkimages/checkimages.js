@@ -25,6 +25,15 @@ Page({
     console.log("imgList:", this.data.imgList);
   },
 
+  /**
+   * 生命周期函数--监听页面显示
+   */
+  onShow: function () {
+    wx.setNavigationBarTitle({
+      title: '验货图片',
+    })
+  },
+
   onReachBottom: function () {
     // Do something when page reach bottom.
   },

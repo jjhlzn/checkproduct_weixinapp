@@ -67,6 +67,9 @@ Page({
    */
   onShow: function () {
     console.log("onShow");
+    wx.setNavigationBarTitle({
+      title: '验货单',
+    })
   },
 
   /**
