@@ -1,4 +1,5 @@
 let service = require('../service').Service;
+import { checkPermission } from '../model/user.js';
 
 Page({
   data: {
@@ -15,6 +16,7 @@ Page({
    * 生命周期函数--监听页面显示
    */
   onShow: function () {
+    checkPermission();
     wx.setNavigationBarTitle({
       title: '验货',
     })

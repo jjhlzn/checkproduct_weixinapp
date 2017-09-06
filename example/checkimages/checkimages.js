@@ -3,6 +3,7 @@
  * 加载多张图片测试页
  */
 let service = require('../service').Service;
+import { checkPermission } from '../model/user.js';
 
 //引入图片预加载组件
 //const ImgLoader = require('../img-loader/img-loader.js')
@@ -29,6 +30,7 @@ Page({
    * 生命周期函数--监听页面显示
    */
   onShow: function () {
+    checkPermission()
     wx.setNavigationBarTitle({
       title: '验货图片',
     })

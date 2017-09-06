@@ -1,5 +1,6 @@
 // showimage.js
 let service = require('../service').Service;
+import { checkPermission } from '../model/user.js';
 
 Page({
 
@@ -35,7 +36,7 @@ Page({
    * 生命周期函数--监听页面初次渲染完成
    */
   onReady: function () {
-
+    checkPermission();
     /* 
     wx.downloadFile({
       url: 'http://pic28.nipic.com/20130424/11588775_115415688157_2.jpg',

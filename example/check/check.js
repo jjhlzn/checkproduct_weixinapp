@@ -1,4 +1,5 @@
 let service = require('../service').Service;
+import { checkPermission } from '../model/user.js';
 
 Page({
   data: {
@@ -18,6 +19,7 @@ Page({
     wx.setNavigationBarTitle({
       title: '验货',
     })
+    checkPermission()
   },
 
   radioChange: function (e) {
