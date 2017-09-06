@@ -4,12 +4,12 @@
 }
 
 .checkItemCellCenter {
-  width: 33%;
+  width: 30%;
   text-align: center;
 }
 
 .checkItemCellLeft {
-  width: 33%;
+  width: 37%;
    text-align: left;
 }
 
