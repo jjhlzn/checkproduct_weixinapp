@@ -97,11 +97,7 @@ Page({
   onShow: function () {
     if (this.data.isBackFromSearch) {
       console.log("load data after search")
-      this.setData({
-        items: [],
-        totalCount: 0,
-        isBackFromSearch: false
-      });
+      this.reset();
       this.loadData(0);
     }
 
@@ -156,12 +152,24 @@ Page({
 
   },
 
+  reset() {
+    this.setData({ 
+      request: {
+        pageNo: 0,
+        pageSize: 10
+      },
+      totalCount: 0,
+      items: [], 
+      isLoadAll: false,
+      isBackFromSearch: false });
+  },
+
   /**
    * 下拉刷新处理
    */
   onPullDownRefresh: function () {
     let self = this;
-    this.setData({ items: [], isLoadAll: false });
+    this.reset();
     this.loadData(0);
     wx.stopPullDownRefresh();
   },
