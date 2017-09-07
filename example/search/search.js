@@ -1,5 +1,6 @@
 // search.js
 import { checkPermission } from '../model/user.js';
+let moment = require('../lib/moment.js');
 
 Page({
 
@@ -15,6 +16,8 @@ Page({
    * 生命周期函数--监听页面加载
    */
   onLoad: function (options) {
+
+    console.log("date:", new moment().format('YYYY-MM-DD'));
 
   },
 
