@@ -8,17 +8,30 @@ Page({
    * 页面的初始数据
    */
   data: {
-    startDate: '2017-08-01',
-    endDate: '2017-08-31'
+    startDate: '',
+    endDate: '',
+    ticketNo: "",
+    hasChecked: false
   },
 
   /**
    * 生命周期函数--监听页面加载
    */
   onLoad: function (options) {
-
-    console.log("date:", new moment().format('YYYY-MM-DD'));
-
+    console.log(options.queryparams);
+    
+    if (options.queryparams) {
+      this.setData(JSON.parse(options.queryparams));
+    } else {
+      console.log("date:", new moment().format('YYYY-MM-DD'));
+      var endDate = new moment().format('YYYY-MM-DD');
+      var startDate = new moment().subtract(30, 'day').format('YYYY-MM-DD');
+      this.setData({
+        startDate: startDate,
+        endDate: endDate,
+        ticketNo: ""
+      });
+    }
   },
 
   /**
@@ -72,9 +85,33 @@ Page({
   
   },
 
+  bindTicketNoInput: function(e) {
+    this.data.ticketNo = e.detail.value;
+  },
+
+  bindStartDateChange: function(e) {
+    this.setData({
+      startDate: e.detail.value
+    })
+  },
+
+  bindEndDateChange: function(e) {
+    this.setData({
+      endDate: e.detail.value
+    })
+  },
+
   bindSearchTap: function() {
-   wx.navigateBack({
-     
-   })
+    var pages = getCurrentPages();
+    var prevPage = pages[pages.length - 2];  //上一个页面
+
+    //直接调用上一个页面的setData()方法，把数据存到上一个页面中去
+    prevPage.setData({
+      queryParams: this.data,
+      isBackFromSearch: true
+    });
+    wx.navigateBack({
+      
+    })
   }
 })

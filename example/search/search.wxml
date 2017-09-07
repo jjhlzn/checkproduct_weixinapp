@@ -10,7 +10,7 @@
                     <view class="weui-label">发票号</view>
                 </view>
                 <view class="weui-cell__bd">
-                    <input class="weui-input" placeholder=""/>
+                    <input class="weui-input" bindinput='bindTicketNoInput' value="{{ticketNo}}" placeholder=""/>
                 </view>
             </view>
 
@@ -19,7 +19,7 @@
                   <view class="weui-label">开始日期</view>
               </view>
               <view class="weui-cell__bd">
-                  <picker mode="date" value="{{startDate}}" start="2015-09-01" end="2017-09-01" bindchange="bindDateChange">
+                  <picker mode="date" value="{{startDate}}" start="2015-09-01" end="2017-09-01" bindchange="bindStartDateChange">
                       <view class="weui-input">{{startDate}}</view>
                   </picker>
               </view>
@@ -30,7 +30,7 @@
                   <view class="weui-label">结束日期</view>
               </view>
               <view class="weui-cell__bd">
-                  <picker mode="date" value="{{endDate}}" start="2015-09-01" end="2017-09-01" bindchange="bindDateChange">
+                  <picker mode="date" value="{{endDate}}" start="2015-09-01" end="2017-09-01" bindchange="bindEndDateChange">
                       <view class="weui-input">{{endDate}}</view>
                   </picker>
               </view>

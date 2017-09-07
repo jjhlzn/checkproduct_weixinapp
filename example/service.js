@@ -3,7 +3,7 @@
 class Service {
   constructor() {
    this.isTest = true;
-   this.isLocal = false;
+   this.isLocal = true;
    if (this.isLocal) {
      this.http = "http";
      this.host = "localhost";

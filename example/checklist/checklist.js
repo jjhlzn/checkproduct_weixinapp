@@ -1,6 +1,7 @@
 // notchecklist.js
 let service = require('../service').Service
 import { checkPermission } from '../model/user.js';
+let moment = require('../lib/moment.js');
 
 Page({
 
@@ -15,7 +16,14 @@ Page({
       pageNo: 0,
       pageSize: 10
     },
-    isLoadAll: false
+    isLoadAll: false,
+    isBackFromSarch: false,
+    queryParams: {
+      startDate: '',
+      endDate: '',
+      ticketNo: '',
+      hasChecked: false
+    }
   },
 
   
@@ -63,7 +71,16 @@ Page({
    * 生命周期函数--监听页面加载
    */
   onLoad: function (options) {
-    
+    var endDate = new moment().format('YYYY-MM-DD');
+    var startDate = new moment().subtract(30, 'day').format('YYYY-MM-DD');
+    this.setData({
+      queryParams: {
+        startDate: startDate,
+        endDate: endDate,
+        ticketNo: "",
+        hasChecked: true
+      }
+    });
   },
 
   /**
@@ -78,6 +95,16 @@ Page({
    * 生命周期函数--监听页面显示
    */
   onShow: function () {
+    if (this.data.isBackFromSearch) {
+      console.log("load data after search")
+      this.setData({
+        items: [],
+        totalCount: 0,
+        isBackFromSearch: false
+      });
+      this.loadData(0);
+    }
+
     wx.setNavigationBarTitle({
       title: '已验货列表',
     })
@@ -150,7 +177,7 @@ Page({
 
   bindSearchTap: function (e) {
     wx.navigateTo({
-      url: '../search/search',
+      url: '../search/search?queryparams=' + JSON.stringify(this.data.queryParams),
     })
   }
 })
