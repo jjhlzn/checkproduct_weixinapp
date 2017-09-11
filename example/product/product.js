@@ -23,6 +23,7 @@ Page({
   onLoad: function (options) {
     if (options.item) {
       let checkItem = JSON.parse(options.item);
+      console.log(checkItem);
       this.setData({
         checkItem: checkItem,
         product: checkItem.products[0]
@@ -95,5 +96,29 @@ Page({
     wx.navigateTo({
       url: '../checkproduct/checkproduct',
     })
+  },
+
+  getProperty: function(code) {
+    for(var i = 0; i < this.data.product.properties.length; i++) {
+      let property = this.data.product.properties[i];
+      if (property.code === code) {
+        return property;
+      }
+    }
+    return null;
+  },
+
+
+  bindProductPropertyTap: function (e) {
+    console.log("property tap");
+    let target = e.currentTarget;
+    let property = this.getProperty(target.dataset.id);
+    console.log("property:", property)
+    if (property && property.canEdit) {
+      console.log("navigate to edit page");
+      wx.navigateTo({
+        url: '../editproductproperty/editproductproperty?property='+JSON.stringify(property)+"&product="+JSON.stringify(this.data.product),
+      })
+    }
   }
 })

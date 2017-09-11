@@ -2,7 +2,8 @@
     <view class="page__bd">
         <view class="weui-cells__title">商品属性</view>
         <view class="weui-cells weui-cells_after-title">
-            <view class="weui-cell" wx:key="1" wx:for="{{product.properties}}">
+            <view class="weui-cell" bindtap='bindProductPropertyTap'  wx:key="1" wx:for="{{product.properties}}" data-id="{{item.code}}" >
+          
                 <view class="weui-cell__bd">{{item.title}}</view>
                 <view class="weui-cell__ft">{{item.value}}</view>
             </view>

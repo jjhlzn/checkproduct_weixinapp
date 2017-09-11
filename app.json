@@ -14,7 +14,8 @@
     "example/search/search",
     "example/assignchecker/assignchecker",
     "example/checkproduct/checkproduct",
-    "example/product/product"
+    "example/product/product",
+    "example/editproductproperty/editproductproperty"
   ],
   "tabBar": {
     "list": [

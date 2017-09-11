@@ -6,7 +6,8 @@ Page({
     uploadedCount: 0,
     radioItems: [
       { name: '合格', value: '0' },
-      { name: '不合格', value: '1', checked: true }
+      { name: '不合格', value: '1', checked: true },
+      { name: '未完成', value: '2' }
     ],
 
     files: []
