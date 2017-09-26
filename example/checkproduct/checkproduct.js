@@ -9,8 +9,25 @@ Page({
       { name: '不合格', value: '1', checked: true },
       { name: '未完成', value: '2' }
     ],
+    checkItem: {
+
+    },
+    product: {
+
+    },
 
     files: []
+  },
+
+  onLoad: function (options) {
+    console.log(options)
+    this.setData({
+      checkItem: JSON.parse(options.item),
+      product: JSON.parse(options.product)
+    })
+
+    console.log("item:", this.data.checkItem);
+    console.log("product:", this.data.product)
   },
 
   /**

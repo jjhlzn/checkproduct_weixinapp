@@ -148,7 +148,8 @@ Page({
 
   bindProductTap: function(e) {
     wx.navigateTo({
-      url: '../product/product?item=' + JSON.stringify(this.data.checkItem),
+      url: '../product/product?item=' + JSON.stringify(this.data.checkItem)
+      + '&product=' + JSON.stringify(this.data.checkItem.products[0]),
     })
   },
 

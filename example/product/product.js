@@ -94,7 +94,8 @@ Page({
 
   bindCheckTap: function() {
     wx.navigateTo({
-      url: '../checkproduct/checkproduct',
+      url: '../checkproduct/checkproduct?item='+JSON.stringify(this.data.checkItem) 
+       + '&product='+JSON.stringify(this.data.product),
     })
   },
 
@@ -110,6 +111,7 @@ Page({
 
 
   bindProductPropertyTap: function (e) {
+    return;
     console.log("property tap");
     let target = e.currentTarget;
     let property = this.getProperty(target.dataset.id);
