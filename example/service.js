@@ -2,8 +2,8 @@
 
 class Service {
   constructor() {
-   this.isTest = false;
-   this.isLocal = false;
+   this.isTest = true;
+   this.isLocal = true;
    if (this.isLocal) {
      this.http = "http";
      this.host = "localhost";
@@ -12,7 +12,7 @@ class Service {
    } else {
     if (this.isTest) {
       this.http = "http";
-      this.host = "test2.hengdianworld.com";
+      this.host = "www.hengdianworld.com";
       this.port = 3003;
       this.prefix = '.aspx'
     } else {

@@ -83,8 +83,10 @@ Page({
     wx.request({
       url: service.loginUrl(), //仅为示例，并非真实的接口地址
       data: {
-        a: 'jjh',
-        b: 'jjhlzn'
+        request: {
+          a: 'jjh',
+          b: 'jjhlzn'
+        }
       },
       header: { 
         'content-type': 'application/json'

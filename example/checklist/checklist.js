@@ -3,6 +3,7 @@ let service = require('../service').Service
 import { checkPermission } from '../model/user.js';
 let moment = require('../lib/moment.js');
 
+
 Page({
 
   /**
@@ -26,7 +27,17 @@ Page({
     }
   },
 
-  
+  makeRequest: function() {
+    let self = this;
+    return {
+      pageNo: self.data.request.pageNo,
+      pageSize: self.data.request.pageSize,
+      startDate: self.data.queryParams.startDate,
+      endDate: self.data.queryParams.endDate,
+      ticketNo: self.data.queryParams.ticketNo,
+      hasChecked: self.data.queryParams.hasChecked
+    }
+  },
 
   loadData: function(pageNo) {
     var self = this;
@@ -41,7 +52,7 @@ Page({
     wx.request({
       url: service.getCheckListUrl(),
       data: {
-        request: self.data.request
+        request: self.makeRequest()
       },
       header: {
         'content-type': 'application/ json'

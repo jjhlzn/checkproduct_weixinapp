@@ -30,7 +30,9 @@ Page({
     })
     wx.request({
       url: service.getCheckItemUrl(),
-      data: options,
+      data: {
+        request: options,
+      },
       header: {
         'content-type': 'application/json'
       },
@@ -115,16 +117,6 @@ Page({
   },
 
   bindFileTap: function(e) {
-    console.log(e)
-    /*
-    let fileId = e.currentTarget.dataset.fileId;
-    console.log(fileId);
-    let url = '../showimage/showimage?id=' + this.data.checkItem.id + '&fileid=' + fileId;
-    console.log("url: ", url);
-    wx.navigateTo({
-      url: url,
-    })*/
-
     var url2 = service.getCheckFileUrl();
     console.log("url: ", url2);
     wx.previewImage({
