@@ -1,5 +1,6 @@
 
 
+
 class Service {
   constructor() {
    this.isTest = true;
@@ -58,6 +59,10 @@ class Service {
 
    getCheckImageUrl(filename) {
      return `${this.http}://${this.host}:${this.port}/uploads/${filename}`
+   }
+
+   getCheckItemResultUrl() {
+     return `${this.http}://${this.host}:${this.port}/getcheckitemresult${this.prefix}`
    }
 }
 

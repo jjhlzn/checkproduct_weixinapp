@@ -8,8 +8,46 @@ Page({
       { name: '完成', value: '0' },
       { name: '未完成', value: '1', checked: true }
     ],
-
+    checkResult: {
+      result: "1",
+      description: "",
+    },
     files: []
+  },
+
+  onLoad: function(options) {
+    //从服务器上获取结果
+    wx.showLoading({
+      title: '加载中',
+    })
+    wx.request({
+      url: service.getCheckItemResultUrl(),
+      data: {
+        request: options,
+      },
+      header: {
+        'content-type': 'application/json'
+      },
+      complete: function (res) {
+        wx.hideLoading()
+        console.log(res);
+        if (res.data.status != 0) {
+          wx.showToast({
+            title: '加载失败',
+          })
+          return;
+        }
+        self.setData({
+          checkResult: res.data.result
+        })
+      },
+      fail: function (err) {
+        wx.hideLoading()
+        wx.showToast({
+          title: '加载失败',
+        })
+      }
+    })
   },
 
   /**
@@ -124,7 +162,7 @@ Page({
   handleImageUploadFail: function() {
     wx.showToast({
       title: '图片上传失败',
-      duration: 5000
+      duration: 3000
     })
   },
 
