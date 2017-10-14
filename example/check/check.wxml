@@ -20,7 +20,7 @@
         <view class="weui-cells weui-cells_after-title">
             <view class="weui-cell">
                 <view class="weui-cell__bd">
-                    <textarea class="weui-textarea" placeholder="请输入文本" style="height: 3.3em" />
+                    <textarea class="weui-textarea" placeholder="请输入文本" value="{{checkResult.description}}" style="height: 3.3em" />
                     <view class="weui-textarea-counter">0/200</view>
                 </view>
             </view>
@@ -33,8 +33,8 @@
                 <view class="weui-uploader__bd">
                             <view class="weui-uploader__files" id="uploaderFiles">
                                 <block wx:for="{{files}}" wx:key="*this">
-                                    <view class="weui-uploader__file" bindtap="previewImage" id="{{item}}">
-                                        <image class="weui-uploader__img" src="{{item}}" mode="aspectFill" />
+                                    <view class="weui-uploader__file" bindtouchend='touchend' bindlongtap='bindLongImageTap' bindtap="previewImage" id="image_{{index}}">
+                                        <image  class="weui-uploader__img" src="{{item}}" mode="aspectFill" />
                                     </view>
                                 </block>
 

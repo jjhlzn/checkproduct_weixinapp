@@ -3,6 +3,7 @@ import { checkPermission } from '../model/user.js';
 
 Page({
   data: {
+    lock: false,
     uploadedCount: 0,
     radioItems: [
       { name: '完成', value: '0' },
@@ -16,6 +17,8 @@ Page({
   },
 
   onLoad: function(options) {
+    let self = this;
+
     //从服务器上获取结果
     wx.showLoading({
       title: '加载中',
@@ -40,6 +43,22 @@ Page({
         self.setData({
           checkResult: res.data.result
         })
+
+        if (self.data.checkResult.result == "完成") {
+          self.setData({
+            radioItems: [
+              { name: '完成', value: '0', checked: true },
+              { name: '未完成', value: '1' }
+            ]
+          })
+        } else {
+          self.setData({
+            radioItems: [
+              { name: '完成', value: '0' },
+              { name: '未完成', value: '1', checked: true }
+            ]
+          })
+        }
       },
       fail: function (err) {
         wx.hideLoading()
@@ -87,14 +106,54 @@ Page({
     })
   },
   previewImage: function (e) {
+    if (this.data.lock) {
+      return;
+    }
     wx.previewImage({
       current: e.currentTarget.id, // 当前显示图片的http链接
       urls: this.data.files // 需要预览的图片http链接列表
     })
   },
 
+  touchend: function(e) {
+    if (this.data.lock) {
+      setTimeout( () => {
+        this.setData({
+          lock: false
+        })
+      }, 100)
+    }
+  },
+
+  //传入按键事件，将所点按的图片删除
+  removeImage: function(e) {
+    let id = e.currentTarget.id;
+    let index = parseInt(id.replace('image_', ''));
+    this.data.files.splice(index, 1);
+    this.setData({files: this.data.files});
+    //console.log(this.data.files);
+  },
+
   bindLongImageTap: function (e) {
+    let self = this;
+    this.setData({
+      lock: true
+    });
     console.log("long tap image");
+    console.log(e);
+    wx.showModal({
+      title: '',
+      content: '删除该图片？',
+      success: function (res) {
+        if (res.confirm) {
+          console.log('用户点击确定')
+          self.removeImage(e);
+
+        } else if (res.cancel) {
+          console.log('用户点击取消')
+        }
+      }
+    })
   },
 
   checkBeforeTap: function(){
@@ -239,4 +298,6 @@ Page({
   onPullDownRefresh: function () {
     wx.stopPullDownRefresh()
   },
+
+
 });
