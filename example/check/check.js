@@ -58,6 +58,15 @@ Page({
               { name: '未完成', value: '1', checked: true }
             ]
           })
+        }  
+
+        console.log("images:", self.data.checkResult.images)
+        //设置图片
+        if (self.data.checkResult.images) {
+          let imageUrls = self.data.checkResult.images.map( (item) => {return item.url} )
+                .map( (item) => {return service.getCheckImageUrl(item)});
+          console.log("imageUrls:", imageUrls);
+          self.setData({files: imageUrls}); 
         }
       },
       fail: function (err) {
@@ -234,14 +243,18 @@ Page({
     var self = this;
 
     //上传图片，使用对话框提示，图片上传完之后，提交验货结果
-    let imageCount = this.data.files.length;
+
+    //过滤不需要进行上传的图片
+    let needUploadFiles = this.data.files.filter((item) => { return !item.startsWith('https:') && !item.startsWith('http:')} );
+
+    let imageCount = needUploadFiles.length;
 
     if (imageCount > 0) {
       wx.showLoading({
         title: '正在上传图片( ' + 1 + '/' + imageCount  +' )',
       })
       
-      this.uploadFiles(this.data.files);
+      this.uploadFiles(needUploadFiles);
     }
   
   },
@@ -258,7 +271,7 @@ Page({
     var self = this;
 
     wx.uploadFile({
-      url: service.uploadFileUrl(), //仅为示例，非真实的接口地址
+      url: service.uploadFileUrl(), 
       filePath: files[index],
       name: 'file',
       formData: {},
@@ -277,7 +290,7 @@ Page({
           self.submitCheckRequest();
         } else {
           wx.showLoading({
-            title: '正在上传图片( ' + (self.data.uploadedCount + 1) + '/' + files.length + ' )',
+            title: '上传中( ' + (self.data.uploadedCount + 1) + '/' + files.length + ' )',
           })
           let next = index + 5;
           if (next < files.length ) {
