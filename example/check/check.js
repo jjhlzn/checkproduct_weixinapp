@@ -118,8 +118,10 @@ Page({
     if (this.data.lock) {
       return;
     }
+    let id = e.currentTarget.id;
+    let index = parseInt(id.replace('image_', ''));
     wx.previewImage({
-      current: e.currentTarget.id, // 当前显示图片的http链接
+      current: this.data.files[index], // 当前显示图片的http链接
       urls: this.data.files // 需要预览的图片http链接列表
     })
   },
@@ -148,8 +150,8 @@ Page({
     this.setData({
       lock: true
     });
-    console.log("long tap image");
-    console.log(e);
+    //console.log("long tap image");
+    //console.log(e);
     wx.showModal({
       title: '',
       content: '删除该图片？',
@@ -251,7 +253,7 @@ Page({
 
     if (imageCount > 0) {
       wx.showLoading({
-        title: '正在上传图片( ' + 1 + '/' + imageCount  +' )',
+        title: '上传中( ' + 1 + '/' + imageCount  +' )',
       })
       
       this.uploadFiles(needUploadFiles);
