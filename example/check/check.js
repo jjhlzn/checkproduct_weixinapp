@@ -296,7 +296,7 @@ Page({
           })
           let next = index + 5;
           if (next < files.length ) {
-            this.uploadFile(files, index + 5)
+            self.uploadFile(files, index + 5)
           }
         }
       },
@@ -305,13 +305,6 @@ Page({
         self.handleImageUploadFail();
       }
     })
-  },
-
-  /**
- * 下拉刷新处理
- */
-  onPullDownRefresh: function () {
-    wx.stopPullDownRefresh()
   },
 
 
