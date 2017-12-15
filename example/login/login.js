@@ -105,12 +105,12 @@ Page({
                 console.log('用户点击确定')
               }
             }
-          });
+          }); 
           return;
         }
         wx.setStorageSync('loginUser', res.data.user)
         wx.reLaunch({
-          url: '../notchecklist/notchecklist',
+          url: '../assignlist/assignlist',
         });
       },
       fail: function(res) {

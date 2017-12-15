@@ -23,7 +23,7 @@ Page({
       console.log('loginUser: ', loginUser);
       if (loginUser) {
         wx.reLaunch({
-          url: './notchecklist/notchecklist',
+          url: './assignlist/assignlist',
         });
       } else {
         wx.redirectTo({

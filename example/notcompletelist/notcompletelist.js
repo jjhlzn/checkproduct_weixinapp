@@ -58,12 +58,14 @@ Page({
   onLoad: function (options) {
     var endDate = new moment().format('YYYY-MM-DD');
     var startDate = new moment().subtract(30, 'day').format('YYYY-MM-DD');
-    this.setData({queryParams: {
-      startDate: startDate,
-      endDate: endDate,
-      ticketNo: "",
-      hasChecked: false
-    }});
+    this.setData({
+      queryParams: {
+        startDate: startDate,
+        endDate: endDate,
+        ticketNo: "",
+        hasChecked: false
+      }
+    });
 
   },
 
@@ -90,36 +92,36 @@ Page({
       this.loadData();
     }
     wx.setNavigationBarTitle({
-      title: '未验货列表'
-    }) 
+      title: '未完成列表'
+    })
   },
 
   /**
    * 生命周期函数--监听页面隐藏
    */
   onHide: function () {
-  
+
   },
 
   /**
    * 生命周期函数--监听页面卸载
    */
   onUnload: function () {
-  
+
   },
 
   /**
    * 页面相关事件处理函数--监听用户下拉动作
    */
   onPullDownRefresh: function () {
-  
+
   },
 
   /**
    * 页面上拉触底事件的处理函数
    */
   onReachBottom: function () {
-  
+
   },
 
   /**
@@ -133,11 +135,11 @@ Page({
    * 用户点击右上角分享
    */
   onShareAppMessage: function () {
-  
+
   },
 
   getItem(ticketNo) {
-    for(var i = 0; i < this.data.items.length; i++) {
+    for (var i = 0; i < this.data.items.length; i++) {
       if (this.data.items[i].ticketNo == ticketNo) {
         return this.data.items[i];
       }
@@ -145,22 +147,22 @@ Page({
     return null;
   },
 
-  bindItemTap: function(e) {
+  bindItemTap: function (e) {
 
     let id = e.currentTarget.dataset.id;
 
     let item = this.getItem(id);
     console.log("item:", item);
     if (item) {
-        wx.navigateTo({
-          url: '../checkitem/checkitem?id=' + id,
-        })
+      wx.navigateTo({
+        url: '../checkitem/checkitem?id=' + id,
+      })
     }
   },
 
-  bindSearchTap: function(e) {
+  bindSearchTap: function (e) {
     wx.navigateTo({
-      url: '../search/search?queryparams='+JSON.stringify(this.data.queryParams),
+      url: '../search/search?queryparams=' + JSON.stringify(this.data.queryParams),
     })
   }
 })
