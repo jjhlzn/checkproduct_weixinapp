@@ -7,7 +7,8 @@ Page({
     radioItems: [
       { name: '合格', value: '0' },
       { name: '不合格', value: '1', checked: true },
-      { name: '未完成', value: '2' }
+      { name: '未完成', value: '2' },
+      { name: '待定', value: '3' }
     ],
     checkItem: {
 
@@ -20,14 +21,51 @@ Page({
   },
 
   onLoad: function (options) {
+    /*
     console.log(options)
     this.setData({
       checkItem: JSON.parse(options.item),
       product: JSON.parse(options.product)
     })
+    */
 
-    console.log("item:", this.data.checkItem);
-    console.log("product:", this.data.product)
+    //console.log("item:", this.data.checkItem);
+    //console.log("product:", this.data.product)
+
+    var self = this;
+    console.log("onload");
+    wx.showLoading({
+      title: '加载中',
+    })
+    wx.request({
+      url: service.getCheckItemUrl(),
+      data: {
+        request: options,
+      },
+      header: {
+        'content-type': 'application/json'
+      },
+      complete: function (res) {
+        wx.hideLoading()
+        console.log(res);
+        if (res.data.status != 0) {
+          wx.showToast({
+            title: '加载失败',
+          })
+          return;
+        }
+        self.setData({
+          checkItem: res.data.item,
+          product: res.data.item.products[0]
+        })
+      },
+      fail: function (err) {
+        wx.hideLoading()
+        wx.showToast({
+          title: '加载失败',
+        })
+      }
+    })
   },
 
   /**

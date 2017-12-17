@@ -29,6 +29,7 @@ Page({
         product: checkItem.products[0]
       });
 
+      
     }
     
   },

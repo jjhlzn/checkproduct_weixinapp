@@ -190,7 +190,7 @@ Page({
     let id = e.currentTarget.dataset.id;
     console.log("id: ", id);
     wx.navigateTo({
-      url: '../checkitem/checkitem?id=' + id,
+      url: '../contractsofitem2/contractsofitem2?id=' + id,
     })
   },
 

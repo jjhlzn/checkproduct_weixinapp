@@ -26,7 +26,7 @@
   </view>
 
    <view class="weui-btn-area">
-          <button class="weui-btn" type="primary" bindtap="bindLogoutTap">退出</button>
+          <button class="weui-btn" type="primary" hover-class='other-button-hover'  bindtap="bindLogoutTap">退出</button>
       </view>
  
 </view>

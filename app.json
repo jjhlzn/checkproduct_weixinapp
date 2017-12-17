@@ -17,7 +17,9 @@
     "example/product/product",
     "example/editproductproperty/editproductproperty",
     "example/assignlist/assignlist",
-    "example/notcompletelist/notcompletelist"
+    "example/notcompletelist/notcompletelist",
+    "example/contractsofitem/contractsofitem",
+    "example/contractsofitem2/contractsofitem2"
   ],
   "tabBar": {
     "list": [

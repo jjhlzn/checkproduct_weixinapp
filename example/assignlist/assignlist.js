@@ -92,7 +92,7 @@ Page({
       this.loadData();
     }
     wx.setNavigationBarTitle({
-      title: '未验货列表'
+      title: '待分配列表'
     })
   },
 

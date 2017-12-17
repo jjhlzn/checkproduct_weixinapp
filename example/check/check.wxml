@@ -69,7 +69,7 @@
         </view>
 
         <view class="weui-btn-area">
-            <button class="weui-btn" type="primary" bindtap="bindSubmitTap">提交</button>
+            <button class="weui-btn" type="primary" hover-class='other-button-hover'  bindtap="bindSubmitTap">提交</button>
         </view>
     </view>
 </view>

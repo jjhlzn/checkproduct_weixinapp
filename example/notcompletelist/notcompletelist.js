@@ -155,7 +155,7 @@ Page({
     console.log("item:", item);
     if (item) {
       wx.navigateTo({
-        url: '../checkitem/checkitem?id=' + id,
+        url: '../contractsofitem/contractsofitem?id=' + id,
       })
     }
   },

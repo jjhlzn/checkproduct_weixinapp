@@ -14,5 +14,5 @@
 </view>
 
  <view class="weui-btn-area">
-      <button class="weui-btn" type="primary" bindtap="bindSaveTap">保存</button>
+      <button class="weui-btn" type="primary" hover-class='other-button-hover' bindtap="bindSaveTap">保存</button>
   </view>
