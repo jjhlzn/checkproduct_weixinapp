@@ -6,17 +6,18 @@
     <view >
      <view class='logoDiv'>
       <image src='../images/logo.png' class="logo" mode="widthFix"></image>
+
       </view>
     </view>
 
-    <view class="">
+    <view>
       <view class="input">
-          <input type="email" placeholder="Email"  />
-          <span><i class="fa fa-envelope-o"></i></span>
+          <input type="email" placeholder="用户名"  />
+          <span><i class="fa fa-user fa-lg"></i></span>
       </view>
       <view class="input">
-          <input type="password" placeholder="Password" />
-          <span><i class="fa fa-lock"></i></span>
+          <input type="password" placeholder="密码" />
+          <span><i class="fa fa-lock fa-lg"></i></span>
       </view>
 
      
@@ -29,7 +30,7 @@
   </view>
 
   <view class='bottomDiv bottomLabel'>
-      <label>技术支持：xxxxx公司</label>
+      <label>技术支持：杭州全顺科技有限公司</label>
   </view>
 
 </view>

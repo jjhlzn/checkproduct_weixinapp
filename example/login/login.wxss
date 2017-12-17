@@ -7,11 +7,8 @@ page {
 .loginDiv {
   background-color: white;
   
-  max-height: 1024px;
   margin-left:  10%;
   margin-right: 10%;
-
-  height: 40%;
 }
 
 .loginButton {
@@ -36,7 +33,7 @@ page {
 
 .bottomDiv {
   text-align: center;
-  font-size: 20px;
+  font-size: 14px;
   font-weight: normal;
   color: white;
   position: fixed;
@@ -90,7 +87,7 @@ page {
   color: #d4d4d4;
   left: 10px;
   top: 8px;
-  font-size: 20px;
+  font-size: 20px; 
 }
 .input input {
   padding: 10px 5px 10px 40px;
@@ -104,4 +101,8 @@ page {
   padding: 10px 5px 10px 10px;
   outline: 0;
   border-color: #FF7052;
+}
+
+.page__bd {
+  padding-bottom: 14px;
 }
