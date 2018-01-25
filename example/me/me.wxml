@@ -4,22 +4,17 @@
   <view class="weui-cells weui-cells_after-title">
       <view class="weui-cell">
           <view class="weui-cell__bd">账号</view>
-          <view class="weui-cell__ft">0001</view>
+          <view class="weui-cell__ft">{{loginUser.username}}</view>
       </view>
 
       <view class="weui-cell">
           <view class="weui-cell__bd">姓名</view>
-          <view class="weui-cell__ft">张三</view>
-      </view>
-
-      <view class="weui-cell">
-          <view class="weui-cell__bd">部门</view>
-          <view class="weui-cell__ft">技术部</view>
+          <view class="weui-cell__ft">{{loginUser.name}}</view>
       </view>
 
       <view class="weui-cell">
           <view class="weui-cell__bd">权限</view>
-          <view class="weui-cell__ft">验货管理员</view>
+          <view class="weui-cell__ft">{{loginUser.roleName}}</view>
       </view>
 
 

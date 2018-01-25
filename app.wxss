@@ -43,6 +43,17 @@ button.weui-btn {
 }
 
 
+.peopleName {
+  width: 65px;
+  display: block;
+  float: right;
+}
+
+
+.checkItemCellRight {
+  width: 50%;
+   text-align: right;
+}
 
 /* font-awesome  */
 @font-face {

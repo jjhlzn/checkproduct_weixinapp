@@ -21,6 +21,21 @@ Page({
     }
   },
 
+  removeItem: function(ticketNo) {
+    let items = this.data.items;
+    console.log(this.data.items);
+    let index = -1;
+    items.forEach((item, i) => {
+      if (item.ticketNo == ticketNo) {
+        index = i;
+      }
+    });
+    if (index != -1) {
+      items.splice(index, 1);
+      this.setData({items: items});
+    }
+  },
+
   loadData: function () {
     var self = this;
     if (this.data.loading) {
@@ -30,9 +45,12 @@ Page({
 
     self.setData({ loading: true });
     wx.request({
-      url: service.getNotCheckListUrl(),
+      url: service.getCheckOrdersUrl(),
+      data: {
+        status: '未分配'
+      },
       header: {
-        'content-type': 'application/ json'
+        'content-type': 'application/json'
       },
       success: function (res) {
         let items = self.data.items;

@@ -33,7 +33,7 @@
         "pagePath": "example/notchecklist/notchecklist",
         "iconPath": "example/icons/notcheck.png",
         "selectedIconPath": "example/icons/notcheck2.png",
-        "text": "未验货"
+        "text": "待验货"
       },
       {
         "pagePath": "example/notcompletelist/notcompletelist",

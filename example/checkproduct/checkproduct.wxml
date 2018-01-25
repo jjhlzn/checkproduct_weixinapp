@@ -21,25 +21,25 @@
             <view class="weui-cell">
                 <view class="weui-cell__bd">抽箱数</view>
                 <view class="weui-cell__ft">
-                  <input  placeholder="" value="{{product.properties[2].value}}"/>
+                  <input  placeholder="" value="{{product.pickCount}}"/>
                 </view>
             </view>
             <view class="weui-cell">
                 <view class="weui-cell__bd">外箱尺寸</view>
                 <view class="weui-cell__ft">
-                  <input  placeholder="" value="{{product.properties[3].value}}"/>
+                  <input  placeholder="" value="{{product.boxSize}}"/>
                 </view>
             </view>
             <view class="weui-cell">
                 <view class="weui-cell__bd">单件毛重</view>
                 <view class="weui-cell__ft">
-                  <input  placeholder="" value="{{product.properties[4].value}}"/>
+                  <input  placeholder="" value="{{product.grossWeight}}"/>
                 </view>
             </view>
             <view class="weui-cell">
                 <view class="weui-cell__bd">单件净重</view>
                 <view class="weui-cell__ft">
-                  <input  placeholder="" value="{{product.properties[5].value}}"/>
+                  <input  placeholder="" value="{{product.netWeight}}"/>
                 </view>
             </view>
         </view>
@@ -48,7 +48,7 @@
         <view class="weui-cells weui-cells_after-title">
             <view class="weui-cell">
                 <view class="weui-cell__bd">
-                    <textarea class="weui-textarea" placeholder="请输入文本" style="height: 3.3em" />
+                    <textarea class="weui-textarea" placeholder="请输入文本" value="{{product.checkMemo}}" style="height: 3.3em" />
                     <view class="weui-textarea-counter">0/200</view>
                 </view>
             </view>

@@ -6,8 +6,8 @@
           <view class="weui-label">验货员</view>
       </view>
       <view class="weui-cell__bd">
-          <picker bindchange="bindCheckerChange" value="{{checkerIndex}}" range="{{checkers}}">
-              <view class="weui-select weui-select_in-select-after">{{checkers[checkerIndex]}}</view>
+          <picker bindchange="bindCheckerChange" value="{{checkerIndex}}" range="{{checkerNames}}">
+              <view class="weui-select weui-select_in-select-after">{{checkers[checkerIndex].name}}</view>
           </picker>
       </view>
   </view>

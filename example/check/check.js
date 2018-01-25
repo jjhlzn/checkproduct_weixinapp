@@ -1,8 +1,10 @@
 let service = require('../service').Service;
+let uploadFiles = require('../logic/upload').uploadFiles;
 import { checkPermission } from '../model/user.js';
 
 Page({
   data: {
+    maxUploadCount: 3,
     lock: false,
     uploadedCount: 0,
     radioItems: [
@@ -229,13 +231,6 @@ Page({
     })
   },
 
-  handleImageUploadFail: function() {
-    wx.showToast({
-      title: '图片上传失败',
-      duration: 3000
-    })
-  },
-
   bindSubmitTap: function(e) {
     if (!this.checkBeforeTap()) {
       return false;
@@ -247,7 +242,13 @@ Page({
     //上传图片，使用对话框提示，图片上传完之后，提交验货结果
 
     //过滤不需要进行上传的图片
-    let needUploadFiles = this.data.files.filter((item) => { return !item.startsWith('https:') && !item.startsWith('http:')} );
+    this.data.files.forEach( item => {
+      console.log("item: " + item);
+    })
+    //let needUploadFiles = this.data.files.filter((item) => { return !item.startsWith('https:') && !item.startsWith('http:')} );
+    let needUploadFiles = this.data.files.filter((item) => { return item.startsWith('http://tmp/') || item.startsWith('wxfile://')  });
+    
+    console.log("needUploadFiles: " + JSON.stringify(needUploadFiles));
 
     let imageCount = needUploadFiles.length;
 
@@ -255,57 +256,12 @@ Page({
       wx.showLoading({
         title: '上传中( ' + 1 + '/' + imageCount  +' )',
       })
-      
-      this.uploadFiles(needUploadFiles);
+      uploadFiles(needUploadFiles, this);
     }
   
   },
 
-  uploadFiles: function(files) {
-    this.data.uploadedCount = 0;
-    var i = 0;
-    for( i =  0; i < files.length && i < 5; i++) {
-      this.uploadFile(files, i);
-    }
-  },
-
-  uploadFile: function(files, index) {
-    var self = this;
-
-    wx.uploadFile({
-      url: service.uploadFileUrl(), 
-      filePath: files[index],
-      name: 'file',
-      formData: {},
-      success: function (res) {
-        console.log(res);
-        let json = JSON.parse(res.data)
-        if (json.status != 0) {
-          self.handleImageUploadFail();
-          return;
-        }
-
-        self.data.uploadedCount++;
-        console.log('完成第' + self.data.uploadedCount + '张');
-
-        if (self.data.uploadedCount == files.length) {
-          self.submitCheckRequest();
-        } else {
-          wx.showLoading({
-            title: '上传中( ' + (self.data.uploadedCount + 1) + '/' + files.length + ' )',
-          })
-          let next = index + 5;
-          if (next < files.length ) {
-            self.uploadFile(files, index + 5)
-          }
-        }
-      },
-      fail: function (err) {
-        console.log(err);
-        self.handleImageUploadFail();
-      }
-    })
-  },
+  
 
 
 });

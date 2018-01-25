@@ -1,18 +1,33 @@
 // example/contractsofitem/contractofitem.js
+let service = require('../service').Service;
+
 Page({
 
   /**
    * 页面的初始数据
    */
   data: {
-  
+    checkOrder: {
+      ticketNo: "",
+      checkStatus: "",
+      checkMemo: ""
+    },
+    contracts: []
   },
 
   /**
    * 生命周期函数--监听页面加载
    */
   onLoad: function (options) {
-  
+     this.setData({
+       checkOrder: {
+         ticketNo: options.id,
+         checkStatus: "未完成",
+         checkMemo: "无"
+       }
+     })
+
+     this.loadData();
   },
 
   /**
@@ -31,49 +46,57 @@ Page({
     })
   },
 
-  /**
-   * 生命周期函数--监听页面隐藏
-   */
-  onHide: function () {
-  
-  },
+  loadData: function() {
+    var self = this;
+    if (this.data.loading) {
+      console.log("正在加载数据中")
+      return;
+    }
 
-  /**
-   * 生命周期函数--监听页面卸载
-   */
-  onUnload: function () {
-  
-  },
-
-  /**
-   * 页面相关事件处理函数--监听用户下拉动作
-   */
-  onPullDownRefresh: function () {
-  
-  },
-
-  /**
-   * 页面上拉触底事件的处理函数
-   */
-  onReachBottom: function () {
-  
-  },
-
-  /**
-   * 用户点击右上角分享
-   */
-  onShareAppMessage: function () {
-  
+    wx.request({
+      url: service.getCheckOrderContractsUrl(),
+      data: {
+        ticketNo: self.data.checkOrder.ticketNo
+      },
+      header: {
+        'content-type': 'application/json'
+      },
+      success: function (res) {
+        console.log(res);
+        if (res.data.status != 0) {
+          wx.showToast({
+            title: '加载失败',
+          })
+          return;
+        }
+        let contracts = res.data.contracts;
+        self.setData({ contracts: contracts});
+      },
+      fail: function (err) {
+        console.error(err)
+        wx.showToast({
+          title: '加载失败',
+        })
+      },
+      complete: function () {
+        self.setData({ loading: false });
+      }
+    })
   },
 
   bindItemTap: function (e) {
 
-    let id = e.currentTarget.dataset.id;
+    let contractNo = e.currentTarget.dataset.id;
     //let item = this.getItem(id);
     //console.log("item:", item);
     //if (item) {
+      /*
     wx.navigateTo({
       url: '../contractsofitem2/contractsofitem2?id=' + id,
+    }) */
+    
+    wx.navigateTo({
+      url: '../checkitem/checkitem?ticketNo=' + this.data.checkOrder.ticketNo + '&contractNo=' + contractNo ,
     })
 
     //}

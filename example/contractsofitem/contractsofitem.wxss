@@ -20,3 +20,12 @@
 .weui-panel__bd .rowTitle {
   background-color: lightgray;
 }
+
+.twoRowCell {
+  padding-top: 12px;
+}
+
+.checkItemCellRight {
+   width: 60%;
+   text-align: right;
+}

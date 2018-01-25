@@ -6,31 +6,25 @@ Page({
     uploadedCount: 0,
     radioItems: [
       { name: '合格', value: '0' },
-      { name: '不合格', value: '1', checked: true },
-      { name: '未完成', value: '2' },
+      { name: '不合格', value: '1'},
+      { name: '未完成', value: '2', checked: true },
       { name: '待定', value: '3' }
     ],
-    checkItem: {
-
-    },
+    ticketNo: "",
+    contractNo: "",
+    productNo: "",
     product: {
 
     },
-
     files: []
   },
 
   onLoad: function (options) {
-    /*
-    console.log(options)
     this.setData({
-      checkItem: JSON.parse(options.item),
-      product: JSON.parse(options.product)
+      ticketNo: options.ticketNo,
+      contractNo: options.contractNo,
+      productNo: options.productNo
     })
-    */
-
-    //console.log("item:", this.data.checkItem);
-    //console.log("product:", this.data.product)
 
     var self = this;
     console.log("onload");
@@ -38,9 +32,10 @@ Page({
       title: '加载中',
     })
     wx.request({
-      url: service.getCheckItemUrl(),
+      url: service.getProductInfoUrl(),
       data: {
-        request: options,
+        contractNo: self.data.contractNo,
+        productNo: self.data.productNo
       },
       header: {
         'content-type': 'application/json'
@@ -55,8 +50,7 @@ Page({
           return;
         }
         self.setData({
-          checkItem: res.data.item,
-          product: res.data.item.products[0]
+          product: res.data.product
         })
       },
       fail: function (err) {
@@ -196,9 +190,9 @@ Page({
 
     if (imageCount > 0) {
       wx.showLoading({
-        title: '正在上传图片( ' + 1 + '/' + imageCount + ' )',
+        title: '上传中( ' + 1 + '/' + imageCount + ' )',
       })
-
+      console.log("needUploadFiles: " + JSON.stringify(this.data.files));
       this.uploadFiles(this.data.files);
     }
 
@@ -216,7 +210,7 @@ Page({
     var self = this;
 
     wx.uploadFile({
-      url: service.uploadFileUrl(), //仅为示例，非真实的接口地址
+      url: service.uploadFileUrl(), 
       filePath: files[index],
       name: 'file',
       formData: {},
@@ -235,7 +229,7 @@ Page({
           self.submitCheckRequest();
         } else {
           wx.showLoading({
-            title: '正在上传图片( ' + (self.data.uploadedCount + 1) + '/' + files.length + ' )',
+            title: '上传中( ' + (self.data.uploadedCount + 1) + '/' + files.length + ' )',
           })
           let next = index + 5;
           if (next < files.length) {
@@ -250,10 +244,4 @@ Page({
     })
   },
 
-  /**
- * 下拉刷新处理
- */
-  onPullDownRefresh: function () {
-    wx.stopPullDownRefresh()
-  },
 });

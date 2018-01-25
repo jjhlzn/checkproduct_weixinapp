@@ -27,12 +27,14 @@ Page({
       console.log("正在加载数据中")
       return;
     }
-
     self.setData({ loading: true });
     wx.request({
-      url: service.getNotCheckListUrl(),
+      url: service.getCheckOrdersUrl(),
       header: {
-        'content-type': 'application/ json'
+        'content-type': 'application/json'
+      },
+      data: {
+        status: '待验货'
       },
       success: function (res) {
         let items = self.data.items;
@@ -114,13 +116,6 @@ Page({
    * 页面相关事件处理函数--监听用户下拉动作
    */
   onPullDownRefresh: function () {
-
-  },
-
-  /**
-   * 页面上拉触底事件的处理函数
-   */
-  onReachBottom: function () {
 
   },
 

@@ -13,36 +13,36 @@
 
             <view class=" weui-media-box weui-media-box_text">
                   <view class="flex-row myrow" >
-                    <view class="flex-view-item" > 
+                    <view class="flex-view-item firstColumn" > 
                          <view style="flex-direction:column;">
                             <view class="flex-view-item ">发票号</view>
                             <view class="flex-view-item ">货号</view>
                           </view>
                     </view>
-                     <view class="flex-view-item" style='padding-top: 12px;'> 
+                     <view class="flex-view-item twoRowCell secondColumn"> 
                         <p>验货结果</p>
                     </view>
-                     <view class="flex-view-item" style='padding-top: 12px;'> 
+                     <view class="flex-view-item checkItemCellRight"> 
                         <p ></p>
                     </view>
                   </view>
-              </view>
+            </view>
 
             <view   bindtap="bindItemTap"  class=" weui-media-box weui-media-box_text" >
                 <view class="flex-row myrow">
-                  <view class="flex-view-item" > 
+                  <view class="flex-view-item firstColumn" > 
                         <view style="flex-direction:column;">
                           <view class="flex-view-item ">HW17133-1</view>
                           <view class="flex-view-item ">BX1234</view>
                         </view>
                   </view>
-                  <view class="flex-view-item" style='padding-top: 12px;'> 
-                      <p>不合格</p>
+                  <view class="flex-view-item twoRowCell secondColumn"> 
+                     合格
                   </view>
-                  <view class="flex-view-item" > 
+                  <view class="flex-view-item checkItemCellRight" > 
                         <view style="flex-direction:column;">
-                          <view class="flex-view-item checkItemCellRight">验货员 小李</view>
-                          <view class="flex-view-item checkItemCellRight">跟单员 小周</view>
+                          <view class="flex-view-item ">验货员 <span class="peopleName">小李</span></view>
+                          <view class="flex-view-item ">跟单员  <span class="peopleName">小周</span></view>
                         </view>
                   </view>
                 </view>
@@ -50,45 +50,25 @@
         
             <view bindtap="bindItemTap"  class=" weui-media-box weui-media-box_text" >
                 <view class="flex-row myrow">
-                  <view class="flex-view-item" > 
+                  <view class="flex-view-item firstColumn" > 
                         <view style="flex-direction:column;">
                           <view class="flex-view-item ">HW17133-2</view>
                           <view class="flex-view-item ">BX1235</view>
                         </view>
                   </view>
-                  <view class="flex-view-item" style='padding-top: 12px;'> 
+                  <view class="flex-view-item twoRowCell secondColumn" > 
                       <p>合格</p>
                   </view>
-                  <view class="flex-view-item" > 
+                  <view class="flex-view-item checkItemCellRight" > 
                         <view style="flex-direction:column;">
-                          <view class="flex-view-item checkItemCellRight">验货员 小李</view>
-                          <view class="flex-view-item checkItemCellRight">跟单员 小周</view>
+                          <view class="flex-view-item ">验货员 <span class="peopleName">小李</span></view>
+                          <view class="flex-view-item ">跟单员  <span class="peopleName">小周</span></view>
                         </view>
                   </view>
                 </view>
             </view>
 
-            <view bindtap="bindItemTap"  class=" weui-media-box weui-media-box_text" >
-                <view class="flex-row myrow">
-                  <view class="flex-view-item" > 
-                        <view style="flex-direction:column;">
-                          <view class="flex-view-item ">HW17133-3</view>
-                          <view class="flex-view-item ">BX1236</view>
-                        </view>
-                  </view>
-                  <view class="flex-view-item" style='padding-top: 12px;'> 
-                      <p>合格</p>
-                  </view>
-                  <view class="flex-view-item" > 
-                        <view style="flex-direction:column;">
-                          <view class="flex-view-item checkItemCellRight">验货员 小李</view>
-                          <view class="flex-view-item checkItemCellRight">跟单员 小周</view>
-                        </view>
-                  </view>
-                </view>
-            </view>
-
-            
+       
             
             
         </view>

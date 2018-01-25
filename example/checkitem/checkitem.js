@@ -8,30 +8,28 @@ Page({
    * 页面的初始数据
    */
   data: {
-   checkItem: {
-     id: "",
-     content: "",
-     files: [],
-     checkResult: {},
-     properties: [
-       
-     ]
-   }
+    ticketNo: "",
+    contractNo: "",
+    contract: {
+    }
   },
 
   /**
    * 生命周期函数--监听页面加载
    */
   onLoad: function (options) {
+    this.setData({ticketNo: options.ticketNo, contractNo: options.contractNo});
+
     var self = this;
     console.log("onload");
     wx.showLoading({
       title: '加载中',
     })
     wx.request({
-      url: service.getCheckItemUrl(),
+      url: service.getContractInfoUrl(),
       data: {
-        request: options,
+        ticketNo: self.data.ticketNo,
+        contractNo: self.data.contractNo
       },
       header: {
         'content-type': 'application/json'
@@ -46,7 +44,7 @@ Page({
            return;
          }
          self.setData({
-           checkItem: res.data.item
+           contract: res.data.contract
          })
       },
       fail: function(err) {
@@ -139,10 +137,16 @@ Page({
   },
 
   bindProductTap: function(e) {
+    let productNo = e.currentTarget.dataset.id;
+    wx.navigateTo({
+      url: '../checkproduct/checkproduct?ticketNo=' + this.data.contract.ticketNo + '&contractNo=' + this.data.contract.contractNo + '&productNo=' + productNo,
+    })
+
+    /*
     wx.navigateTo({
       url: '../product/product?item=' + JSON.stringify(this.data.checkItem)
       + '&product=' + JSON.stringify(this.data.checkItem.products[0]),
-    })
+    }) */
   },
 
   /**

@@ -1,16 +1,19 @@
 
 
 
+
+
+
 class Service {
   constructor() {
-   this.isTest = true;
+   this.isTest = false;
    this.isLocal = false;
    if (this.isLocal) {
      this.http = "http";
      this.host = "localhost";
      this.port = ":16623";
-     this.prefix = '.aspx'
-   } else {
+     this.prefix = '.aspx';
+   } else { 
     if (this.isTest) {
       this.http = "https";
       this.host = "test.yhkamani.com";
@@ -35,6 +38,10 @@ class Service {
 
    checkProductUrl() {
      return `${this.http}://${this.host}${this.port}/checkproduct${this.prefix}`
+   }
+
+   getCheckOrdersUrl() {
+     return `${this.http}://${this.host}${this.port}/getcheckorders${this.prefix}`
    }
 
    getNotCheckListUrl() {
@@ -63,6 +70,26 @@ class Service {
 
    getCheckItemResultUrl() {
      return `${this.http}://${this.host}${this.port}/getcheckitemresult${this.prefix}`
+   }
+
+   getAllCheckersUrl() {
+     return `${this.http}://${this.host}${this.port}/getallcheckers${this.prefix}`
+   }
+
+   assignCheckerUrl() {
+     return `${this.http}://${this.host}${this.port}/assignchecker${this.prefix}`
+   }
+
+   getCheckOrderContractsUrl() {
+     return `${this.http}://${this.host}${this.port}/getcheckordercontracts${this.prefix}`
+   }
+
+   getContractInfoUrl() {
+     return `${this.http}://${this.host}${this.port}/getcontractinfo${this.prefix}`
+   }
+
+   getProductInfoUrl() {
+     return `${this.http}://${this.host}${this.port}/getproductinfo${this.prefix}`
    }
 }
 

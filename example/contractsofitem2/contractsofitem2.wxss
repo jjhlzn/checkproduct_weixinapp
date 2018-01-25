@@ -12,6 +12,10 @@
   text-align: left;
 }
 
+.twoRowCell {
+  padding-top: 12px;
+}
+
 .flexCellContent {
   width: 70%;
   text-align: right;
@@ -43,4 +47,17 @@
 .myrow2 {
   margin: 0px;
   padding: 0px;
+}
+
+.firstColumn {
+  width: 40%;
+}
+
+.secondColumn {
+  width: 20%;
+}
+
+.checkItemCellRight {
+   width: 40%;
+   text-align: right;
 }

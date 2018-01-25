@@ -7,7 +7,8 @@ Page({
    * 页面的初始数据
    */
   data: {
-  
+    username: '',
+    password: ''
   },
 
   /**
@@ -75,17 +76,27 @@ Page({
   
   },
 
+  setUserName: function(e) {
+    this.data.username = e.detail.value;
+  },
+
+  setPassword: function(e) {
+    this.data.password = e.detail.value
+  },
+
   bindLoginTap: function() {
     wx.showLoading({
       title: '登陆中',
     });
 
+    let username = 
+
     wx.request({
       url: service.loginUrl(), //仅为示例，并非真实的接口地址
       data: {
         request: {
-          a: 'jjh',
-          b: 'jjhlzn'
+          a: this.data.username,
+          b: this.data.password
         }
       },
       header: { 
@@ -107,6 +118,12 @@ Page({
             }
           }); 
           return;
+        }
+        let user = res.data.user;
+        if (user.role == 'checker') {
+          user.roleName = '验货员';
+        } else if (user.role == 'checker_manager') {
+          user.roleName = '验货管理员';
         }
         wx.setStorageSync('loginUser', res.data.user)
         wx.reLaunch({
