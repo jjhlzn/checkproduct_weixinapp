@@ -33,7 +33,7 @@
             <view url="" data-id="{{item.productNo}}" bindtap="bindProductTap" class="weui-cell weui-cell_access" wx:key="product_1" hover-class="weui-cell_active" wx:for="{{contract.products}}">
                 <view class="weui-cell__bd">{{item.productNo}}({{item.name}})</view>
                 <!-- <view class="weui-cell__ft weui-cell__ft_in-access"></view> -->
-                 <view class="weui-cell__ft weui-cell__ft_in-access" >{{item.checkResult}}</view>
+                 <view class="weui-cell__ft weui-cell__ft_in-access" >{{item.checkResult == null ? "待定" : item.checkResult}}</view>
             </view>
             
         </view>

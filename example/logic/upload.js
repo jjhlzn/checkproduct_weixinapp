@@ -1,6 +1,7 @@
 let service = require('../service').Service;
 
 function handleImageUploadFail() {
+  wx.hideLoading();
   wx.showToast({
     title: '图片上传失败',
     duration: 3000
@@ -31,7 +32,16 @@ function upload(files, index, controller, uploadCompleteHandler) {
     formData: {}, 
     success: function (res) {
       console.log(res);
-      let json = JSON.parse(res.data)
+      
+      let json = null;
+      try {
+        json = JSON.parse(res.data)
+      } catch(ex) {
+        console.log("exception: " + ex);
+        handleImageUploadFail();
+        return;
+      }
+      console.log(json);
       if (json.status != 0) {
         self.handleImageUploadFail();
         return;
@@ -40,13 +50,13 @@ function upload(files, index, controller, uploadCompleteHandler) {
       self.data.uploadedCount++;
       console.log('完成第' + self.data.uploadedCount + '张');
 
+      if (controller.data.uploadImageError ) {
+        wx.hideLoading();
+        return;
+      }
+
       if (self.data.uploadedCount == files.length) {
-        //self.submitCheckRequest();
-
         self.uploadCompleteHandler();
-        
-
-        
       } else {
         wx.showLoading({
           title: '上传中( ' + (self.data.uploadedCount + 1) + '/' + files.length + ' )',
@@ -57,12 +67,11 @@ function upload(files, index, controller, uploadCompleteHandler) {
         } else if (next >= files.length) {
           
         }
-
-
       }
     },
     fail: function (err) {
       console.log(err);
+      controller.data.uploadImageError = true;
       handleImageUploadFail();
     }
   });

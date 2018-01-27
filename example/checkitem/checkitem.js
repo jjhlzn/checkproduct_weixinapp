@@ -67,51 +67,31 @@ Page({
    * 生命周期函数--监听页面显示
    */
   onShow: function () {
-    console.log("onShow");
     wx.setNavigationBarTitle({
       title: '验货单',
     })
-  },
-
-  /**
-   * 生命周期函数--监听页面隐藏
-   */
-  onHide: function () {
-    console.log("onHide");
-  },
-
-  /**
-   * 生命周期函数--监听页面卸载
-   */
-  onUnload: function () {
-    console.log("onUnload");
-  },
-
-  /**
-   * 页面相关事件处理函数--监听用户下拉动作
-   */
-  onPullDownRefresh: function () {
-  
-  },
-
-  /**
-   * 页面上拉触底事件的处理函数
-   */
-  onReachBottom: function () {
-  
-  },
-
-  /**
-   * 用户点击右上角分享
-   */
-  onShareAppMessage: function () {
-  
   },
 
   bindCheckTap: function() {
     wx.navigateTo({
       url: '../check/check',
     })
+  },
+
+  updateCheckResult: function(productNo, checkResult) {
+    //console.log("updateCheckResult called: " + productNo);
+    //console.log(JSON.stringify(this.data.contract));
+    this.data.contract.products.forEach(product => {
+     // console.log(JSON.stringify(product));
+      if (product.productNo == productNo) {
+        product.checkResult = checkResult;
+        console.log("find " + productNo);
+      }
+    })
+
+    this.setData({
+      contract: this.data.contract
+    });
   },
 
   bindFileTap: function(e) {
@@ -141,12 +121,6 @@ Page({
     wx.navigateTo({
       url: '../checkproduct/checkproduct?ticketNo=' + this.data.contract.ticketNo + '&contractNo=' + this.data.contract.contractNo + '&productNo=' + productNo,
     })
-
-    /*
-    wx.navigateTo({
-      url: '../product/product?item=' + JSON.stringify(this.data.checkItem)
-      + '&product=' + JSON.stringify(this.data.checkItem.products[0]),
-    }) */
   },
 
   /**

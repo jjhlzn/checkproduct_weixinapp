@@ -1,5 +1,6 @@
 let service = require('../service').Service;
 let uploadFiles = require('../logic/upload').uploadFiles;
+let utils = require('../utils').utils;
 import { checkPermission } from '../model/user.js';
 
 Page({
@@ -21,7 +22,8 @@ Page({
     },
     files: [],
     deleteImages: [],
-    addImages: []
+    addImages: [],
+    uploadImageError: false
   },
 
   onLoad: function (options) {
@@ -56,13 +58,20 @@ Page({
           })
           return;
         }
+
+        let found = false;
         self.data.radioItems.forEach( item => {
           if (item.value == res.data.product.checkResult) {
             item.checked = true;
+            found = true;
           } else {
             delete item.checked;
           }
         });
+
+        if (!found) {
+          self.data.radioItems[2].checked = true; 
+        }
 
         let files = res.data.product.pictureUrls;
         let urls = files.map(file => service.makeImageUrl(file));
@@ -134,6 +143,7 @@ Page({
       }
     })
   },
+
   previewImage: function (e) {
     if (this.data.lock) {
       return;
@@ -178,8 +188,6 @@ Page({
     this.setData({
       lock: true
     });
-    //console.log("long tap image");
-    //console.log(e);
     wx.showModal({
       title: '',
       content: '删除该图片？',
@@ -200,71 +208,24 @@ Page({
   },
 
   checkBeforeTap: function () {
-    return true;
-  },
+    let self = this;
 
-  submitCheckRequest: function () {
-    wx.showLoading({
-      title: '提交验货结果',
-    })
-    wx.request({
-      url: service.checkProductUrl(),
-      success: function (res) {
-        wx.hideLoading();
-        if (res.data.status == 0) {
+    if (!utils.isInt(self.data.product.pickCount)) {
+      return "抽箱数必须是整数";
+    }
+    if (!utils.isFloat(self.data.product.grossWeight)) {
+      return "单件毛重必须是数字";
+    }
+    if (!utils.isFloat(self.data.product.netWeight)) {
+      return "单件净重必须是数字";
+    }
 
-          wx.showModal({
-            content: '提交成功',
-            showCancel: false,
-            success: function (res) {
-              //把审核的结果传递回前一个页面
-              let pages = getCurrentPages();
-              let curPage = pages[pages.length - 2];
-              let data = curPage.data
-              console.log("data: ", data);
-
-              if (res.confirm) {
-                console.log('用户点击确定')
-                wx.navigateBack({
-                  checkResult: {
-                    result: true
-                  }
-                });
-              }
-            }
-          });
-
-
-        } else {
-          wx.showModal({
-            content: '提交失败',
-            showCancel: false,
-            success: function (res) {
-              if (res.confirm) {
-                console.log('用户点击确定')
-              }
-            }
-          });
-        }
-      },
-      fail: function (err) {
-        wx.showModal({
-          content: '提交失败',
-          showCancel: false,
-          success: function (res) {
-            if (res.confirm) {
-              console.log('用户点击确定')
-            }
-          }
-        });
-      }
-    })
+    return "";
   },
 
   combineImageUrls: function(array) {
     if (array.length == 0)
       return "";
-
     let result = array[0];
     for(var i = 1; i < array.length; i++) {
       result = result + "^" + array[i];
@@ -277,7 +238,6 @@ Page({
       title: '提交验货结果',
     })
     let self = this;
-    console.log("deleteImages: " + self.combineImageUrls(self.data.deleteImages));
     
     wx.request({
       url: service.checkProductUrl(),
@@ -287,10 +247,10 @@ Page({
         productNo: self.data.productNo,
 
         checkResult: self.data.product.checkResult,
-        pickCount: self.data.product.pickCount,
+        pickCount: parseInt(self.data.product.pickCount),
         boxSize: self.data.product.boxSize,
-        grossWeight: self.data.product.grossWeight,
-        netWeight: self.data.product.netWeight,
+        grossWeight: parseFloat(self.data.product.grossWeight),
+        netWeight: parseFloat(self.data.product.netWeight),
         checkMemo: self.data.product.checkMemo,
 
         addImages: self.combineImageUrls(self.data.addImages),
@@ -312,6 +272,19 @@ Page({
             title: '验货成功',
             duration: 3000
           })
+
+          //把审核的结果传递回前一个页面
+          let pages = getCurrentPages();
+          let curPage = pages[pages.length - 2];
+          curPage.updateCheckResult(self.data.productNo, self.data.product.checkResult);
+
+          if (res.confirm) {
+            wx.navigateBack({
+              checkResult: {
+                result: true
+              }
+            });
+          }
         }
       },
       fail: function (err) {
@@ -328,23 +301,22 @@ Page({
   },
 
   bindSubmitTap: function (e) {
-    if (!this.checkBeforeTap()) {
+    this.data.uploadImageError = false;
+    let errorMessage = this.checkBeforeTap();
+    if (errorMessage != "") {
+      wx.showModal({
+        content: errorMessage,
+        showCancel: false
+      })
       return false;
     }
-
-    console.log("submit tap");
     var self = this;
-
     //上传图片，使用对话框提示，图片上传完之后，提交验货结果
-
     //过滤不需要进行上传的图片
     this.data.files.forEach(item => {
       console.log("item: " + item);
     })
-    //let needUploadFiles = this.data.files.filter((item) => { return !item.startsWith('https:') && !item.startsWith('http:')} );
     let needUploadFiles = this.data.files.filter((item) => { return item.startsWith('http://tmp/') || item.startsWith('wxfile://') });
-
-    console.log("needUploadFiles: " + JSON.stringify(needUploadFiles));
 
     let imageCount = needUploadFiles.length;
 
@@ -354,8 +326,5 @@ Page({
       })
     }
     uploadFiles(needUploadFiles, this, this.uploadCompleteHandler);
-
   },
-
-
 });
