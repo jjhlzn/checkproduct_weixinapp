@@ -122,6 +122,7 @@ Page({
     }
     let id = e.currentTarget.id;
     let index = parseInt(id.replace('image_', ''));
+    console.log("index = " + index);
     wx.previewImage({
       current: this.data.files[index], // 当前显示图片的http链接
       urls: this.data.files // 需要预览的图片http链接列表

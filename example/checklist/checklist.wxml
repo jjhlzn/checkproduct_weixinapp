@@ -26,17 +26,17 @@
                     <view class="flex-row" style="display: flex;flex-direction: row; align-items: left; justify-content: space-between;">
                      <view class="flex-view-item checkItemCellLeft">发票号  </view>
 
-                      <view class="flex-view-item checkItemCellCenter">合格: 2 </view>
+                      <view class="flex-view-item checkItemCellCenter">合格: {{item.qualifiedCount}} </view>
 
-                      <view class="flex-view-item checkItemCellRight">未验: 2 </view>
+                      <view class="flex-view-item checkItemCellRight">未验: {{item.notCheckCount}} </view>
                     </view>
                     <view class="flex-row" style="display: flex;flex-direction: row; align-items: left; justify-content: space-between;">
                     <view class="flex-view-item checkItemCellLeft">{{item.ticketNo}}  </view>
                     
 
-                      <view class="flex-view-item checkItemCellCenter">不合格: 2 </view>
+                      <view class="flex-view-item checkItemCellCenter">不合格: {{item.notQualifiedCount}} </view>
 
-                      <view class="flex-view-item checkItemCellRight">待定: 2 </view>
+                      <view class="flex-view-item checkItemCellRight">待定: {{item.tbdCount}} </view>
                     </view>  
                 </view>
 

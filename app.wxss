@@ -55,6 +55,11 @@ button.weui-btn {
    text-align: right;
 }
 
+.loadAllCell {
+  margin-top: 10px;
+  height: 10px;
+}
+
 /* font-awesome  */
 @font-face {
 	font-family: 'fa';

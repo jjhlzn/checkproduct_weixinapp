@@ -1,14 +1,17 @@
 let service = require('../service').Service;
+let uploadFiles = require('../logic/upload').uploadFiles;
 import { checkPermission } from '../model/user.js';
 
 Page({
   data: {
+    maxUploadCount: 3,
+    lock: false,     
     uploadedCount: 0,
     radioItems: [
-      { name: '合格', value: '0' },
-      { name: '不合格', value: '1'},
-      { name: '未完成', value: '2', checked: true },
-      { name: '待定', value: '3' }
+      { name: '合格', value: '合格' },
+      { name: '不合格', value: '不合格'},
+      { name: '未完成', value: '未完成', checked: true },
+      { name: '待定', value: '待定' }
     ],
     ticketNo: "",
     contractNo: "",
@@ -16,10 +19,14 @@ Page({
     product: {
 
     },
-    files: []
+    files: [],
+    deleteImages: [],
+    addImages: []
   },
 
   onLoad: function (options) {
+    console.log('options: ' + options)
+
     this.setData({
       ticketNo: options.ticketNo,
       contractNo: options.contractNo,
@@ -49,9 +56,22 @@ Page({
           })
           return;
         }
+        self.data.radioItems.forEach( item => {
+          if (item.value == res.data.product.checkResult) {
+            item.checked = true;
+          } else {
+            delete item.checked;
+          }
+        });
+
+        let files = res.data.product.pictureUrls;
+        let urls = files.map(file => service.makeImageUrl(file));
         self.setData({
-          product: res.data.product
+          product: res.data.product,
+          files: urls,
+          radioItems: self.data.radioItems
         })
+        
       },
       fail: function (err) {
         wx.hideLoading()
@@ -62,19 +82,35 @@ Page({
     })
   },
 
+  setPickCount: function(e) {
+    this.data.product.pickCount = e.detail.value;
+  },
+  setBoxSize: function (e) {
+    this.data.product.boxSize = e.detail.value;
+  },
+  setGrossWeight: function (e) {
+    this.data.product.grossWeight = e.detail.value;
+  },
+  setNetWeight: function (e) {
+    this.data.product.netWeight = e.detail.value;
+  },
+  setCheckMemo: function (e) {
+    this.data.product.checkMemo = e.detail.value;
+  },
+
   /**
    * 生命周期函数--监听页面显示
    */
   onShow: function () {
-    checkPermission();
     wx.setNavigationBarTitle({
       title: '验货',
     })
+    checkPermission()
   },
 
   radioChange: function (e) {
     console.log('radio发生change事件，携带value值为：', e.detail.value);
-
+    this.data.product.checkResult = e.detail.value;
     var radioItems = this.data.radioItems;
     for (var i = 0, len = radioItems.length; i < len; ++i) {
       radioItems[i].checked = radioItems[i].value == e.detail.value;
@@ -99,14 +135,68 @@ Page({
     })
   },
   previewImage: function (e) {
+    if (this.data.lock) {
+      return;
+    }
+    let id = e.currentTarget.id;
+    let index = parseInt(id.replace('image_', ''));
+    console.log("index = " + index);
     wx.previewImage({
-      current: e.currentTarget.id, // 当前显示图片的http链接
+      current: this.data.files[index], // 当前显示图片的http链接
       urls: this.data.files // 需要预览的图片http链接列表
     })
   },
 
+  touchend: function (e) {
+    if (this.data.lock) {
+      setTimeout(() => {
+        this.setData({
+          lock: false
+        })
+      }, 100)
+    }
+  },
+
+  getImageUrl: function(event) {
+    let e = event;
+    let id = e.currentTarget.id;
+    let index = parseInt(id.replace('image_', ''));
+    return this.data.files[index];
+  },
+
+  //传入按键事件，将所点按的图片删除
+  removeImage: function (e) {
+    let id = e.currentTarget.id;
+    let index = parseInt(id.replace('image_', ''));
+    let url = this.data.files.splice(index, 1);
+    console.log("delete image: " + url);
+    this.setData({ files: this.data.files });
+  },
+
   bindLongImageTap: function (e) {
-    console.log("long tap image");
+    let self = this;
+    this.setData({
+      lock: true
+    });
+    //console.log("long tap image");
+    //console.log(e);
+    wx.showModal({
+      title: '',
+      content: '删除该图片？',
+      success: function (res) {
+        if (res.confirm) {
+          console.log('用户点击确定')
+          let url = self.getImageUrl(e);
+          self.removeImage(e);
+          console.log('url: ' + url);
+          if (!url.startsWith('http://tmp/') && !url.startsWith('wxfile://')) {
+            self.data.deleteImages.push(url);
+          }
+        } else if (res.cancel) {
+          console.log('用户点击取消')
+        }
+      }
+    })
   },
 
   checkBeforeTap: function () {
@@ -171,10 +261,69 @@ Page({
     })
   },
 
-  handleImageUploadFail: function () {
-    wx.showToast({
-      title: '图片上传失败',
-      duration: 5000
+  combineImageUrls: function(array) {
+    if (array.length == 0)
+      return "";
+
+    let result = array[0];
+    for(var i = 1; i < array.length; i++) {
+      result = result + "^" + array[i];
+    }
+    return result;
+  },
+
+  uploadCompleteHandler: function() {
+    wx.showLoading({
+      title: '提交验货结果',
+    })
+    let self = this;
+    console.log("deleteImages: " + self.combineImageUrls(self.data.deleteImages));
+    
+    wx.request({
+      url: service.checkProductUrl(),
+      data: {
+        ticketNo: self.data.ticketNo,
+        contractNo: self.data.contractNo,
+        productNo: self.data.productNo,
+
+        checkResult: self.data.product.checkResult,
+        pickCount: self.data.product.pickCount,
+        boxSize: self.data.product.boxSize,
+        grossWeight: self.data.product.grossWeight,
+        netWeight: self.data.product.netWeight,
+        checkMemo: self.data.product.checkMemo,
+
+        addImages: self.combineImageUrls(self.data.addImages),
+        deleteImages: self.combineImageUrls(self.data.deleteImages)
+      },
+      header: {
+        'content-type': 'application/json'
+      },
+      success: function (res) {
+        let items = self.data.items;
+        console.log("checkproduct response:", res);
+        if (res.data.status != 0) {
+          wx.showToast({
+            title: '验货失败',
+            duration: 3000
+          })
+        } else {
+          wx.showToast({
+            title: '验货成功',
+            duration: 3000
+          })
+        }
+      },
+      fail: function (err) {
+        console.error(err)
+        wx.showToast({
+          title: '验货失败',
+          duration: 3000
+        })
+
+      },
+      complete: function () {
+      }
     })
   },
 
@@ -183,65 +332,30 @@ Page({
       return false;
     }
 
+    console.log("submit tap");
     var self = this;
 
     //上传图片，使用对话框提示，图片上传完之后，提交验货结果
-    let imageCount = this.data.files.length;
+
+    //过滤不需要进行上传的图片
+    this.data.files.forEach(item => {
+      console.log("item: " + item);
+    })
+    //let needUploadFiles = this.data.files.filter((item) => { return !item.startsWith('https:') && !item.startsWith('http:')} );
+    let needUploadFiles = this.data.files.filter((item) => { return item.startsWith('http://tmp/') || item.startsWith('wxfile://') });
+
+    console.log("needUploadFiles: " + JSON.stringify(needUploadFiles));
+
+    let imageCount = needUploadFiles.length;
 
     if (imageCount > 0) {
       wx.showLoading({
         title: '上传中( ' + 1 + '/' + imageCount + ' )',
       })
-      console.log("needUploadFiles: " + JSON.stringify(this.data.files));
-      this.uploadFiles(this.data.files);
     }
+    uploadFiles(needUploadFiles, this, this.uploadCompleteHandler);
 
   },
 
-  uploadFiles: function (files) {
-    this.data.uploadedCount = 0;
-    var i = 0;
-    for (i = 0; i < files.length && i < 5; i++) {
-      this.uploadFile(files, i);
-    }
-  },
-
-  uploadFile: function (files, index) {
-    var self = this;
-
-    wx.uploadFile({
-      url: service.uploadFileUrl(), 
-      filePath: files[index],
-      name: 'file',
-      formData: {},
-      success: function (res) {
-        console.log(res);
-        let json = JSON.parse(res.data)
-        if (json.status != 0) {
-          self.handleImageUploadFail();
-          return;
-        }
-
-        self.data.uploadedCount++;
-        console.log('完成第' + self.data.uploadedCount + '张');
-
-        if (self.data.uploadedCount == files.length) {
-          self.submitCheckRequest();
-        } else {
-          wx.showLoading({
-            title: '上传中( ' + (self.data.uploadedCount + 1) + '/' + files.length + ' )',
-          })
-          let next = index + 5;
-          if (next < files.length) {
-            this.uploadFile(files, index + 5)
-          }
-        }
-      },
-      fail: function (err) {
-        console.log(err);
-        self.handleImageUploadFail();
-      }
-    })
-  },
 
 });

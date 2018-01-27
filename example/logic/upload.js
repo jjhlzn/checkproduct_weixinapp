@@ -7,16 +7,20 @@ function handleImageUploadFail() {
   })
 }
 
-function uploadFiles(files, controller) {
+function uploadFiles(files, controller, uploadCompleteHandler) {
   let self = controller;
   self.data.uploadedCount = 0;
-  var i = 0;
-  for (i = 0; i < files.length && i < self.data.maxUploadCount; i++) {
-    upload(files, i, self);
+
+  if (files.length == 0) {
+    self.uploadCompleteHandler();
+  } else {
+    for (var i = 0; i < files.length && i < self.data.maxUploadCount; i++) {
+      upload(files, i, self, uploadCompleteHandler);
+    }
   }
 }
 
-function upload(files, index, controller) {
+function upload(files, index, controller, uploadCompleteHandler) {
 
   var self = controller;
   console.log("self: " + self);
@@ -24,7 +28,7 @@ function upload(files, index, controller) {
     url: service.uploadFileUrl(),
     filePath: files[index],
     name: 'file',
-    formData: {},
+    formData: {}, 
     success: function (res) {
       console.log(res);
       let json = JSON.parse(res.data)
@@ -32,12 +36,17 @@ function upload(files, index, controller) {
         self.handleImageUploadFail();
         return;
       }
-
+      self.data.addImages.push(json.fileNames[0]);
       self.data.uploadedCount++;
       console.log('完成第' + self.data.uploadedCount + '张');
 
       if (self.data.uploadedCount == files.length) {
-        self.submitCheckRequest();
+        //self.submitCheckRequest();
+
+        self.uploadCompleteHandler();
+        
+
+        
       } else {
         wx.showLoading({
           title: '上传中( ' + (self.data.uploadedCount + 1) + '/' + files.length + ' )',
@@ -45,7 +54,11 @@ function upload(files, index, controller) {
         let next = index + self.data.maxUploadCount;
         if (next < files.length) {
           upload(files, index + self.data.maxUploadCount, self)
+        } else if (next >= files.length) {
+          
         }
+
+
       }
     },
     fail: function (err) {

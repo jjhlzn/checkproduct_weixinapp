@@ -1,6 +1,9 @@
 // notchecklist.js
 let service = require('../service').Service
 import { checkPermission } from '../model/user.js';
+let loadData = require('../dataloader').loadData
+let getMoreData = require('../dataloader').getMoreData
+let reset = require('../dataloader').reset
 let moment = require('../lib/moment.js');
 
 Page({
@@ -10,8 +13,14 @@ Page({
    */
   data: {
     loading: false,
+    status: '未分配',
     totalCount: 0,
     items: [],
+    request: {
+      pageNo: 0,
+      pageSize: 10
+    },
+    isLoadAll: false,
     isBackFromSarch: false,
     queryParams: {
       startDate: '',
@@ -36,40 +45,6 @@ Page({
     }
   },
 
-  loadData: function () {
-    var self = this;
-    if (this.data.loading) {
-      console.log("正在加载数据中")
-      return;
-    }
-
-    self.setData({ loading: true });
-    wx.request({
-      url: service.getCheckOrdersUrl(),
-      data: {
-        status: '未分配'
-      },
-      header: {
-        'content-type': 'application/json'
-      },
-      success: function (res) {
-        let items = self.data.items;
-        items.push.apply(items, res.data.items);
-        self.setData({ items: items, totalCount: res.data.totalCount });
-      },
-      fail: function (err) {
-        console.error(err)
-        wx.showToast({
-          title: '加载失败',
-        })
-      },
-      complete: function () {
-        self.setData({ loading: false });
-      }
-    })
-  },
-
-
   /**
    * 生命周期函数--监听页面加载
    */
@@ -93,7 +68,7 @@ Page({
    */
   onReady: function () {
     checkPermission();
-    this.loadData()
+    loadData(this, 0)
   },
 
   /**
@@ -102,58 +77,32 @@ Page({
   onShow: function () {
     if (this.data.isBackFromSearch) {
       console.log("load data after search")
-      this.setData({
-        items: [],
-        totalCount: 0,
-        isBackFromSearch: false
-      });
-      this.loadData();
+      reset(this);
+      loadData(this, 0)
     }
+
     wx.setNavigationBarTitle({
-      title: '待分配列表'
+      title: '待分配列表',
     })
   },
 
-  /**
-   * 生命周期函数--监听页面隐藏
-   */
-  onHide: function () {
-
-  },
-
-  /**
-   * 生命周期函数--监听页面卸载
-   */
-  onUnload: function () {
-
-  },
-
-  /**
-   * 页面相关事件处理函数--监听用户下拉动作
-   */
-  onPullDownRefresh: function () {
-
-  },
-
+  
   /**
    * 页面上拉触底事件的处理函数
    */
   onReachBottom: function () {
-
+    console.log("onReachBottom called")
+    getMoreData(this);
   },
 
   /**
    * 下拉刷新处理
    */
   onPullDownRefresh: function () {
-    wx.stopPullDownRefresh()
-  },
-
-  /**
-   * 用户点击右上角分享
-   */
-  onShareAppMessage: function () {
-
+    let self = this;
+    reset(this);
+    loadData(this, 0)
+    wx.stopPullDownRefresh();
   },
 
   getItem(ticketNo) {

@@ -21,25 +21,25 @@
             <view class="weui-cell">
                 <view class="weui-cell__bd">抽箱数</view>
                 <view class="weui-cell__ft">
-                  <input  placeholder="" value="{{product.pickCount}}"/>
+                  <input  placeholder="" value="{{product.pickCount}}" bindinput="setPickCount"/>
                 </view>
             </view>
             <view class="weui-cell">
                 <view class="weui-cell__bd">外箱尺寸</view>
                 <view class="weui-cell__ft">
-                  <input  placeholder="" value="{{product.boxSize}}"/>
+                  <input  placeholder="" value="{{product.boxSize}}" bindinput="setBoxSize"/>
                 </view>
             </view>
             <view class="weui-cell">
                 <view class="weui-cell__bd">单件毛重</view>
                 <view class="weui-cell__ft">
-                  <input  placeholder="" value="{{product.grossWeight}}"/>
+                  <input  placeholder="" value="{{product.grossWeight}}" bindinput="setGrossWeight"/>
                 </view>
             </view>
             <view class="weui-cell">
                 <view class="weui-cell__bd">单件净重</view>
                 <view class="weui-cell__ft">
-                  <input  placeholder="" value="{{product.netWeight}}"/>
+                  <input  placeholder="" value="{{product.netWeight}}" bindinput="setNetWeight"/>
                 </view>
             </view>
         </view>
@@ -48,7 +48,7 @@
         <view class="weui-cells weui-cells_after-title">
             <view class="weui-cell">
                 <view class="weui-cell__bd">
-                    <textarea class="weui-textarea" placeholder="请输入文本" value="{{product.checkMemo}}" style="height: 3.3em" />
+                    <textarea class="weui-textarea" placeholder="请输入文本" value="{{product.checkMemo}}" style="height: 3.3em" bindinput="setCheckMemo"/>
                     <view class="weui-textarea-counter">0/200</view>
                 </view>
             </view>
@@ -60,9 +60,9 @@
             <view class="weui-cell">
                 <view class="weui-uploader__bd">
                             <view class="weui-uploader__files" id="uploaderFiles">
-                                <block wx:for="{{files}}" wx:key="*this">
-                                    <view class="weui-uploader__file" bindtap="previewImage" id="{{item}}">
-                                        <image class="weui-uploader__img" src="{{item}}" mode="aspectFill" />
+                                 <block wx:for="{{files}}" wx:key="*this">
+                                    <view class="weui-uploader__file" bindtouchend='touchend' bindlongtap='bindLongImageTap' bindtap="previewImage" id="image_{{index}}">
+                                        <image  class="weui-uploader__img" src="{{item}}" mode="aspectFill" />
                                     </view>
                                 </block>
 
