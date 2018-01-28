@@ -1,5 +1,6 @@
 // notchecklist.js
 let service = require('../service').Service
+let utils = require('../utils').utils;
 import { checkPermission } from '../model/user.js';
 let loadData = require('../dataloader').loadData
 let getMoreData = require('../dataloader').getMoreData
@@ -7,6 +8,7 @@ let reset = require('../dataloader').reset
 let moment = require('../lib/moment.js');
 
 Page({
+
 
   /**
    * 页面的初始数据
@@ -76,7 +78,14 @@ Page({
    */
   onShow: function () {
     if (this.data.isBackFromSearch) {
-      console.log("load data after search")
+      reset(this);
+      loadData(this, 0)
+    } 
+    
+    let isNeedReload = wx.getStorageSync(utils.isNeedReloadNotCheckListKey);
+    console.log("isNeedReload: " + isNeedReload);
+    if (isNeedReload) {
+      wx.setStorageSync(utils.isNeedReloadNotCheckListKey, false)
       reset(this);
       loadData(this, 0)
     }

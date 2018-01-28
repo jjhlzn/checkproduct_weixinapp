@@ -1,5 +1,6 @@
 // notchecklist.js
 let service = require('../service').Service
+let utils = require('../utils.js').utils;
 import { checkPermission } from '../model/user.js';
 let loadData = require('../dataloader').loadData
 let getMoreData = require('../dataloader').getMoreData
@@ -42,6 +43,9 @@ Page({
     if (index != -1) {
       items.splice(index, 1);
       this.setData({items: items});
+
+      //让待验货列表重新刷新
+      wx.setStorageSync(utils.isNeedReloadNotCheckListKey, true);
     }
   },
 

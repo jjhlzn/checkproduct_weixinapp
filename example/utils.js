@@ -20,6 +20,7 @@ function isNumeric(num) {
 module.exports = {
   utils: {
     isFloat: isFloat,
-    isInt: isInt
+    isInt: isInt,
+    isNeedReloadNotCheckListKey: 'isNeedReloadNotCheckListKey'
   }
 }

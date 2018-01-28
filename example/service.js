@@ -92,6 +92,10 @@ class Service {
      return `${this.http}://${this.host}${this.port}/getproductinfo${this.prefix}`
    }
 
+   getProductsUrl() {
+     return `${this.http}://${this.host}${this.port}/getproducts${this.prefix}`
+   }
+
    makeImageUrl(imageName) {
      return `${this.http}://${this.host}${this.port}/uploads/${imageName}`
    }

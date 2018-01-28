@@ -32,7 +32,7 @@
                     <view class="flex-row" style="display: flex;flex-direction: row; align-items: left; justify-content: space-between;">
                       <view class="flex-view-item checkItemCellLeft">{{item.ticketNo}}  </view>
 
-                      <view class="flex-view-item checkItemCellRight">验货员 <span class="peopleName">待分配</span></view>
+                      <view class="flex-view-item checkItemCellRight">验货员 <span class="peopleName">{{item.checker}}</span></view>
                     </view>
                     <view class="flex-row" style="display: flex;flex-direction: row; align-items: left; justify-content: space-between;">
                       <view class="flex-view-item checkItemCellLeft">{{item.outDate == null ? '未定' : item.outDate}}  </view>

@@ -87,19 +87,18 @@ Page({
   bindItemTap: function (e) {
 
     let contractNo = e.currentTarget.dataset.id;
-    //let item = this.getItem(id);
-    //console.log("item:", item);
-    //if (item) {
-      /*
-    wx.navigateTo({
-      url: '../contractsofitem2/contractsofitem2?id=' + id,
-    }) */
-    
+    if (!contractNo) {
+      wx.showToast({
+        title: '合同号不能为空',
+        duration: 3000,
+        image: '../icons/error.png'
+      })
+      return;
+    }
+
     wx.navigateTo({
       url: '../checkitem/checkitem?ticketNo=' + this.data.checkOrder.ticketNo + '&contractNo=' + contractNo ,
     })
-
-    //}
   },
 
   bindCheckTap: function () {

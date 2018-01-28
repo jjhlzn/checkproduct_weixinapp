@@ -1,18 +1,25 @@
 // example/contractsofitem2/contractsofitem2.js
+let service = require('../service').Service
+import { checkPermission } from '../model/user.js';
 Page({
 
   /**
    * 页面的初始数据
    */
   data: {
-  
+    loading: false,
+    selectedType: '全部',
+    ticketNo: '',
+    products: []
   },
 
   /**
    * 生命周期函数--监听页面加载
    */
   onLoad: function (options) {
-  
+    this.setData({
+      ticketNo: options.id
+    });
   },
 
   /**
@@ -29,20 +36,74 @@ Page({
     wx.setNavigationBarTitle({
       title: '验货详情',
     })
+    this.loadData();
   },
 
-  /**
-   * 生命周期函数--监听页面隐藏
-   */
-  onHide: function () {
-  
+  allTap: function() {
+    this.changeSelectedType('全部')
+  },
+  qualifyTap: function() {
+    this.changeSelectedType('合格')
+  },
+  notQualifyTap: function() {
+    this.changeSelectedType('不合格')
+  },
+  tbdTap: function() {
+    this.changeSelectedType('待定')
   },
 
-  /**
-   * 生命周期函数--监听页面卸载
-   */
-  onUnload: function () {
-  
+  changeSelectedType: function(selectedType) {
+    console.log('selectedType: ' + selectedType)
+    this.setData({
+      selectedType: selectedType,
+      products: []
+    })
+    this.loadData();
+  },
+
+  loadData: function () {
+    let self = this;
+    this.setData({
+      loading: true
+    })
+    wx.request({
+      url: service.getProductsUrl(),
+      data: {
+        ticketNo: self.data.ticketNo,
+        checkResult: self.data.selectedType
+      },
+      header: {
+        'content-type': 'application/json'
+      },
+      success: function (res) {
+        console.log("res:", res);
+        if (res.data.status != 0) {
+          wx.showToast({
+            title: '加载失败',
+          })
+          return;
+        }
+        let products = res.data.products;
+        self.setData({ products: products});
+      },
+      fail: function (err) {
+        console.error(err)
+        wx.showToast({
+          title: '加载失败',
+        })
+      },
+      complete: function () {
+        self.setData({ loading: false });
+      }
+    })
+  },
+
+  updateCheckResult: function(productNo, checkResult) {
+    let product = this.data.products.filter(product => product.productNo == productNo)[0];
+    if (product) {
+      product.checkResult = checkResult;
+      this.setData({products: this.data.products});
+    }
   },
 
   /**
@@ -59,24 +120,21 @@ Page({
   
   },
 
-  /**
-   * 用户点击右上角分享
-   */
-  onShareAppMessage: function () {
-  
-  },
-
-
   bindItemTap: function (e) {
+    let productNo = e.currentTarget.dataset.id;
+    console.log('productNo: ' + productNo);
+    let product = this.data.products.filter(product => product.productNo == productNo)[0]
+    console.log(JSON.stringify(product));
 
-    let id = e.currentTarget.dataset.id;
-    //let item = this.getItem(id);
-    //console.log("item:", item);
-    //if (item) {
-      wx.navigateTo({
-        url: '../checkproduct/checkproduct?id=' + id,
+    if (!product.contractNo) {
+      wx.showToast({
+        title: '合同号不能为空'
       })
+      return;
+    }
 
-    //}
+    wx.navigateTo({
+      url: '../checkproduct/checkproduct?ticketNo=' + this.data.ticketNo + '&contractNo=' + product.contractNo + '&productNo=' + productNo,
+    })
   },
 })
