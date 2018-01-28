@@ -1,34 +1,47 @@
 let service = require('../service').Service;
 let uploadFiles = require('../logic/upload').uploadFiles;
+let utils = require('../utils').utils;
 import { checkPermission } from '../model/user.js';
 
 Page({
   data: {
+    
     maxUploadCount: 3,
     lock: false,
     uploadedCount: 0,
     radioItems: [
-      { name: '完成', value: '0' },
-      { name: '未完成', value: '1', checked: true }
+      { name: '完成', value: '完成' },
+      { name: '未完成', value: '未完成', checked: true }
     ],
     checkResult: {
       result: "1",
       description: "",
     },
-    files: []
+    ticketNo: "",
+    checkResult: "",
+    checkMemo: "",
+
+    files: [],
+    deleteImages: [],
+    addImages: [],
+    uploadImageError: false
   },
 
   onLoad: function(options) {
-    let self = this;
+    console.log('options: ' + options)
 
-    //从服务器上获取结果
+    this.setData({
+      ticketNo: options.ticketNo
+    })
+
+    var self = this;
     wx.showLoading({
       title: '加载中',
     })
     wx.request({
-      url: service.getCheckItemResultUrl(),
+      url: service.getCheckOrderInfoUrl(),
       data: {
-        request: options,
+        ticketNo: self.data.ticketNo
       },
       header: {
         'content-type': 'application/json'
@@ -42,34 +55,33 @@ Page({
           })
           return;
         }
+
+        let found = false;
+        let checkResult = "";
+        self.data.radioItems.forEach(item => {
+          if (item.value == res.data.checkOrder.checkResult) {
+            item.checked = true;
+            checkResult = res.data.checkOrder.checkResult;
+            found = true;
+          } else {
+            delete item.checked;
+          }
+        });
+
+        if (!found) {
+          self.data.radioItems[1].checked = true;
+          checkResult = self.data.radioItems[1].value;
+        }
+
+        let files = res.data.checkOrder.pictureUrls;
+        let urls = files.map(file => service.makeImageUrl(file));
         self.setData({
-          checkResult: res.data.result
+          files: urls,
+          radioItems: self.data.radioItems,
+          checkResult: checkResult,
+          checkMemo: res.data.checkOrder.checkMemo
         })
 
-        if (self.data.checkResult.result == "完成") {
-          self.setData({
-            radioItems: [
-              { name: '完成', value: '0', checked: true },
-              { name: '未完成', value: '1' }
-            ]
-          })
-        } else {
-          self.setData({
-            radioItems: [
-              { name: '完成', value: '0' },
-              { name: '未完成', value: '1', checked: true }
-            ]
-          })
-        }  
-
-        console.log("images:", self.data.checkResult.images)
-        //设置图片
-        if (self.data.checkResult.images) {
-          let imageUrls = self.data.checkResult.images.map( (item) => {return item.url} )
-                .map( (item) => {return service.getCheckImageUrl(item)});
-          console.log("imageUrls:", imageUrls);
-          self.setData({files: imageUrls}); 
-        }
       },
       fail: function (err) {
         wx.hideLoading()
@@ -79,6 +91,11 @@ Page({
       }
     })
   },
+
+  setCheckMemo: function (e) {
+    this.data.checkMemo = e.detail.value;
+  },
+
 
   /**
    * 生命周期函数--监听页面显示
@@ -92,7 +109,7 @@ Page({
 
   radioChange: function (e) {
         console.log('radio发生change事件，携带value值为：', e.detail.value);
-
+        this.data.checkResult = e.detail.value;
         var radioItems = this.data.radioItems;
         for (var i = 0, len = radioItems.length; i < len; ++i) {
             radioItems[i].checked = radioItems[i].value == e.detail.value;
@@ -171,95 +188,98 @@ Page({
   },
 
   checkBeforeTap: function(){
-    return true;
+    return "";
   },
 
-  submitCheckRequest: function() {
+  uploadCompleteHandler: function () {
     wx.showLoading({
       title: '提交验货结果',
     })
+    let self = this;
+
     wx.request({
-      url: service.checkProductUrl(),
+      url: service.checkOrderUrl(),
+      data: {
+        ticketNo: self.data.ticketNo,
+
+        checkResult: self.data.checkResult,
+        checkMemo: self.data.checkMemo,
+
+        addImages: utils.combineImageUrls(self.data.addImages),
+        deleteImages: utils.combineImageUrls(self.data.deleteImages)
+      },
+      header: {
+        'content-type': 'application/json'
+      },
       success: function (res) {
-        wx.hideLoading();
-        if (res.data.status == 0) {
-          
-          wx.showModal({
-            content: '提交成功',
-            showCancel: false,
-            success: function (res) {
-              //把审核的结果传递回前一个页面
-              let pages = getCurrentPages();
-              let curPage = pages[pages.length - 2];
-              let data= curPage.data
-              console.log("data: ", data);
-
-              if (res.confirm) {
-                console.log('用户点击确定')
-                wx.navigateBack({
-                  checkResult: {
-                    result: true
-                  }
-                });
-              }
-            }
-          });
-
-          
+        let items = self.data.items;
+        console.log("checkorder response:", res);
+        if (res.data.status != 0) {
+          wx.showToast({
+            title: '验货失败',
+            duration: 3000
+          })
         } else {
-          wx.showModal({
-            content: '提交失败',
-            showCancel: false,
-            success: function (res) {
-              if (res.confirm) {
-                console.log('用户点击确定')
+          wx.showToast({
+            title: '验货成功',
+            duration: 3000
+          })
+
+          //把审核的结果传递回前一个页面
+          let pages = getCurrentPages();
+          let curPage = pages[pages.length - 2];
+          if (curPage.updateCheckResult) {
+            curPage.updateCheckResult(self.data.ticketNo, self.data.checkResult);
+          }
+
+          if (res.confirm) {
+            wx.navigateBack({
+              checkResult: {
+                result: true
               }
-            }
-          });
+            });
+          }
         }
       },
       fail: function (err) {
-        wx.showModal({
-          content: '提交失败',
-          showCancel: false,
-          success: function (res) {
-            if (res.confirm) {
-              console.log('用户点击确定')
-            }
-          }
-        });
+        console.error(err)
+        wx.showToast({
+          title: '验货失败',
+          duration: 3000
+        })
+
+      },
+      complete: function () {
       }
     })
   },
 
   bindSubmitTap: function(e) {
-    if (!this.checkBeforeTap()) {
+    this.data.uploadImageError = false;
+    let errorMessage = this.checkBeforeTap();
+    if (errorMessage != "") {
+      wx.showModal({
+        content: errorMessage,
+        showCancel: false
+      })
       return false;
     }
-
-    console.log("submit tap");
     var self = this;
-
     //上传图片，使用对话框提示，图片上传完之后，提交验货结果
-
     //过滤不需要进行上传的图片
-    this.data.files.forEach( item => {
+    this.data.files.forEach(item => {
       console.log("item: " + item);
     })
-    //let needUploadFiles = this.data.files.filter((item) => { return !item.startsWith('https:') && !item.startsWith('http:')} );
-    let needUploadFiles = this.data.files.filter((item) => { return item.startsWith('http://tmp/') || item.startsWith('wxfile://')  });
-    
-    console.log("needUploadFiles: " + JSON.stringify(needUploadFiles));
+    let needUploadFiles = this.data.files.filter((item) => { return item.startsWith('http://tmp/') || item.startsWith('wxfile://') });
 
     let imageCount = needUploadFiles.length;
 
     if (imageCount > 0) {
       wx.showLoading({
-        title: '上传中( ' + 1 + '/' + imageCount  +' )',
+        title: '上传中( ' + 1 + '/' + imageCount + ' )',
       })
-      uploadFiles(needUploadFiles, this);
     }
-  
+    uploadFiles(needUploadFiles, this, this.uploadCompleteHandler);
   },
 
   

@@ -40,6 +40,10 @@ class Service {
      return `${this.http}://${this.host}${this.port}/checkproduct${this.prefix}`
    }
 
+   checkOrderUrl() {
+     return `${this.http}://${this.host}${this.port}/checkorder${this.prefix}`
+   }
+
    getCheckOrdersUrl() {
      return `${this.http}://${this.host}${this.port}/getcheckorders${this.prefix}`
    }
@@ -95,6 +99,11 @@ class Service {
    getProductsUrl() {
      return `${this.http}://${this.host}${this.port}/getproducts${this.prefix}`
    }
+
+   getCheckOrderInfoUrl() {
+     return `${this.http}://${this.host}${this.port}/getcheckorderinfo${this.prefix}`
+   }
+
 
    makeImageUrl(imageName) {
      return `${this.http}://${this.host}${this.port}/uploads/${imageName}`

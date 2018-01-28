@@ -122,7 +122,8 @@ Page({
     console.log("item:", item);
     if (item) {
       wx.navigateTo({
-        url: '../contractsofitem/contractsofitem?id=' + id,
+        url: '../contractsofitem/contractsofitem?id=' + id + '&checkResult='
+        + item.checkResult + '&checkMemo=' + item.checkMemo,
       })
     }
   },

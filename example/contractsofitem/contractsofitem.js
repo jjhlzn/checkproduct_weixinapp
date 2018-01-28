@@ -9,7 +9,7 @@ Page({
   data: {
     checkOrder: {
       ticketNo: "",
-      checkStatus: "",
+      checkResult: "",
       checkMemo: ""
     },
     contracts: []
@@ -22,11 +22,11 @@ Page({
      this.setData({
        checkOrder: {
          ticketNo: options.id,
-         checkStatus: "未完成",
-         checkMemo: "无"
+         checkResult: options.checkResult,
+         checkMemo: options.checkMemo
        }
      })
-
+     
      this.loadData();
   },
 
@@ -44,6 +44,8 @@ Page({
     wx.setNavigationBarTitle({
       title: '采购合同号',
     })
+
+    console.log("checkOrder: " + JSON.stringify(this.data.checkOrder));
   },
 
   loadData: function() {
@@ -84,6 +86,15 @@ Page({
     })
   },
 
+  updateCheckResult: function (ticketNo, checkResult) {
+    console.log('updateCheckResult: ' + ticketNo + " = " + ticketNo + ', checkResult = '
+      + checkResult);
+    this.data.checkOrder.checkResult = checkResult;
+    this.setData({
+      checkOrder: this.data.checkOrder
+    });
+  },
+
   bindItemTap: function (e) {
 
     let contractNo = e.currentTarget.dataset.id;
@@ -103,7 +114,7 @@ Page({
 
   bindCheckTap: function () {
     wx.navigateTo({
-      url: '../check/check',
+      url: '../check/check?ticketNo=' + this.data.checkOrder.ticketNo,
     })
   },
 })

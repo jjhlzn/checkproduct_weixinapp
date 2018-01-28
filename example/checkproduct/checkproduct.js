@@ -223,15 +223,7 @@ Page({
     return "";
   },
 
-  combineImageUrls: function(array) {
-    if (array.length == 0)
-      return "";
-    let result = array[0];
-    for(var i = 1; i < array.length; i++) {
-      result = result + "^" + array[i];
-    }
-    return result;
-  },
+
 
   uploadCompleteHandler: function() {
     wx.showLoading({
@@ -253,8 +245,8 @@ Page({
         netWeight: parseFloat(self.data.product.netWeight),
         checkMemo: self.data.product.checkMemo,
 
-        addImages: self.combineImageUrls(self.data.addImages),
-        deleteImages: self.combineImageUrls(self.data.deleteImages)
+        addImages: utils.combineImageUrls(self.data.addImages),
+        deleteImages: utils.combineImageUrls(self.data.deleteImages)
       },
       header: {
         'content-type': 'application/json'

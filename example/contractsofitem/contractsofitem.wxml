@@ -25,19 +25,13 @@
                   </view>
               </view>
             </view>
+           
+
             <view class="weui-cells__title">验货结果</view>
-            <!--
-            <view class=" weui-media-box weui-media-box_text rowTitle">
-                  <view class="flex-row " style="display: flex;flex-direction: row; align-items: left; justify-content: space-between;">
-                    <view class="flex-view-item"> 验货结果</view>
-                  </view>
-
-            </view> -->
-
             <view class="weui-cells weui-cells_after-title">
               <view class="weui-cell">
                 <view class="weui-cell__bd">验货状态</view>
-                <view class="weui-cell__ft">{{checkOrder.checkStatus}}</view>
+                <view class="weui-cell__ft">{{checkOrder.checkResult}}</view>
               </view>
               <view class="flex-row weui-cell" style="display: flex;flex-direction: row; align-items: left; justify-content: space-between;">
                 <view class="weui-cell__bd flexCellTitle">验货备注</view>
@@ -54,10 +48,14 @@
             <!--
             <view class="weui-btn-area">
               <button id="checkfile_{{index}}" data-file-id="{{index}}" wx:key="{{index}}" class="weui-btn mini-btn" type="primary" size="mini" plain="true" bindtap="bindFileTap" wx:for="{{checkItem.files}}">验货文件{{index+1}}</button>
-            </view>
+            </view> -->
 
+           
             <view class="weui-btn-area" >
               <button class="weui-btn" type="primary" hover-class='other-button-hover'  bindtap="bindCheckTap">整单验货</button>
-            </view> -->
+            </view> 
+            
+
+           
           </view>
 </view>
