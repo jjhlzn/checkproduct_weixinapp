@@ -5,6 +5,7 @@ let getMoreData = require('../dataloader').getMoreData
 let reset = require('../dataloader').reset
 import { checkPermission } from '../model/user.js';
 let moment = require('../lib/moment.js');
+let utils = require('../utils').utils;
 
 
 Page({
@@ -61,6 +62,14 @@ Page({
   onShow: function () {
     if (this.data.isBackFromSearch) {
       console.log("load data after search")
+      reset(this);
+      loadData(this, 0)
+    }
+
+    let isNeedReload = wx.getStorageSync(utils.isNeedReloadCheckedListKey);
+    console.log("isNeedReload: " + isNeedReload);
+    if (isNeedReload) {
+      wx.setStorageSync(utils.isNeedReloadCheckedListKey, false)
       reset(this);
       loadData(this, 0)
     }

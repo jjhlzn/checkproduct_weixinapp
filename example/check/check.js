@@ -24,7 +24,9 @@ Page({
     files: [],
     deleteImages: [],
     addImages: [],
-    uploadImageError: false
+    uploadImageError: false,
+
+    isCheckResultChange: false
   },
 
   onLoad: function(options) {
@@ -108,16 +110,19 @@ Page({
   },
 
   radioChange: function (e) {
-        console.log('radio发生change事件，携带value值为：', e.detail.value);
-        this.data.checkResult = e.detail.value;
-        var radioItems = this.data.radioItems;
-        for (var i = 0, len = radioItems.length; i < len; ++i) {
-            radioItems[i].checked = radioItems[i].value == e.detail.value;
-        }
+    console.log('radio发生change事件，携带value值为：', e.detail.value);
+    if (this.data.checkResult != e.detail.value) {
+      this.data.isCheckResultChange = true;
+    }
+    this.data.checkResult = e.detail.value;
+    var radioItems = this.data.radioItems;
+    for (var i = 0, len = radioItems.length; i < len; ++i) {
+        radioItems[i].checked = radioItems[i].value == e.detail.value;
+    }
 
-        this.setData({
-            radioItems: radioItems
-        });
+    this.setData({
+        radioItems: radioItems
+    });
   },
 
   chooseImage: function (e) {
@@ -231,6 +236,14 @@ Page({
           if (curPage.updateCheckResult) {
             curPage.updateCheckResult(self.data.ticketNo, self.data.checkResult);
           }
+
+          //对待验货，未完成，已验货 列表进行刷新。
+          if (self.data.isCheckResultChange) {
+            wx.setStorageSync(utils.isNeedReloadNotCheckListKey, true);
+            wx.setStorageSync(utils.isNeedReloadNotCompleteListKey, true);
+            wx.setStorageSync(utils.isNeedReloadCheckedListKey, true);
+          }
+          self.data.isCheckResultChange = false;
 
           if (res.confirm) {
             wx.navigateBack({

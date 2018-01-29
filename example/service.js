@@ -6,7 +6,7 @@
 
 class Service {
   constructor() {
-   this.isTest = false;
+   this.isTest = true;
    this.isLocal = false;
    if (this.isLocal) {
      this.http = "http";
@@ -16,7 +16,8 @@ class Service {
    } else { 
     if (this.isTest) {
       this.http = "https";
-      this.host = "test.yhkamani.com";
+
+      this.host = "xhw.hengdianworld.com";
       this.port = "";
       this.prefix = '.aspx'
     } else {

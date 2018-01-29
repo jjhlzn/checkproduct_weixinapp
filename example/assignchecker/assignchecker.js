@@ -9,10 +9,10 @@ Page({
    */
   data: {
     checkers: [
-      {name: '张三', username: '0001'}
+      //{name: '张三', username: '0001'}
     ],
     checkerNames: [
-      '张三'
+      //'张三'
     ],
     checkerIndex: 0,
     ticketNo: ''
@@ -61,7 +61,7 @@ Page({
         let checkers = res.data.checkers;
         self.setData({checkers: checkers});
         let checkerNames = checkers.map(item => item.name);
-        self.setData({ checkerNames: checkerNames});
+        self.setData({ checkerNames: checkerNames, selectedChecker: checkers[0]});
       },
       fail: function (err) {
         console.error(err)
@@ -75,28 +75,6 @@ Page({
     })
   },
 
-
-  /**
-   * 下拉刷新处理
-   */
-  onPullDownRefresh: function () {
-    wx.stopPullDownRefresh()
-  },
-
-  /**
-   * 页面上拉触底事件的处理函数
-   */
-  onReachBottom: function () {
-  
-  },
-
-  /**
-   * 用户点击右上角分享
-   */
-  onShareAppMessage: function () {
-  
-  },
-
   bindCheckerChange: function (e) {
     this.setData({
       checkerIndex: e.detail.value
@@ -104,13 +82,22 @@ Page({
   },
 
   bindSaveTap: function(e) {
+    let selectedChecker = this.data.checkers[this.data.checkerIndex];
+    if (!selectedChecker) {
+      wx.showToast({
+        title: '没有选中验货员',
+        image: '../icons/error.png'
+      })
+    }
+    console.log('selectedChecker: ' + this.data.selectedChecker.name);
+
     let loginUser = wx.getStorageSync('loginUser');
     let self = this;
     wx.request({
       url: service.assignCheckerUrl(),
       data: {
         ticketNo: this.data.ticketNo,
-        checker: loginUser.username
+        checker: selectedChecker.username
       },
       header: {
         'content-type': 'application/json'

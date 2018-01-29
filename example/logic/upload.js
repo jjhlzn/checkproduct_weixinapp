@@ -56,6 +56,7 @@ function upload(files, index, controller, uploadCompleteHandler) {
       }
 
       if (self.data.uploadedCount == files.length) {
+        wx.hideLoading();
         self.uploadCompleteHandler();
       } else {
         wx.showLoading({

@@ -27,11 +27,15 @@ function combineImageUrls(array) {
   return result;
 }
 
+
+
 module.exports = {
   utils: {
     isFloat: isFloat,
     isInt: isInt,
     isNeedReloadNotCheckListKey: 'isNeedReloadNotCheckListKey',
+    isNeedReloadNotCompleteListKey: 'isNeedReloadNotCompleteListKey',
+    isNeedReloadCheckedListKey: 'isNeedReloadCheckedListKey',
     combineImageUrls: combineImageUrls
   }
 }

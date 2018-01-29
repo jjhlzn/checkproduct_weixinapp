@@ -9,8 +9,8 @@ Page({
   data: {
     checkOrder: {
       ticketNo: "",
-      checkResult: "",
-      checkMemo: ""
+      checkResult: null,
+      checkMemo: null
     },
     contracts: []
   },
@@ -19,10 +19,11 @@ Page({
    * 生命周期函数--监听页面加载
    */
   onLoad: function (options) {
+     console.log("options: " + JSON.stringify(options));
      this.setData({
        checkOrder: {
          ticketNo: options.id,
-         checkResult: options.checkResult,
+         checkResult: options.checkResult ,
          checkMemo: options.checkMemo
        }
      })

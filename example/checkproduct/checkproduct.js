@@ -226,9 +226,7 @@ Page({
 
 
   uploadCompleteHandler: function() {
-    wx.showLoading({
-      title: '提交验货结果',
-    })
+    
     let self = this;
     
     wx.request({

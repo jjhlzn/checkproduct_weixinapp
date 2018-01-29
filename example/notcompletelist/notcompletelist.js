@@ -1,5 +1,6 @@
 // notchecklist.js
 let service = require('../service').Service
+let utils = require('../utils').utils;
 import { checkPermission } from '../model/user.js';
 let loadData = require('../dataloader').loadData
 let getMoreData = require('../dataloader').getMoreData
@@ -13,7 +14,7 @@ Page({
    */
   data: {
     loading: false,
-    status: '未验货',
+    status: '未完成',
     totalCount: 0,
     items: [],
     request: {
@@ -77,6 +78,14 @@ Page({
   onShow: function () {
     if (this.data.isBackFromSearch) {
       console.log("load data after search")
+      reset(this);
+      loadData(this, 0)
+    }
+
+    let isNeedReload = wx.getStorageSync(utils.isNeedReloadNotCompleteListKey);
+    console.log("isNeedReload: " + isNeedReload);
+    if (isNeedReload) {
+      wx.setStorageSync(utils.isNeedReloadNotCompleteListKey, false)
       reset(this);
       loadData(this, 0)
     }
