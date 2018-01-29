@@ -52,7 +52,7 @@
         </view>
 
         <view class="weui-btn-area">
-            <button class="weui-btn" type="primary" bindtap="bindSearchTap">查找</button>
+            <button class="weui-btn" type="primary" hover-class='other-button-hover'   bindtap="bindSearchTap">查找</button>
         </view>
     </view>
 

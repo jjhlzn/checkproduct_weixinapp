@@ -32,17 +32,26 @@ Page({
    * 生命周期函数--监听页面加载
    */
   onLoad: function (options) {
-    console.log("options:" + options.queryparams);
+    console.log("search.js options:" + options.queryparams);
     if (options.queryparams) {
+      console.log("find queryparams");
       let queryParams = JSON.parse(options.queryparams);
+      queryParams.statusIndex = 0;
       this.data.statuses.forEach( (item, index) => {
-        console.log(item);
-        console.log("index: " + index);
+        //console.log(item);
+        //console.log("index: " + index);
         if (item.value == queryParams.status) {
           queryParams.statusIndex = index;
         }
       })
-      this.setData(queryParams);
+      console.log(queryParams);
+      this.setData({
+        startDate: queryParams.startDate,
+        endDate: queryParams.endDate,
+        ticketNo: queryParams.ticketNo,
+        statusIndex: queryParams.statusIndex
+      });
+      console.log(this.data);
     } else {
       console.log("date:", new moment().format('YYYY-MM-DD'));
       var endDate = new moment().format('YYYY-MM-DD');
@@ -98,13 +107,11 @@ Page({
       isBackFromSearch: true
     }); */
     wx.setStorageSync(utils.queryParamsKey, {
-      queryParams: {
         startDate: this.data.startDate,
         endDate: this.data.endDate,
         ticketNo: this.data.ticketNo,
-        status: this.data.statuses[this.data.statusIndex].value
-      },
-      isBackFromSearch: true
+        status: this.data.statuses[this.data.statusIndex].value,
+        isBackFromSearch: true
     });
     console.log("before wx.switchTab")
     let url = "";

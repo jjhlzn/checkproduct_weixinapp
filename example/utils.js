@@ -54,12 +54,14 @@ function onShowHandler(page, isReloadKey, reset, loadData) {
     }
     wx.setStorageSync(utils.queryParamsKey, null);
   } else {
-    let isNeedReload = wx.getStorageSync(isReloadKey);
-    console.log("isNeedReload: " + isNeedReload);
-    if (isNeedReload) {
-      wx.setStorageSync(isReloadKey, false)
-      reset(self);
-      loadData(self, 0)
+    if (isReloadKey) {
+      let isNeedReload = wx.getStorageSync(isReloadKey);
+      console.log("isNeedReload: " + isNeedReload);
+      if (isNeedReload) {
+        wx.setStorageSync(isReloadKey, false)
+        reset(self);
+        loadData(self, 0)
+      }
     }
   }
 }

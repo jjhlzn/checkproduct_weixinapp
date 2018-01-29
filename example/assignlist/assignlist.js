@@ -79,11 +79,13 @@ Page({
    * 生命周期函数--监听页面显示
    */
   onShow: function () {
+    utils.onShowHandler(this, null, reset, loadData);
+    /*
     if (this.data.isBackFromSearch) {
       console.log("load data after search")
       reset(this);
       loadData(this, 0)
-    }
+    } */
 
     wx.setNavigationBarTitle({
       title: '待分配列表',

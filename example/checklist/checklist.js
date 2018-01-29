@@ -60,6 +60,8 @@ Page({
    * 生命周期函数--监听页面显示
    */
   onShow: function () {
+    utils.onShowHandler(this, utils.isNeedReloadCheckedListKey, reset, loadData);
+    /*
     if (this.data.isBackFromSearch) {
       console.log("load data after search")
       reset(this);
@@ -72,7 +74,7 @@ Page({
       wx.setStorageSync(utils.isNeedReloadCheckedListKey, false)
       reset(this);
       loadData(this, 0)
-    }
+    } */
 
     wx.setNavigationBarTitle({
       title: '已验货列表',
