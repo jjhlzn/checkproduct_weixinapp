@@ -60,7 +60,6 @@ Page({
         hasChecked: false
       }
     });
-
   },
 
 
@@ -76,25 +75,34 @@ Page({
    * 生命周期函数--监听页面显示
    */
   onShow: function () {
-    if (this.data.isBackFromSearch) {
+    utils.onShowHandler(this, utils.isNeedReloadNotCompleteListKey, reset, loadData);
+    /*
+    let queryParams = wx.getStorageSync(utils.queryParamsKey);
+    console.log("queryParams: " + JSON.stringify(queryParams));
+    if (queryParams) {
       console.log("load data after search")
-      reset(this);
-      loadData(this, 0)
-    }
-
-    let isNeedReload = wx.getStorageSync(utils.isNeedReloadNotCompleteListKey);
-    console.log("isNeedReload: " + isNeedReload);
-    if (isNeedReload) {
-      wx.setStorageSync(utils.isNeedReloadNotCompleteListKey, false)
-      reset(this);
-      loadData(this, 0)
-    }
+      this.setData({
+        queryParams: queryParams
+      })
+      if (queryParams.isBackFromSearch) {
+        reset(this);
+        loadData(this, 0)
+      }
+      wx.setStorageSync(utils.queryParamsKey, null);
+    } else {
+      let isNeedReload = wx.getStorageSync(utils.isNeedReloadNotCompleteListKey);
+      console.log("isNeedReload: " + isNeedReload);
+      if (isNeedReload) {
+        wx.setStorageSync(utils.isNeedReloadNotCompleteListKey, false)
+        reset(this);
+        loadData(this, 0)
+      } 
+    }*/
 
     wx.setNavigationBarTitle({
       title: '待完成列表',
     })
   },
-
 
   /**
    * 页面上拉触底事件的处理函数
@@ -138,6 +146,7 @@ Page({
   },
 
   bindSearchTap: function (e) {
+    this.data.queryParams.status = this.data.status;
     wx.navigateTo({
       url: '../search/search?queryparams=' + JSON.stringify(this.data.queryParams),
     })

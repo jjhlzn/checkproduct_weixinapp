@@ -1,3 +1,14 @@
+let utils = {
+  isFloat: isFloat,
+  isInt: isInt,
+  isNeedReloadNotCheckListKey: 'isNeedReloadNotCheckListKey',
+  isNeedReloadNotCompleteListKey: 'isNeedReloadNotCompleteListKey',
+  isNeedReloadCheckedListKey: 'isNeedReloadCheckedListKey',
+  queryParamsKey: 'queryParamsKey',
+  combineImageUrls: combineImageUrls,
+  onShowHandler: onShowHandler
+};
+
 function isFloat(value) {
   if (!isNumeric(value))
     return false;
@@ -28,14 +39,33 @@ function combineImageUrls(array) {
 }
 
 
+function onShowHandler(page, isReloadKey, reset, loadData) {
+  let self = page;
+  let queryParams = wx.getStorageSync(utils.queryParamsKey);
+  console.log("queryParams: " + JSON.stringify(queryParams));
+  if (queryParams) {
+    console.log("load data after search")
+    self.setData({
+      queryParams: queryParams
+    })
+    if (queryParams.isBackFromSearch) {
+      reset(self);
+      loadData(self, 0)
+    }
+    wx.setStorageSync(utils.queryParamsKey, null);
+  } else {
+    let isNeedReload = wx.getStorageSync(isReloadKey);
+    console.log("isNeedReload: " + isNeedReload);
+    if (isNeedReload) {
+      wx.setStorageSync(isReloadKey, false)
+      reset(self);
+      loadData(self, 0)
+    }
+  }
+}
+
+
 
 module.exports = {
-  utils: {
-    isFloat: isFloat,
-    isInt: isInt,
-    isNeedReloadNotCheckListKey: 'isNeedReloadNotCheckListKey',
-    isNeedReloadNotCompleteListKey: 'isNeedReloadNotCompleteListKey',
-    isNeedReloadCheckedListKey: 'isNeedReloadCheckedListKey',
-    combineImageUrls: combineImageUrls
-  }
+  utils: utils
 }

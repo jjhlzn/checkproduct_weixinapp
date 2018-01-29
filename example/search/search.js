@@ -1,6 +1,7 @@
 // search.js
 import { checkPermission } from '../model/user.js';
 let moment = require('../lib/moment.js');
+let utils = require('../utils').utils;
 
 Page({
 
@@ -11,17 +12,37 @@ Page({
     startDate: '',
     endDate: '',
     ticketNo: "",
-    hasChecked: false
+    hasChecked: false,
+
+    statusIndex: 0,
+    statuses: [{ name: '未分配', value: '未分配'},
+      { name: '待验货', value: '未验货' },
+      { name: '未完成', value: '未完成' },
+      { name: '已验货', value: '已验货' },
+              ],
+    statusNames: [
+      '未分配',
+      '待验货',
+      '未完成',
+      '已验货'
+    ]
   },
 
   /**
    * 生命周期函数--监听页面加载
    */
   onLoad: function (options) {
-    console.log(options.queryparams);
-    
+    console.log("options:" + options.queryparams);
     if (options.queryparams) {
-      this.setData(JSON.parse(options.queryparams));
+      let queryParams = JSON.parse(options.queryparams);
+      this.data.statuses.forEach( (item, index) => {
+        console.log(item);
+        console.log("index: " + index);
+        if (item.value == queryParams.status) {
+          queryParams.statusIndex = index;
+        }
+      })
+      this.setData(queryParams);
     } else {
       console.log("date:", new moment().format('YYYY-MM-DD'));
       var endDate = new moment().format('YYYY-MM-DD');
@@ -50,41 +71,6 @@ Page({
     })
   },
 
-  /**
-   * 生命周期函数--监听页面隐藏
-   */
-  onHide: function () {
-  
-  },
-
-  /**
-   * 生命周期函数--监听页面卸载
-   */
-  onUnload: function () {
-  
-  },
-
-  /**
- * 下拉刷新处理
- */
-  onPullDownRefresh: function () {
-    wx.stopPullDownRefresh()
-  },
-
-  /**
-   * 页面上拉触底事件的处理函数
-   */
-  onReachBottom: function () {
-  
-  },
-
-  /**
-   * 用户点击右上角分享
-   */
-  onShareAppMessage: function () {
-  
-  },
-
   bindTicketNoInput: function(e) {
     this.data.ticketNo = e.detail.value;
   },
@@ -102,6 +88,7 @@ Page({
   },
 
   bindSearchTap: function() {
+    /*
     var pages = getCurrentPages();
     var prevPage = pages[pages.length - 2];  //上一个页面
 
@@ -109,9 +96,29 @@ Page({
     prevPage.setData({
       queryParams: this.data,
       isBackFromSearch: true
+    }); */
+    wx.setStorageSync(utils.queryParamsKey, {
+      queryParams: {
+        startDate: this.data.startDate,
+        endDate: this.data.endDate,
+        ticketNo: this.data.ticketNo,
+        status: this.data.statuses[this.data.statusIndex].value
+      },
+      isBackFromSearch: true
     });
-    wx.navigateBack({
-      
+    console.log("before wx.switchTab")
+    let url = "";
+    if (this.data.statusIndex == 0) {
+      url = '../assignlist/assignlist';
+    } else if (this.data.statusIndex == 1) {
+      url = '../notchecklist/notchecklist';
+    } else if (this.data.statusIndex == 2) {
+      url = '../notcompletelist/notcompletelist';
+    } else if (this.data.statusIndex == 3) {
+      url = '../checklist/checklist';
+    }
+    wx.switchTab({
+      url: url,
     })
   }
 })

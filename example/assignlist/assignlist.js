@@ -133,6 +133,7 @@ Page({
   },
 
   bindSearchTap: function (e) {
+    this.data.queryParams.status = this.data.status;
     wx.navigateTo({
       url: '../search/search?queryparams=' + JSON.stringify(this.data.queryParams),
     })

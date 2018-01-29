@@ -1,9 +1,3 @@
-
-
-
-
-
-
 class Service {
   constructor() {
    this.isTest = true;

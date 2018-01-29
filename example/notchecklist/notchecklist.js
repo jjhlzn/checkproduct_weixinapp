@@ -61,7 +61,6 @@ Page({
         hasChecked: false
       }
     });
-
   },
 
 
@@ -77,6 +76,8 @@ Page({
    * 生命周期函数--监听页面显示
    */
   onShow: function () {
+    utils.onShowHandler(this, utils.isNeedReloadNotCheckListKey, reset, loadData);
+    /*
     if (this.data.isBackFromSearch) {
       reset(this);
       loadData(this, 0)
@@ -88,7 +89,7 @@ Page({
       wx.setStorageSync(utils.isNeedReloadNotCheckListKey, false)
       reset(this);
       loadData(this, 0)
-    }
+    } */
 
     wx.setNavigationBarTitle({
       title: '待验货列表',
@@ -137,9 +138,10 @@ Page({
     }
   },
 
-  bindSearchTap: function(e) {
+  bindSearchTap: function (e) {
+    this.data.queryParams.status = this.data.status;
     wx.navigateTo({
-      url: '../search/search?queryparams='+JSON.stringify(this.data.queryParams),
+      url: '../search/search?queryparams=' + JSON.stringify(this.data.queryParams),
     })
   }
 })
