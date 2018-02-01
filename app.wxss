@@ -51,13 +51,37 @@ button.weui-btn {
 
 
 .checkItemCellRight {
-  width: 50%;
+  width: 55%;
    text-align: right;
 }
 
 .loadAllCell {
   margin-top: 10px;
   height: 10px;
+}
+
+.checkItemCellRight {
+   width: 40%;
+   text-align: right;
+}
+
+
+.twoRowCell {
+  padding-top: 12px;
+}
+
+.twoRowCell2 {
+  padding-top: 14px;
+}
+
+.twoRowCell3 {
+  padding-top: 10px;
+}
+
+
+
+.totalCountDesc {
+  color: gray;
 }
 
 /* font-awesome  */

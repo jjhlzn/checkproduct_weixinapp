@@ -80,6 +80,12 @@ Page({
     })
   },
 
+  bindStatusChange: function (e) {
+    this.setData({
+      statusIndex: e.detail.value
+    })
+  },
+
   bindTicketNoInput: function(e) {
     this.data.ticketNo = e.detail.value;
   },
@@ -97,15 +103,6 @@ Page({
   },
 
   bindSearchTap: function() {
-    /*
-    var pages = getCurrentPages();
-    var prevPage = pages[pages.length - 2];  //上一个页面
-
-    //直接调用上一个页面的setData()方法，把数据存到上一个页面中去
-    prevPage.setData({
-      queryParams: this.data,
-      isBackFromSearch: true
-    }); */
     wx.setStorageSync(utils.queryParamsKey, {
         startDate: this.data.startDate,
         endDate: this.data.endDate,

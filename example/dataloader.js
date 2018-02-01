@@ -1,4 +1,5 @@
 let service = require('./service').Service
+let utils = require('./utils.js').utils;
 
 let makeRequest = function(page) {
   let self = page;
@@ -55,8 +56,8 @@ let loadData = function (page, pageNo) {
       startDate: self.data.queryParams.startDate,
       endDate: self.data.queryParams.endDate,
       ticketNo: self.data.queryParams.ticketNo,
-      hasChecked: self.data.queryParams.hasChecked,
-      status: self.data.status
+      status: self.data.status,
+      username: utils.getMyUserName()
     },
     header: {
       'content-type': 'application/json'

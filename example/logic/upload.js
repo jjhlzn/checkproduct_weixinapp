@@ -8,6 +8,7 @@ function handleImageUploadFail() {
   })
 }
 
+
 function uploadFiles(files, controller, uploadCompleteHandler) {
   let self = controller;
   self.data.uploadedCount = 0;
@@ -28,7 +29,7 @@ function upload(files, index, controller, uploadCompleteHandler) {
   wx.uploadFile({
     url: service.uploadFileUrl(),
     filePath: files[index],
-    name: 'file',
+    name: files[index],
     formData: {}, 
     success: function (res) {
       console.log(res);
@@ -46,7 +47,12 @@ function upload(files, index, controller, uploadCompleteHandler) {
         self.handleImageUploadFail();
         return;
       }
-      self.data.addImages.push(json.fileNames[0]);
+      let newItem = {
+        originName: json.orginNames[0],
+        fileName: json.fileNames[0],
+        hasAddToDB: false
+      }
+      self.data.addImages.push(newItem);
       self.data.uploadedCount++;
       console.log('完成第' + self.data.uploadedCount + '张');
 

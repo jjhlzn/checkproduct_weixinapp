@@ -42,8 +42,7 @@ Page({
     });
     if (index != -1) {
       items.splice(index, 1);
-      this.setData({items: items});
-
+      this.setData({ items: items, totalCount: this.data.totalCount - 1});
       //让待验货列表重新刷新
       wx.setStorageSync(utils.isNeedReloadNotCheckListKey, true);
     }
@@ -73,6 +72,7 @@ Page({
   onReady: function () {
     checkPermission();
     loadData(this, 0)
+    
   },
 
   /**
@@ -80,15 +80,16 @@ Page({
    */
   onShow: function () {
     utils.onShowHandler(this, null, reset, loadData);
-    /*
-    if (this.data.isBackFromSearch) {
-      console.log("load data after search")
-      reset(this);
-      loadData(this, 0)
-    } */
 
     wx.setNavigationBarTitle({
       title: '待分配列表',
+    })
+
+    wx.setTabBarStyle({
+      color: "#6d6d6d",
+      selectedColor: '#3AA5C8',
+      backgroundColor: '#FEFFFF',
+      borderStyle: 'black'
     })
   },
 

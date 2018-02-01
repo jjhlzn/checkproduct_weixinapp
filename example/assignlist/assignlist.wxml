@@ -18,14 +18,24 @@
         </view>
         <view class="weui-panel weui-panel_access">
             <view class="weui-panel__bd">
+
+                
  
-                <view bindtap="bindItemTap" class=" weui-media-box weui-media-box_text">
-                    <view class="flex-row" style="display: flex;flex-direction: row; align-items: left; justify-content: space-between;">
-                      <view class="flex-view-item checkItemCellLeft"> 发票号 </view>
-                    </view>
-                    <view class="flex-row" style="display: flex;flex-direction: row; align-items: left; justify-content: space-between;">
-                      <view class="flex-view-item checkItemCellLeft"> 截止日期 </view>
-                    </view>  
+                <view class=" weui-media-box weui-media-box_text">
+                    <view class="flex-row myrow" >
+                      <view class="flex-view-item firstColumn" > 
+                          <view style="flex-direction:column;">
+                              <view class="flex-view-item ">发票号</view>
+                              <view class="flex-view-item ">截止日期</view>
+                            </view>
+                      </view>
+                      <view class="flex-view-item secondColumn"> 
+                          <p></p>
+                      </view>
+                      <view class="flex-view-item twoRowCell2 secondColumn checkItemCellRight"> 
+                          <p class="totalCountDesc">总共{{totalCount}}条验货单</p>
+                      </view>
+                   </view>
                 </view>
 
                 <view bindtap="bindItemTap" data-id="{{item.ticketNo}}"  class=" weui-media-box weui-media-box_text" wx:for="{{items}}" wx:key="item_{{index}}">

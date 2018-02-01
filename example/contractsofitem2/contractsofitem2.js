@@ -106,20 +106,6 @@ Page({
     }
   },
 
-  /**
-   * 页面相关事件处理函数--监听用户下拉动作
-   */
-  onPullDownRefresh: function () {
-  
-  },
-
-  /**
-   * 页面上拉触底事件的处理函数
-   */
-  onReachBottom: function () {
-  
-  },
-
   bindItemTap: function (e) {
     let productNo = e.currentTarget.dataset.id;
     console.log('productNo: ' + productNo);
@@ -137,4 +123,10 @@ Page({
       url: '../checkproduct/checkproduct?ticketNo=' + this.data.ticketNo + '&contractNo=' + product.contractNo + '&productNo=' + productNo,
     })
   },
+
+  bindRecheckTap: function(e) {
+    wx.navigateTo({
+      url: '../check/check?ticketNo=' + this.data.ticketNo,
+    })
+  }
 })

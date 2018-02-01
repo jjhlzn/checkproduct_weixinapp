@@ -22,7 +22,7 @@ Page({
     },
     files: [],
     deleteImages: [],
-    addImages: [],
+    addImages: [],   //[{fileName: '', orginName: '', hasAddToDB: true}]
     uploadImageError: false
   },
 
@@ -200,6 +200,18 @@ Page({
           if (!url.startsWith('http://tmp/') && !url.startsWith('wxfile://')) {
             self.data.deleteImages.push(url);
           }
+
+          let deleteIndex = -1;
+          self.data.addImages.forEach((item, index) => {
+            if (item.originName == url) {
+              self.data.deleteImages.push(item.fileName);
+              deleteIndex = index;
+            }
+          })
+          if (deleteIndex != -1) {
+            self.data.addImages.splice(deleteIndex, 1);
+          }
+
         } else if (res.cancel) {
           console.log('用户点击取消')
         }
@@ -228,7 +240,10 @@ Page({
   uploadCompleteHandler: function() {
     
     let self = this;
+    let addImageUrls = self.data.addImages.filter(item => { return !item.hasAddToDB }).map(item => item.fileName);
     
+    console.log('addImages:' + addImageUrls);
+    console.log('deleteImages: ' + self.data.deleteImages);
     wx.request({
       url: service.checkProductUrl(),
       data: {
@@ -243,7 +258,7 @@ Page({
         netWeight: parseFloat(self.data.product.netWeight),
         checkMemo: self.data.product.checkMemo,
 
-        addImages: utils.combineImageUrls(self.data.addImages),
+        addImages: utils.combineImageUrls(addImageUrls),
         deleteImages: utils.combineImageUrls(self.data.deleteImages)
       },
       header: {
@@ -262,6 +277,12 @@ Page({
             title: '验货成功',
             duration: 3000
           })
+
+          self.data.addImages.forEach(item => {
+            item.hasAddToDB = true;
+          })
+
+          self.data.deleteImages = [];
 
           //把审核的结果传递回前一个页面
           let pages = getCurrentPages();
@@ -306,7 +327,23 @@ Page({
     this.data.files.forEach(item => {
       console.log("item: " + item);
     })
-    let needUploadFiles = this.data.files.filter((item) => { return item.startsWith('http://tmp/') || item.startsWith('wxfile://') });
+    let needUploadFiles = this.data.files
+            .filter((item) => { 
+              return item.startsWith('http://tmp/') || item.startsWith('wxfile://') 
+            })
+            .filter((item) => {
+              let needAdd = true;
+              self.data.addImages.forEach( x => {
+                console.log("item: " + item);
+                console.log("x.originName: " + x.originName);
+                if (item == x.originName && x.hasAddToDB) {
+                  needAdd = false;
+                }
+              })
+              return needAdd;
+            });
+    
+    console.log("needUploadFiles: " + needUploadFiles);
 
     let imageCount = needUploadFiles.length;
 

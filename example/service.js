@@ -10,7 +10,6 @@ class Service {
    } else { 
     if (this.isTest) {
       this.http = "https";
-
       this.host = "xhw.hengdianworld.com";
       this.port = "";
       this.prefix = '.aspx'
@@ -100,9 +99,13 @@ class Service {
    }
 
 
-   makeImageUrl(imageName) {
-     return `${this.http}://${this.host}${this.port}/uploads/${imageName}`
-   }
+   makeImageUrl(item) {
+     console.log("makeImageUrl, item: " + item)
+     if (item.fileName)
+      return `${this.http}://${this.host}${this.port}/uploads/${item.fileName}`
+    else 
+       return `${this.http}://${this.host}${this.port}/uploads/${item}`
+  }
 }
 
 

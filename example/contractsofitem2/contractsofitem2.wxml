@@ -1,13 +1,17 @@
 <view class="page">
     <view class="page__bd">
       <view class="weui-panel weui-panel_access">
+          
+
           <view class="weui-panel__bd">
+
             <view class=" weui-media-box weui-media-box_text myrow2">
                   <view class="flex-row myrow myrow2">
                     <view class="flex-view-item mybutton"> <button class="{{selectedType == '全部'? 'selectedButton' : ''}}" bindtap="allTap">全部 </button></view>
                     <view class="flex-view-item mybutton"> <button class="{{selectedType == '合格'? 'selectedButton' : ''}}" bindtap="qualifyTap">合格 </button>  </view>
                     <view class="flex-view-item mybutton"> <button class="{{selectedType == '不合格'? 'selectedButton' : ''}}" bindtap="notQualifyTap">不合格 </button>  </view>
-                    <view class="flex-view-item mybutton .mybutton-rightest"> <button class="{{selectedType == '待定'? 'selectedButton' : ''}}" bindtap="tbdTap"> 待定 </button>  </view>
+                    <view class="flex-view-item mybutton .mybutton"> <button class="{{selectedType == '待定'? 'selectedButton' : ''}}" bindtap="tbdTap"> 待定 </button>  </view>
+                     <view class="flex-view-item mybutton .mybutton-rightest"> <button  bindtap="bindRecheckTap"> 重新验货 </button>  </view>
                   </view>
               </view>
 

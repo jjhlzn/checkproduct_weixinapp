@@ -6,7 +6,8 @@ let utils = {
   isNeedReloadCheckedListKey: 'isNeedReloadCheckedListKey',
   queryParamsKey: 'queryParamsKey',
   combineImageUrls: combineImageUrls,
-  onShowHandler: onShowHandler
+  onShowHandler: onShowHandler,
+  getMyUserName: getMyUserName
 };
 
 function isFloat(value) {
@@ -28,13 +29,25 @@ function isNumeric(num) {
   return !isNaN(num)
 }
 
+function getMyUserName() {
+  let loginUser = wx.getStorageSync("loginUser");
+  if (loginUser) {
+    return loginUser.username;
+  }
+  return "";
+}
+
 function combineImageUrls(array) {
-  if (array.length == 0)
+  if (array.length == 0) {
+    console.log("reuslt: ");
     return "";
+  }
   let result = array[0];
   for (var i = 1; i < array.length; i++) {
-    result = result + "^" + array[i];
+    if (!array[i].hasAddDB)
+      result = result + "^" + array[i];
   }
+  console.log("reuslt: " +result);
   return result;
 }
 

@@ -19,7 +19,17 @@
         <view class="weui-panel weui-panel_access">
             <view class="weui-panel__bd">
 
-
+                 <view class=" weui-media-box weui-media-box_text">
+                    <view class="flex-row myrow" >
+                      <view class="flex-view-item " > 
+                          发票号
+                      </view>
+                      
+                      <view class="checkItemCellRight"> 
+                          <p class="totalCountDesc">总共{{totalCount}}条验货单</p>
+                      </view>
+                   </view>
+                </view>
 
 
                 <view bindtap="bindItemTap" data-id="{{item.ticketNo}}"  class=" weui-media-box weui-media-box_text" wx:for="{{items}}" wx:key="item_{{index}}">

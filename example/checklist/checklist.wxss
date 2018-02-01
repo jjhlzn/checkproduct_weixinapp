@@ -14,7 +14,7 @@
 }
 
 .checkItemCellRight {
-  width: 33%;
+  width: 43%;
    text-align: right;
 }
 

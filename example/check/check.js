@@ -161,13 +161,20 @@ Page({
     }
   },
 
-  //传入按键事件，将所点按的图片删除
-  removeImage: function(e) {
+  getImageUrl: function (event) {
+    let e = event;
     let id = e.currentTarget.id;
     let index = parseInt(id.replace('image_', ''));
-    this.data.files.splice(index, 1);
-    this.setData({files: this.data.files});
-    //console.log(this.data.files);
+    return this.data.files[index];
+  },
+
+  //传入按键事件，将所点按的图片删除
+  removeImage: function (e) {
+    let id = e.currentTarget.id;
+    let index = parseInt(id.replace('image_', ''));
+    let url = this.data.files.splice(index, 1);
+    console.log("delete image: " + url);
+    this.setData({ files: this.data.files });
   },
 
   bindLongImageTap: function (e) {
@@ -175,15 +182,29 @@ Page({
     this.setData({
       lock: true
     });
-    //console.log("long tap image");
-    //console.log(e);
     wx.showModal({
       title: '',
       content: '删除该图片？',
       success: function (res) {
         if (res.confirm) {
           console.log('用户点击确定')
+          let url = self.getImageUrl(e);
           self.removeImage(e);
+          console.log('url: ' + url);
+          if (!url.startsWith('http://tmp/') && !url.startsWith('wxfile://')) {
+            self.data.deleteImages.push(url);
+          }
+
+          let deleteIndex = -1;
+          self.data.addImages.forEach((item, index) => {
+            if (item.originName == url) {
+              self.data.deleteImages.push(item.fileName);
+              deleteIndex = index;
+            }
+          })
+          if (deleteIndex != -1) {
+            self.data.addImages.splice(deleteIndex, 1);
+          }
 
         } else if (res.cancel) {
           console.log('用户点击取消')
@@ -202,6 +223,11 @@ Page({
     })
     let self = this;
 
+    let addImageUrls = self.data.addImages.filter(item => { return !item.hasAddToDB }).map(item => item.fileName);
+
+    console.log('addImages:' + addImageUrls);
+    console.log('deleteImages: ' + self.data.deleteImages);
+
     wx.request({
       url: service.checkOrderUrl(),
       data: {
@@ -210,7 +236,7 @@ Page({
         checkResult: self.data.checkResult,
         checkMemo: self.data.checkMemo,
 
-        addImages: utils.combineImageUrls(self.data.addImages),
+        addImages: utils.combineImageUrls(addImageUrls),
         deleteImages: utils.combineImageUrls(self.data.deleteImages)
       },
       header: {
@@ -267,7 +293,7 @@ Page({
     })
   },
 
-  bindSubmitTap: function(e) {
+  bindSubmitTap: function (e) {
     this.data.uploadImageError = false;
     let errorMessage = this.checkBeforeTap();
     if (errorMessage != "") {
@@ -283,7 +309,23 @@ Page({
     this.data.files.forEach(item => {
       console.log("item: " + item);
     })
-    let needUploadFiles = this.data.files.filter((item) => { return item.startsWith('http://tmp/') || item.startsWith('wxfile://') });
+    let needUploadFiles = this.data.files
+      .filter((item) => {
+        return item.startsWith('http://tmp/') || item.startsWith('wxfile://')
+      })
+      .filter((item) => {
+        let needAdd = true;
+        self.data.addImages.forEach(x => {
+          console.log("item: " + item);
+          console.log("x.originName: " + x.originName);
+          if (item == x.originName && x.hasAddToDB) {
+            needAdd = false;
+          }
+        })
+        return needAdd;
+      });
+
+    console.log("needUploadFiles: " + needUploadFiles);
 
     let imageCount = needUploadFiles.length;
 
@@ -294,7 +336,6 @@ Page({
     }
     uploadFiles(needUploadFiles, this, this.uploadCompleteHandler);
   },
-
   
 
 
