@@ -10,7 +10,7 @@ class Service {
    } else { 
     if (this.isTest) {
       this.http = "https";
-      this.host = "xhw.hengdianworld.com";
+      this.host = "xcx.ningboxhw.com";
       this.port = "";
       this.prefix = '.aspx'
     } else {
