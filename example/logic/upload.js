@@ -25,7 +25,7 @@ function uploadFiles(files, controller, uploadCompleteHandler) {
 function upload(files, index, controller, uploadCompleteHandler) {
 
   var self = controller;
-  console.log("self: " + self);
+  //console.log("self: " + self);
   wx.uploadFile({
     url: service.uploadFileUrl(),
     filePath: files[index],
@@ -71,9 +71,7 @@ function upload(files, index, controller, uploadCompleteHandler) {
         let next = index + self.data.maxUploadCount;
         if (next < files.length) {
           upload(files, index + self.data.maxUploadCount, self)
-        } else if (next >= files.length) {
-          
-        }
+        } 
       }
     },
     fail: function (err) {

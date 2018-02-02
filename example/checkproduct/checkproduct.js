@@ -282,6 +282,7 @@ Page({
       success: function (res) {
         let items = self.data.items;
         console.log("checkproduct response:", res);
+        wx.hideLoading();
         if (res.data.status != 0) {
           wx.showToast({
             title: '验货失败',

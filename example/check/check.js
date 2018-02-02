@@ -218,9 +218,6 @@ Page({
   },
 
   uploadCompleteHandler: function () {
-    wx.showLoading({
-      title: '提交验货结果',
-    })
     let self = this;
 
     let addImageUrls = self.data.addImages.filter(item => { return !item.hasAddToDB }).map(item => item.fileName);
@@ -247,6 +244,7 @@ Page({
       success: function (res) {
         let items = self.data.items;
         console.log("checkorder response:", res);
+        wx.hideLoading();
         if (res.data.status != 0) {
           wx.showToast({
             title: '验货失败',
