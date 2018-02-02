@@ -27,7 +27,12 @@
             <view class="weui-cell">
                 <view class="weui-cell__bd">外箱尺寸</view>
                 <view class="weui-cell__ft">
-                  <input  placeholder="" value="{{product.boxSize}}" bindinput="setBoxSize"/>
+                  <input style='width: 40px; border: solid 1px lightgray; float: left;text-align:center;' type="number" placeholder="" value="{{product.sizeObj.long}}" bindinput="setLong"/> 
+                    <p style='width: 34px; float: left; text-align:center;'> x </p>
+                   <input style='width: 40px; border: solid 1px lightgray; float: left;text-align:center' type="number" placeholder="" value="{{product.sizeObj.width}}" bindinput="setWidth"/> 
+                    <p style='width: 34px; float: left; text-align:center;'> x </p>
+                   <input style='width: 40px; border: solid 1px lightgray; float: left;text-align:center' type="number" placeholder="" value="{{product.sizeObj.height}}" bindinput="setHeight"/> 
+                    <p style='width: 30px; float: left; text-align:right;'> cm </p>
                 </view>
             </view>
             <view class="weui-cell">

@@ -236,6 +236,8 @@ Page({
         checkResult: self.data.checkResult,
         checkMemo: self.data.checkMemo,
 
+        username: utils.getMyUserName(),
+
         addImages: utils.combineImageUrls(addImageUrls),
         deleteImages: utils.combineImageUrls(self.data.deleteImages)
       },

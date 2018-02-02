@@ -7,7 +7,8 @@ let utils = {
   queryParamsKey: 'queryParamsKey',
   combineImageUrls: combineImageUrls,
   onShowHandler: onShowHandler,
-  getMyUserName: getMyUserName
+  getMyUserName: getMyUserName,
+  extractSize: extractSize,
 };
 
 function isFloat(value) {
@@ -49,6 +50,28 @@ function combineImageUrls(array) {
   }
   console.log("reuslt: " +result);
   return result;
+}
+
+function extractSize(sizeStr) {
+  console.log("sizeStr: " + sizeStr);
+  let defaultResult = {
+    long: 0,
+    width: 0,
+    height: 0
+  };
+  if (!sizeStr) {
+    return defaultResult;
+  }
+  let regex = new RegExp('(.+)x(.+)x(.+)');
+  let result = regex.exec(sizeStr);
+  if (!result) {
+    return defaultResult;
+  }
+  return {
+    long: result[1],
+    width: result[2],
+    height: result[3]
+  }
 }
 
 

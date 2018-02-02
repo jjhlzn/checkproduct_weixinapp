@@ -1,18 +1,6 @@
 let service = require('./service').Service
 let utils = require('./utils.js').utils;
 
-let makeRequest = function(page) {
-  let self = page;
-  return {
-    pageNo: self.data.request.pageNo,
-    pageSize: self.data.request.pageSize,
-    startDate: self.data.queryParams.startDate,
-    endDate: self.data.queryParams.endDate,
-    ticketNo: self.data.queryParams.ticketNo,
-    hasChecked: self.data.queryParams.hasChecked
-  }
-}
-
 let getMoreData = function (page) {
   let self = page;
   if (self.data.items.length < self.data.totalCount) {

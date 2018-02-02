@@ -73,6 +73,9 @@ Page({
           self.data.radioItems[2].checked = true; 
         }
 
+        let sizeObj = utils.extractSize(res.data.product.boxSize);
+        res.data.product.sizeObj = sizeObj;
+
         let files = res.data.product.pictureUrls;
         let urls = files.map(file => service.makeImageUrl(file));
         self.setData({
@@ -94,8 +97,14 @@ Page({
   setPickCount: function(e) {
     this.data.product.pickCount = e.detail.value;
   },
-  setBoxSize: function (e) {
-    this.data.product.boxSize = e.detail.value;
+  setLong: function (e) {
+    this.data.product.sizeObj.long = e.detail.value;
+  },
+  setWidth: function (e) {
+    this.data.product.sizeObj.width = e.detail.value;
+  },
+  setHeight: function (e) {
+    this.data.product.sizeObj.height = e.detail.value;
   },
   setGrossWeight: function (e) {
     this.data.product.grossWeight = e.detail.value;
@@ -235,6 +244,10 @@ Page({
     return "";
   },
 
+  getBoxSizeStr: function() {
+    return this.data.product.sizeObj.long + 'x' +  this.data.product.sizeObj.width + 'x'
+      + this.data.product.sizeObj.height;
+  },
 
 
   uploadCompleteHandler: function() {
@@ -253,10 +266,12 @@ Page({
 
         checkResult: self.data.product.checkResult,
         pickCount: parseInt(self.data.product.pickCount),
-        boxSize: self.data.product.boxSize,
+        boxSize: self.getBoxSizeStr(),
         grossWeight: parseFloat(self.data.product.grossWeight),
         netWeight: parseFloat(self.data.product.netWeight),
         checkMemo: self.data.product.checkMemo,
+
+        username: utils.getMyUserName(),
 
         addImages: utils.combineImageUrls(addImageUrls),
         deleteImages: utils.combineImageUrls(self.data.deleteImages)
