@@ -12,7 +12,7 @@
             </view>
             <view class="weui-cell" >
                 <view class="weui-cell__bd">进仓编号</view>
-                <view class="weui-cell__ft">{{contract.jinCangNo}}</view>
+                <view class="weui-cell__ft">{{contract.jinCangNo ? contract.jinCangNo : ""}}</view>
             </view>
             <view class="weui-cell" >
                 <view class="weui-cell__bd">跟单员</view>
@@ -24,7 +24,7 @@
             </view>
             <view class="weui-cell" >
                 <view class="weui-cell__bd">截止时间</view>
-                <view class="weui-cell__ft">{{contract.deadlineDate}}</view>
+                <view class="weui-cell__ft">{{contract.deadlineDate ? contract.deadlineDate : "未定"}}</view>
             </view>
         </view>
 
