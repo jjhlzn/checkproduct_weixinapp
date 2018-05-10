@@ -54,8 +54,10 @@
             <view class="weui-btn-area" >
               <button class="weui-btn" type="primary" hover-class='other-button-hover'  bindtap="bindCheckTap">整单验货</button>
             </view> 
-            
 
-           
+            <view class="weui-btn-area" >
+              <button type="default" hover-class='other-button-hover'  bindtap="bindModifyChecker">修改验货员</button>
+            </view> 
+            
           </view>
 </view>

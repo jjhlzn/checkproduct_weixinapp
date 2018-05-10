@@ -17,6 +17,7 @@ Page({
     ticketNo: "",
     contractNo: "",
     productNo: "",
+    spid: "",
     product: {
 
     },
@@ -27,12 +28,13 @@ Page({
   },
 
   onLoad: function (options) {
-    console.log('options: ' + options)
+    console.log('options: ' + JSON.stringify(options))
 
     this.setData({
       ticketNo: options.ticketNo,
       contractNo: options.contractNo,
-      productNo: options.productNo
+      productNo: options.productNo,
+      spid: options.spid
     })
 
     var self = this;
@@ -43,8 +45,10 @@ Page({
     wx.request({
       url: service.getProductInfoUrl(),
       data: {
+        ticketNo: self.data.ticketNo,
         contractNo: self.data.contractNo,
-        productNo: self.data.productNo
+        productNo: self.data.productNo,
+        spid: self.data.spid
       },
       header: {
         'content-type': 'application/json'
@@ -230,7 +234,7 @@ Page({
 
   checkBeforeTap: function () {
     let self = this;
-
+    
     if (!utils.isInt(self.data.product.pickCount)) {
       return "抽箱数必须是整数";
     }
@@ -263,6 +267,7 @@ Page({
         ticketNo: self.data.ticketNo,
         contractNo: self.data.contractNo,
         productNo: self.data.productNo,
+        spid: self.data.spid,
 
         checkResult: self.data.product.checkResult,
         pickCount: parseInt(self.data.product.pickCount),
@@ -305,13 +310,14 @@ Page({
           let curPage = pages[pages.length - 2];
           curPage.updateCheckResult(self.data.productNo, self.data.product.checkResult);
 
-          if (res.confirm) {
+         //if (res.confirm) {
             wx.navigateBack({
-              checkResult: {
-                result: true
-              }
+              isCheckSuccess: true
+              //checkResult: {
+              //  result: true
+             // }
             });
-          }
+         // }
         }
       },
       fail: function (err) {

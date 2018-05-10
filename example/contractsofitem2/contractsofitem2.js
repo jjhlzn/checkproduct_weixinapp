@@ -107,7 +107,10 @@ Page({
   },
 
   bindItemTap: function (e) {
-    let productNo = e.currentTarget.dataset.id;
+    let productNoAndSpid = e.currentTarget.dataset.id;
+    let productNo = productNoAndSpid.split('###')[0]
+    let spid = productNoAndSpid.split('###')[1]
+
     console.log('productNo: ' + productNo);
     let product = this.data.products.filter(product => product.productNo == productNo)[0]
     console.log(JSON.stringify(product));
@@ -120,7 +123,7 @@ Page({
     }
 
     wx.navigateTo({
-      url: '../checkproduct/checkproduct?ticketNo=' + this.data.ticketNo + '&contractNo=' + product.contractNo + '&productNo=' + productNo,
+      url: '../checkproduct/checkproduct?ticketNo=' + this.data.ticketNo + '&contractNo=' + product.contractNo + '&productNo=' + productNo + '&spid=' + spid,
     })
   },
 

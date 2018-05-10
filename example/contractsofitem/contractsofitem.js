@@ -118,4 +118,12 @@ Page({
       url: '../check/check?ticketNo=' + this.data.checkOrder.ticketNo,
     })
   },
+
+  bindModifyChecker: function() {
+    if (this.data.checkOrder.ticketNo) {
+      wx.navigateTo({
+        url: '../assignchecker/assignchecker?id=' + this.data.checkOrder.ticketNo,
+      })
+    }
+  }
 })

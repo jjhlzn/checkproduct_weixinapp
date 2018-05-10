@@ -30,11 +30,16 @@ Page({
   },
 
   onLoad: function(options) {
-    console.log('options: ' + options)
+    console.log('options: ' + JSON.stringify(options))
+
 
     this.setData({
       ticketNo: options.ticketNo
     })
+    if (!options.checkResult ) {
+      console.log("set isCheckResultChange to true")
+      this.data.isCheckResultChange = true
+    }
 
     var self = this;
     wx.showLoading({
@@ -271,13 +276,13 @@ Page({
           }
           self.data.isCheckResultChange = false;
 
-          if (res.confirm) {
+          //if (res.confirm) {
             wx.navigateBack({
-              checkResult: {
-                result: true
-              }
+              //checkResult: {
+               // result: true
+              //}
             });
-          }
+          //}
         }
       },
       fail: function (err) {

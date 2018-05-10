@@ -28,7 +28,8 @@ Page({
       startDate: '',
       endDate: '',
       ticketNo: '',
-      hasChecked: false
+      hasChecked: false,
+      checker: "-1"
     }
   },
 
@@ -58,7 +59,8 @@ Page({
         startDate: startDate,
         endDate: endDate,
         ticketNo: "",
-        hasChecked: false
+        hasChecked: false,
+        checker: "-1"
       }
     });
   },
@@ -77,19 +79,6 @@ Page({
    */
   onShow: function () {
     utils.onShowHandler(this, utils.isNeedReloadNotCheckListKey, reset, loadData);
-    /*
-    if (this.data.isBackFromSearch) {
-      reset(this);
-      loadData(this, 0)
-    } 
-    
-    let isNeedReload = wx.getStorageSync(utils.isNeedReloadNotCheckListKey);
-    console.log("isNeedReload: " + isNeedReload);
-    if (isNeedReload) {
-      wx.setStorageSync(utils.isNeedReloadNotCheckListKey, false)
-      reset(this);
-      loadData(this, 0)
-    } */
 
     wx.setNavigationBarTitle({
       title: '待验货列表',
@@ -140,6 +129,8 @@ Page({
 
   bindSearchTap: function (e) {
     this.data.queryParams.status = this.data.status;
+    console.log("in find bindSearchTap:")
+    console.log(JSON.stringify(this.data.queryParams))
     wx.navigateTo({
       url: '../search/search?queryparams=' + JSON.stringify(this.data.queryParams),
     })

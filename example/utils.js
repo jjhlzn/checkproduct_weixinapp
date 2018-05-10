@@ -9,6 +9,7 @@ let utils = {
   onShowHandler: onShowHandler,
   getMyUserName: getMyUserName,
   extractSize: extractSize,
+  isCheckerManager: isCheckerManager,
 };
 
 function isFloat(value) {
@@ -36,6 +37,14 @@ function getMyUserName() {
     return loginUser.username;
   }
   return "";
+}
+
+function isCheckerManager() {
+  let loginUser = wx.getStorageSync("loginUser");
+  console.log("loginUser: ", loginUser)
+  if (loginUser.role == 'checker_manager')
+    return true
+  return false 
 }
 
 function combineImageUrls(array) {

@@ -44,6 +44,7 @@ let loadData = function (page, pageNo) {
       startDate: self.data.queryParams.startDate,
       endDate: self.data.queryParams.endDate,
       ticketNo: self.data.queryParams.ticketNo,
+      checker: self.data.queryParams.checker ? self.data.queryParams.checker : "-1",
       status: self.data.status,
       username: utils.getMyUserName()
     },

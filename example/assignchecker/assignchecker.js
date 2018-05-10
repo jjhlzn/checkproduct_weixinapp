@@ -15,8 +15,10 @@ Page({
       //'张三'
     ],
     checkerIndex: 0,
-    ticketNo: ''
+    ticketNo: '',
   },
+
+  
 
   /**
    * 生命周期函数--监听页面加载
@@ -59,6 +61,7 @@ Page({
         let items = self.data.items;
         console.log(res);
         let checkers = res.data.checkers;
+
         self.setData({checkers: checkers});
         let checkerNames = checkers.map(item => item.name);
         self.setData({ checkerNames: checkerNames, selectedChecker: checkers[0]});

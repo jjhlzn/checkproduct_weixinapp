@@ -12,7 +12,7 @@
             </view>
             <view class="weui-cell" >
                 <view class="weui-cell__bd">进仓编号</view>
-                <view class="weui-cell__ft">{{contract.jinCangNo ? contract.jinCangNo : ""}}</view>
+                <view class="weui-cell__ft">{{contract.jinCangNo ? contract.jinCangNo : "-"}}</view>
             </view>
             <view class="weui-cell" >
                 <view class="weui-cell__bd">跟单员</view>
@@ -30,7 +30,7 @@
 
         <view class="weui-cells__title">货号</view>
         <view class="weui-cells weui-cells_after-title">
-            <view url="" data-id="{{item.productNo}}" bindtap="bindProductTap" class="weui-cell weui-cell_access" wx:key="product_1" hover-class="weui-cell_active" wx:for="{{contract.products}}">
+            <view url="" data-id="{{item.productNo+'###'+item.spid}}" bindtap="bindProductTap" class="weui-cell weui-cell_access" wx:key="product_1" hover-class="weui-cell_active" wx:for="{{contract.products}}">
                 <view class="weui-cell__bd">{{item.productNo}}({{item.name}})</view>
                 <!-- <view class="weui-cell__ft weui-cell__ft_in-access"></view> -->
                  <view class="weui-cell__ft weui-cell__ft_in-access" >{{item.checkResult == null ? "未完成" : item.checkResult}}</view>

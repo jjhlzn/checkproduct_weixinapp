@@ -32,7 +32,7 @@
                   </view>
             </view>
 
-            <view   bindtap="bindItemTap"  class=" weui-media-box weui-media-box_text" data-id="{{item.productNo}}"   wx:for="{{products}}" wx:key="item_{{index}}">
+            <view   bindtap="bindItemTap"  class=" weui-media-box weui-media-box_text" data-id="{{item.productNo+'###'+item.spid}}"   wx:for="{{products}}" wx:key="item_{{index}}">
                 <view class="flex-row myrow">
                   <view class="flex-view-item firstColumn" > 
                         <view style="flex-direction:column;">

@@ -2,6 +2,7 @@
 import { checkPermission } from '../model/user.js';
 let moment = require('../lib/moment.js');
 let utils = require('../utils').utils;
+let service = require('../service').Service;
 
 Page({
 
@@ -13,7 +14,7 @@ Page({
     endDate: '',
     ticketNo: "",
     hasChecked: false,
-
+    selectedCheckerUserName: '-1',
     statusIndex: 0,
     statuses: [{ name: '未分配', value: '未分配'},
       { name: '待验货', value: '未验货' },
@@ -25,7 +26,60 @@ Page({
       '待验货',
       '未完成',
       '已验货'
-    ]
+    ],
+    checkers: [
+      //{name: '张三', username: '0001'}
+      { name: '全部', username: '-1' }
+    ],
+    checkerNames: [
+      //'张三'
+      '全部'
+    ],
+    checkerIndex: 0,
+    isShowSelectChecker: false
+  },
+
+  loadData: function () {
+    var self = this;
+    if (this.data.loading) {
+      console.log("正在加载数据中")
+      return;
+    }
+
+    self.setData({ loading: true });
+    wx.request({
+      url: service.getAllCheckersUrl(),
+      header: {
+        'content-type': 'application/json'
+      },
+      success: function (res) {
+        let items = self.data.items;
+        console.log(res);
+        let checkers = res.data.checkers;
+        checkers.splice(0, 0, { name: '全部', username: '-1' })
+        self.setData({ checkers: checkers });
+        let checkerNames = checkers.map(item => item.name);
+        let localCheckerIndex = 0
+        self.data.checkers.forEach((item, index) => {
+          if (item.username == self.data.selectedCheckerUserName) {
+            localCheckerIndex = index
+          }
+        })
+        console.log("loadData: localCheckIndex = " + localCheckerIndex)
+        self.setData({ checkerNames: checkerNames, 
+          checkerIndex: localCheckerIndex});
+
+      },
+      fail: function (err) {
+        console.error(err)
+        wx.showToast({
+          title: '加载失败',
+        })
+      },
+      complete: function () {
+        self.setData({ loading: false });
+      }
+    })
   },
 
   /**
@@ -33,23 +87,36 @@ Page({
    */
   onLoad: function (options) {
     console.log("search.js options:" + options.queryparams);
+    if (utils.isCheckerManager) {
+      this.setData({
+        isShowSelectChecker: true
+      })
+    }
+    this.loadData()
     if (options.queryparams) {
       console.log("find queryparams");
       let queryParams = JSON.parse(options.queryparams);
       queryParams.statusIndex = 0;
       this.data.statuses.forEach( (item, index) => {
-        //console.log(item);
-        //console.log("index: " + index);
         if (item.value == queryParams.status) {
           queryParams.statusIndex = index;
         }
       })
+      let localCheckerIndex = 0
+      this.data.checkers.forEach( (item, index) => {
+        if (item.username == queryParams.checker) {
+          localCheckerIndex = index
+        }
+      })
+      console.log("localCheckIndex = " + localCheckerIndex)
       console.log(queryParams);
       this.setData({
         startDate: queryParams.startDate,
         endDate: queryParams.endDate,
         ticketNo: queryParams.ticketNo,
-        statusIndex: queryParams.statusIndex
+        statusIndex: queryParams.statusIndex,
+        checkerIndex: localCheckerIndex,
+        selectedCheckerUserName: queryParams.checker ? queryParams.checker : "-1"
       });
       console.log(this.data);
     } else {
@@ -59,9 +126,12 @@ Page({
       this.setData({
         startDate: startDate,
         endDate: endDate,
-        ticketNo: ""
+        ticketNo: "",
+        checkerIndex: 0,
+        selectedCheckerUserName: "-1"
       });
     }
+    
   },
 
   /**
@@ -102,13 +172,20 @@ Page({
     })
   },
 
+  bindCheckerChange: function (e) {
+    this.setData({
+      checkerIndex: e.detail.value
+    })
+  },
+
   bindSearchTap: function() {
     wx.setStorageSync(utils.queryParamsKey, {
         startDate: this.data.startDate,
         endDate: this.data.endDate,
         ticketNo: this.data.ticketNo,
         status: this.data.statuses[this.data.statusIndex].value,
-        isBackFromSearch: true
+        isBackFromSearch: true,
+        checker: this.data.checkers[this.data.checkerIndex].username
     });
     console.log("before wx.switchTab")
     let url = "";

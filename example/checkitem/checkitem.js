@@ -109,6 +109,8 @@ Page({
     })
   },
 
+  
+
   bindViewImagesTap: function(e) {
     let images = this.data.checkItem.checkResult.images;
     wx.navigateTo({
@@ -117,11 +119,13 @@ Page({
   },
 
   bindProductTap: function(e) {
-    let productNo = e.currentTarget.dataset.id;
+    let productNoAndSpid = e.currentTarget.dataset.id;
+    let productNo = productNoAndSpid.split('###')[0]
+    let spid = productNoAndSpid.split('###')[1]
     wx.navigateTo({
-      url: '../checkproduct/checkproduct?ticketNo=' + this.data.contract.ticketNo + '&contractNo=' + this.data.contract.contractNo + '&productNo=' + productNo,
+      url: '../checkproduct/checkproduct?ticketNo=' + this.data.ticketNo + '&contractNo=' + this.data.contract.contractNo + '&productNo=' + productNo + '&spid='+spid,
     })
-  },
+  }, 
 
   /**
  * 下拉刷新处理

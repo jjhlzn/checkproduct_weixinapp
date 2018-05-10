@@ -24,7 +24,7 @@
                       <view class="flex-view-item firstColumn" > 
                           <view style="flex-direction:column;">
                               <view class="flex-view-item ">发票号</view>
-                              <view class="flex-view-item ">截止日期</view>
+                              <view class="flex-view-item ">进仓编号</view>
                             </view>
                       </view>
                       <view class="flex-view-item twoRowCell secondColumn"> 
@@ -43,8 +43,8 @@
                       <view class="flex-view-item checkItemCellRight">验货员 <span class="peopleName">{{item.checker}}</span></view>
                     </view>
                     <view class="flex-row" style="display: flex;flex-direction: row; align-items: left; justify-content: space-between;">
-                      <view class="flex-view-item checkItemCellLeft">{{item.outDate == null ? '未定' : item.outDate}}  </view>
-                      <view class="flex-view-item checkItemCellRight">跟单员 <span class="peopleName">{{item.tracker}}</span>   </view>
+                      <view class="flex-view-item checkItemCellLeft">{{item.jinCangNo ? item.jinCangNo  : '--'}}  </view>
+                      <view class="flex-view-item checkItemCellRight">商品数 <span class="peopleName">{{item.productCount}}</span>   </view>
                     </view>  
                 </view>
 

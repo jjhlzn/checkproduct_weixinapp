@@ -7,7 +7,7 @@
 
           <view class="weui-cell weui-cell_input">
                 <view class="weui-cell__hd">
-                    <view class="weui-label">发票号</view>
+                    <view class="weui-label">关键字</view>
                 </view>
                 <view class="weui-cell__bd">
                     <input class="weui-input" bindinput='bindTicketNoInput' value="{{ticketNo}}" placeholder=""/>
@@ -19,7 +19,7 @@
                   <view class="weui-label">开始日期</view>
               </view>
               <view class="weui-cell__bd">
-                  <picker mode="date" value="{{startDate}}" start="2015-09-01" end="2017-09-01" bindchange="bindStartDateChange">
+                  <picker mode="date" value="{{startDate}}"  bindchange="bindStartDateChange">
                       <view class="weui-input">{{startDate}}</view>
                   </picker>
               </view>
@@ -30,7 +30,7 @@
                   <view class="weui-label">结束日期</view>
               </view>
               <view class="weui-cell__bd">
-                  <picker mode="date" value="{{endDate}}" start="2015-09-01" end="2017-09-01" bindchange="bindEndDateChange">
+                  <picker mode="date" value="{{endDate}}"  bindchange="bindEndDateChange">
                       <view class="weui-input">{{endDate}}</view>
                   </picker>
               </view>
@@ -45,8 +45,18 @@
                     <view class="weui-select weui-select_in-select-after">{{statuses[statusIndex].name}}</view>
                 </picker>
             </view>
-        </view>
+          </view>
 
+          <view class="weui-cell weui-cell_select" wx:if="{{isShowSelectChecker}}">
+              <view class="weui-cell__hd weui-cell__hd_in-select-after">
+                  <view class="weui-label">验货员</view>
+              </view>
+              <view class="weui-cell__bd">
+                  <picker bindchange="bindCheckerChange" value="{{checkerIndex}}" range="{{checkerNames}}">
+                      <view class="weui-select weui-select_in-select-after">{{checkers[checkerIndex].name}}</view>
+                  </picker>
+              </view>
+          </view>
            
 
         </view>
