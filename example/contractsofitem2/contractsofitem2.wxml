@@ -11,7 +11,7 @@
                     <view class="flex-view-item mybutton"> <button class="{{selectedType == '合格'? 'selectedButton' : ''}}" bindtap="qualifyTap">合格 </button>  </view>
                     <view class="flex-view-item mybutton"> <button class="{{selectedType == '不合格'? 'selectedButton' : ''}}" bindtap="notQualifyTap">不合格 </button>  </view>
                     <view class="flex-view-item mybutton .mybutton"> <button class="{{selectedType == '待定'? 'selectedButton' : ''}}" bindtap="tbdTap"> 待定 </button>  </view>
-                     <view class="flex-view-item mybutton .mybutton-rightest"> <button  bindtap="bindRecheckTap"> 重新验货 </button>  </view>
+                     <view class="flex-view-item mybutton .mybutton-rightest"> <button  bindtap="bindRecheckTap"> 装柜照 </button>  </view>
                   </view>
               </view>
 

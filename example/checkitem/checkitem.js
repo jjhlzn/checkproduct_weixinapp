@@ -20,8 +20,12 @@ Page({
   onLoad: function (options) {
     this.setData({ticketNo: options.ticketNo, contractNo: options.contractNo});
 
+    this.loadData();
+  },
+
+  loadData: function() {
     var self = this;
-    console.log("onload");
+    console.log("加载checkitem");
     wx.showLoading({
       title: '加载中',
     })
@@ -34,20 +38,20 @@ Page({
       header: {
         'content-type': 'application/json'
       },
-      complete: function(res) {
-         wx.hideLoading()
-         console.log(res);
-         if (res.data.status != 0) {
-           wx.showToast({
-             title: '加载失败',
-           })
-           return;
-         }
-         self.setData({
-           contract: res.data.contract
-         })
+      complete: function (res) {
+        wx.hideLoading()
+        console.log(res);
+        if (res.data.status != 0) {
+          wx.showToast({
+            title: '加载失败',
+          })
+          return;
+        }
+        self.setData({
+          contract: res.data.contract
+        })
       },
-      fail: function(err) {
+      fail: function (err) {
         wx.hideLoading()
         wx.showToast({
           title: '加载失败',
@@ -82,16 +86,20 @@ Page({
     //console.log("updateCheckResult called: " + productNo);
     //console.log(JSON.stringify(this.data.contract));
     this.data.contract.products.forEach(product => {
-     // console.log(JSON.stringify(product));
       if (product.productNo == productNo) {
         product.checkResult = checkResult;
-        console.log("find " + productNo);
+        console.log("find " + productNo + ", checkResult:  " + checkResult);
       }
     })
 
     this.setData({
       contract: this.data.contract
     });
+
+    let pages = getCurrentPages();
+    let curPage = pages[pages.length - 3];
+    curPage.loadData()
+
   },
 
   bindFileTap: function(e) {

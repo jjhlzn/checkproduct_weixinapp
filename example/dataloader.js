@@ -16,13 +16,14 @@ let reset = function(page) {
   self.setData({
     request: {
       pageNo: 0,
-      pageSize: 10
+      pageSize: 10,
     },
     totalCount: 0,
     items: [],
     isLoadAll: false,
     isBackFromSearch: false
   });
+  //self.data.queryParams.ticketNo = ''
 }
 
 let loadData = function (page, pageNo) {
@@ -53,6 +54,11 @@ let loadData = function (page, pageNo) {
     },
     success: function (res) {
       let items = self.data.items;
+      res.data.items.forEach( (item)=> {
+        if (item.outDate) {
+          item.outDate = item.outDate.substr(0, item.outDate.indexOf(' '))
+        }
+      })
       items.push.apply(items, res.data.items);
       console.log("res:", res);
       self.setData({ items: items, totalCount: res.data.totalCount });
@@ -72,10 +78,41 @@ let loadData = function (page, pageNo) {
   })
 }
 
-
+let reloadOrder = function(page, orderNo) {
+  wx.request({
+    url: service.getCheckOrderInfoUrl(),
+    data: {
+      ticketNo: orderNo
+    },
+    header: {
+      'content-type': 'application/json'
+    },
+    complete: function (res) {
+      console.log("reloadOrder: "+ JSON.stringify(res));
+      if (res.data.status != 0) {
+        return;
+      }
+      let order = res.data.checkOrder
+      let orders = page.data.items;
+      console.log(JSON.stringify(page.data))
+      for(var i = 0; i < orders.length; i++) {
+        if (orders[i].ticketNo == order.ticketNo) {
+          orders[i] = order;
+          page.setData({ items: orders})
+          console.log("find order: " + order.ticketNo)
+          break;
+        }
+      }
+    },
+    fail: function (err) {
+      
+    }
+  })
+}
 
 module.exports = {
   loadData: loadData,
   getMoreData: getMoreData,
-  reset: reset
+  reset: reset,
+  reloadOrder: reloadOrder
 }

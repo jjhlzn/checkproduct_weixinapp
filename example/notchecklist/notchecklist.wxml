@@ -44,7 +44,7 @@
                     </view>
                     <view class="flex-row" style="display: flex;flex-direction: row; align-items: left; justify-content: space-between;">
                       <view class="flex-view-item checkItemCellLeft">{{item.jinCangNo ? item.jinCangNo  : '--'}}  </view>
-                      <view class="flex-view-item checkItemCellRight">商品数 <span class="peopleName">{{item.productCount}}</span>   </view>
+                      <view class="flex-view-item checkItemCellRight">商品数 <span class="peopleName">{{item.checkedProductCount + "/" + item.productCount}}</span>   </view>
                     </view>  
                 </view>
 

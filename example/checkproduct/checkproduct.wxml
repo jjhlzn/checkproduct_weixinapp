@@ -28,20 +28,20 @@
             <view class="weui-cell">
                 <view class="weui-cell__bd">抽箱数</view>
                 <view class="weui-cell__ft">
-                  <input  placeholder="" value="{{product.pickCount}}" bindinput="setPickCount"/>
+                  <input type="number" placeholder="" value="{{product.pickCount}}" bindinput="setPickCount"/>
                 </view>
             </view>
             <view class="weui-cell">
                 <view class="weui-cell__bd">外箱尺寸</view>
                 <view class="weui-cell__ft">
-                  <input style='width: 40px; border: solid 1px lightgray; float: left;text-align:center;' type="number" placeholder=""
-                   value="{{product.sizeObj.long != 0 ? product.sizeObj.long : ''}}" bindinput="setLong"/> 
+                  <input style='width: 40px; border: solid 1px lightgray; float: left;text-align:center;' type="digit" placeholder=""
+                   value="{{product.sizeObj.long != 0 ? product.sizeObj.long : ''}}" bindinput="setLong" focus='{{focusList[0]}}'/> 
                     <p style='width: 34px; float: left; text-align:center;'> x </p>
-                   <input style='width: 40px; border: solid 1px lightgray; float: left;text-align:center' type="number" placeholder="" 
-                   value="{{product.sizeObj.width != 0 ? product.sizeObj.width : ''}}" bindinput="setWidth"/> 
+                   <input id="widthInput" style='width: 40px; border: solid 1px lightgray; float: left;text-align:center' type="digit" placeholder="" 
+                   value="{{product.sizeObj.width != 0 ? product.sizeObj.width : ''}}" bindinput="setWidth" focus='{{focusList[1]}}'/> 
                     <p style='width: 34px; float: left; text-align:center;'> x </p>
-                   <input style='width: 40px; border: solid 1px lightgray; float: left;text-align:center' type="number" placeholder="" 
-                   value="{{product.sizeObj.height != 0 ? product.sizeObj.height : ''}}" bindinput="setHeight"/> 
+                   <input style='width: 40px; border: solid 1px lightgray; float: left;text-align:center' type="digit" placeholder="" 
+                   value="{{product.sizeObj.height != 0 ? product.sizeObj.height : ''}}" bindinput="setHeight" focus='{{focusList[2]}}'/> 
                     <p style='width: 30px; float: left; text-align:right;'> cm </p>
                 </view>
             </view>

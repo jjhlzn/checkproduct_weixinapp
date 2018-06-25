@@ -1,6 +1,7 @@
 let service = require('../service').Service;
 let uploadFiles = require('../logic/upload').uploadFiles;
 let utils = require('../utils').utils;
+let reloadOrder = require('../dataloader').reloadOrder
 import { checkPermission } from '../model/user.js';
 
 Page({
@@ -9,9 +10,8 @@ Page({
     lock: false,     
     uploadedCount: 0,
     radioItems: [
-      { name: '合格', value: '合格' },
+      { name: '合格', value: '合格', checked: true  },
       { name: '不合格', value: '不合格'},
-      { name: '未完成', value: '未完成', checked: true },
       { name: '待定', value: '待定' }
     ],
     ticketNo: "",
@@ -24,7 +24,8 @@ Page({
     files: [],
     deleteImages: [],
     addImages: [],   //[{fileName: '', orginName: '', hasAddToDB: true}]
-    uploadImageError: false
+    uploadImageError: false,
+    focusList: [false, false, false]
   },
 
   onLoad: function (options) {
@@ -74,7 +75,8 @@ Page({
         });
 
         if (!found) {
-          self.data.radioItems[2].checked = true; 
+          console.log("can't find")
+          self.data.radioItems[0].checked = true;
         }
 
         let sizeObj = utils.extractSize(res.data.product.boxSize);
@@ -88,6 +90,10 @@ Page({
           radioItems: self.data.radioItems
         })
         
+        if (!found) {
+          console.log("can't find")
+          self.data.product.checkResult = "合格" 
+        }
       },
       fail: function (err) {
         wx.hideLoading()
@@ -102,10 +108,22 @@ Page({
     this.data.product.pickCount = e.detail.value;
   },
   setLong: function (e) {
+    var lastValue = this.data.product.sizeObj.long
     this.data.product.sizeObj.long = e.detail.value;
+    if (lastValue[lastValue.length - 1] == '.' && e.detail.value[e.detail.value.length - 2] == '.') {
+      this.setData({
+        focusList: [false, true, false]
+      })
+    }
   },
   setWidth: function (e) {
+    var lastValue = this.data.product.sizeObj.width
     this.data.product.sizeObj.width = e.detail.value;
+    if (lastValue[lastValue.length - 1] == '.' && e.detail.value[e.detail.value.length - 2] == '.') {
+      this.setData({
+        focusList: [false, false, true]
+      })
+    }
   },
   setHeight: function (e) {
     this.data.product.sizeObj.height = e.detail.value;
@@ -261,26 +279,29 @@ Page({
     
     console.log('addImages:' + addImageUrls);
     console.log('deleteImages: ' + self.data.deleteImages);
+
+    let queryParams = {
+      ticketNo: self.data.ticketNo,
+      contractNo: self.data.contractNo,
+      productNo: self.data.productNo,
+      spid: self.data.spid,
+
+      checkResult: self.data.product.checkResult,
+      pickCount: parseInt(self.data.product.pickCount),
+      boxSize: self.getBoxSizeStr(),
+      grossWeight: parseFloat(self.data.product.grossWeight),
+      netWeight: parseFloat(self.data.product.netWeight),
+      checkMemo: self.data.product.checkMemo,
+
+      username: utils.getMyUserName(),
+
+      addImages: utils.combineImageUrls(addImageUrls),
+      deleteImages: utils.combineImageUrls(self.data.deleteImages)
+    }
+    console.log(queryParams)
     wx.request({
       url: service.checkProductUrl(),
-      data: {
-        ticketNo: self.data.ticketNo,
-        contractNo: self.data.contractNo,
-        productNo: self.data.productNo,
-        spid: self.data.spid,
-
-        checkResult: self.data.product.checkResult,
-        pickCount: parseInt(self.data.product.pickCount),
-        boxSize: self.getBoxSizeStr(),
-        grossWeight: parseFloat(self.data.product.grossWeight),
-        netWeight: parseFloat(self.data.product.netWeight),
-        checkMemo: self.data.product.checkMemo,
-
-        username: utils.getMyUserName(),
-
-        addImages: utils.combineImageUrls(addImageUrls),
-        deleteImages: utils.combineImageUrls(self.data.deleteImages)
-      },
+      data: queryParams,
       header: {
         'content-type': 'application/json'
       },
@@ -310,14 +331,12 @@ Page({
           let curPage = pages[pages.length - 2];
           curPage.updateCheckResult(self.data.productNo, self.data.product.checkResult);
 
-         //if (res.confirm) {
-            wx.navigateBack({
-              isCheckSuccess: true
-              //checkResult: {
-              //  result: true
-             // }
-            });
-         // }
+          let prevPage = pages[0];
+          reloadOrder(prevPage, self.data.ticketNo)
+
+          wx.navigateBack({
+            isCheckSuccess: true
+          });
         }
       },
       fail: function (err) {

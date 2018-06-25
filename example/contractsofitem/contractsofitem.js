@@ -50,12 +50,15 @@ Page({
   },
 
   loadData: function() {
+    console.log('加载合同信息')
     var self = this;
     if (this.data.loading) {
       console.log("正在加载数据中")
       return;
     }
-
+    wx.showLoading({
+      title: '',
+    })
     wx.request({
       url: service.getCheckOrderContractsUrl(),
       data: {
@@ -82,6 +85,7 @@ Page({
         })
       },
       complete: function () {
+        wx.hideLoading()
         self.setData({ loading: false });
       }
     })

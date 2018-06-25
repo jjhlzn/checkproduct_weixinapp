@@ -1,1 +1,7 @@
 /* checkproduct.wxss */
+.weui-cell__bd{
+  width: 60px;
+}
+.weui-cell__ft input {
+  width: 180px;
+}

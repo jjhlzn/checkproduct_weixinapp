@@ -100,8 +100,15 @@ Page({
   onPullDownRefresh: function () {
     let self = this;
     reset(this);
+    this.data.queryParams.ticketNo = ''
     loadData(this, 0)
     wx.stopPullDownRefresh();
+  },
+
+  updateDataList: function() {
+    let self = this;
+    reset(this);
+    loadData(this, 0)
   },
 
   getItem(ticketNo) {

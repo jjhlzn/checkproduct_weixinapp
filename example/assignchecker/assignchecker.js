@@ -113,7 +113,9 @@ Page({
 
           var pages = getCurrentPages();
           var prevPage = pages[pages.length - 2];
-          prevPage.removeItem(self.data.ticketNo);
+          if (prevPage.removeItem) {
+            prevPage.removeItem(self.data.ticketNo);
+          }
 
 
         } else {

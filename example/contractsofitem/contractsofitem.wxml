@@ -13,8 +13,12 @@
 
               <view bindtap="bindItemTap"  data-id="{{item.contractNo}}" class=" weui-media-box weui-media-box_text"                        wx:for="{{contracts}}" wx:key="item_{{index}}" >
                 <view class="flex-row myrow">
-                    <view class="flex-view-item twoRowCell"> 
-                        {{item.contractNo}}
+                    <view class="flex-view-item"> 
+                        <view style="flex-direction:column;">
+                            <view class="flex-view-item"> {{item.contractNo}} </view>
+                            <view class="flex-view-item" style='color: gray'> 已验: {{item.checkedProductCount}} /  {{item.productCount}}  </view>
+                          </view>
+                      
                     </view>
                     <view class="flex-view-item checkItemCellRight" > 
                           <view style="flex-direction:column;">
