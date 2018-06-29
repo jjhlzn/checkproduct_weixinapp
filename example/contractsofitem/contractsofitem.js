@@ -9,6 +9,7 @@ Page({
   data: {
     checkOrder: {
       ticketNo: "",
+      announcements: "",
       checkResult: null,
       checkMemo: null
     },
@@ -23,6 +24,7 @@ Page({
      this.setData({
        checkOrder: {
          ticketNo: options.id,
+         announcements: options.announcements, 
          checkResult: options.checkResult ,
          checkMemo: options.checkMemo
        }

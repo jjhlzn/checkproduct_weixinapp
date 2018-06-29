@@ -57,6 +57,13 @@
                   <input  placeholder="" value="{{product.netWeight}}" bindinput="setNetWeight"/>
                 </view>
             </view>
+
+            <view class="weui-cell">
+                <view class="weui-cell__bd">验货时间</view>
+                <view class="weui-cell__ft">
+                  {{product.checkTime ? product.checkTime : ""}}
+                </view>
+            </view>
         </view>
 
          <view class="weui-cells__title">描述</view>

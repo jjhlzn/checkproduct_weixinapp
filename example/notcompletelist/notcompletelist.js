@@ -141,7 +141,7 @@ Page({
     if (item) {
       wx.navigateTo({
         url: '../contractsofitem/contractsofitem?id=' + id + '&checkResult='
-        + item.checkResult + '&checkMemo=' + item.checkMemo,
+        + item.checkResult + '&checkMemo=' + item.checkMemo + '&announcements=' + item.announcements ,
       })
     }
   },
