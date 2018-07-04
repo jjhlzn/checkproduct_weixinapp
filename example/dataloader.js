@@ -53,6 +53,7 @@ let loadData = function (page, pageNo) {
       'content-type': 'application/json'
     },
     success: function (res) {
+      console.log(res)
       let items = self.data.items;
       res.data.items.forEach( (item)=> {
         if (item.outDate) {

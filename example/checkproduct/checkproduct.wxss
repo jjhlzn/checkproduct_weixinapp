@@ -5,3 +5,10 @@
 .weui-cell__ft input {
   width: 180px;
 }
+
+
+.prop_description {
+  text-align: justify;
+  margin-left: 30px;
+  font-size: 15px;
+}

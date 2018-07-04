@@ -91,9 +91,9 @@
 
             <view class="weui-cell ">
                 <view class="weui-cell__bd">
-                  <view class="weui-label">商品描述</view>
+                  <view class="weui-label ">商品描述</view>
                 </view>
-                <view class="weui-cell__ft">
+                <view class="weui-cell__ft prop_description">
                  {{product.description}}
                 </view>
             </view>
