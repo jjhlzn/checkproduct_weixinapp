@@ -127,7 +127,7 @@ Page({
         }
         wx.setStorageSync('loginUser', res.data.user)
         wx.reLaunch({
-          url: '../assignlist/assignlist',
+          url: '../all/all',
         });
       },
       fail: function(res) {

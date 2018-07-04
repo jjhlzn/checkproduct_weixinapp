@@ -98,6 +98,9 @@ class Service {
      return `${this.http}://${this.host}${this.port}/getcheckorderinfo${this.prefix}`
    }
 
+   saveZiliaoUrl() {
+     return `${this.http}://${this.host}${this.port}/saveziliaoku${this.prefix}`
+   }
 
    makeImageUrl(item) {
      console.log("makeImageUrl, item: " + item)
@@ -105,6 +108,10 @@ class Service {
       return `${this.http}://${this.host}${this.port}/uploads/${item.fileName}`
     else 
        return `${this.http}://${this.host}${this.port}/uploads/${item}`
+  }
+
+  makeProductImageUrl(item) {
+    return `${this.http}://${this.host}${this.port}/${item}`
   }
 }
 

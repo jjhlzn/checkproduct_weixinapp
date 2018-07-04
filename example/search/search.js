@@ -18,13 +18,13 @@ Page({
     statusIndex: 0,
     statuses: [{ name: '未分配', value: '未分配'},
       { name: '待验货', value: '未验货' },
-      { name: '未完成', value: '未完成' },
+      { name: '全部', value: '全部' },
       { name: '已验货', value: '已验货' },
               ],
     statusNames: [
       '未分配',
       '待验货',
-      '未完成',
+      '全部',
       '已验货'
     ],
     checkers: [
@@ -194,7 +194,7 @@ Page({
     } else if (this.data.statusIndex == 1) {
       url = '../notchecklist/notchecklist';
     } else if (this.data.statusIndex == 2) {
-      url = '../notcompletelist/notcompletelist';
+      url = '../all/all';
     } else if (this.data.statusIndex == 3) {
       url = '../checklist/checklist';
     }

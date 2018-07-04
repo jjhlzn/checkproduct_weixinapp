@@ -70,14 +70,37 @@
         <view class="weui-cells weui-cells_after-title">
             <view class="weui-cell">
                 <view class="weui-cell__bd">
-                    <textarea class="weui-textarea" placeholder="请输入验货备注" value="{{product.checkMemo ? product.checkMemo : ''}}" style="height: 3.3em" bindinput="setCheckMemo"/>
+                    <textarea class="weui-textarea" placeholder="请输入验货备注" 
+                    value="{{product.checkMemo && product.checkMemo != 'null' ? product.checkMemo : ''}}" style="height: 3.3em" bindinput="setCheckMemo"/>
                     <!--<view class="weui-textarea-counter">0/200</view> -->
                 </view>
             </view>
         </view>
 
+        <view class="weui-cells__title">其他信息</view>
+        <view class="weui-cells weui-cells_after-title">
 
-        <view class="weui-cells__title">图片上传</view>
+            <view class="weui-cell ">
+                <view class="weui-cell__bd">
+                  <view class="weui-label">包装</view>
+                </view>
+                <view class="weui-cell__ft">
+                  {{product.package}}
+                </view>
+            </view>
+
+            <view class="weui-cell ">
+                <view class="weui-cell__bd">
+                  <view class="weui-label">商品描述</view>
+                </view>
+                <view class="weui-cell__ft">
+                 {{product.description}}
+                </view>
+            </view>
+        </view>
+
+
+        <view class="weui-cells__title">验货图片</view>
         <view class="weui-cells weui-cells_after-title">
             <view class="weui-cell">
                 <view class="weui-uploader__bd">
@@ -97,8 +120,44 @@
             </view>
         </view>
 
+        <view class="weui-cells__title">商品图片</view>
+        <view class="weui-cells weui-cells_after-title">
+            <view class="weui-cell">
+                <view class="weui-uploader__bd">
+                            <view class="weui-uploader__files" id="uploaderFiles">
+                                 <block wx:for="{{product.productUrls}}" wx:key="*this">
+                                    <view class="weui-uploader__file"  bindtap="previewProductImage" id="image_{{index}}">
+                                        <image  class="weui-uploader__img" src="{{item}}" mode="aspectFill" />
+                                    </view>
+                                </block>
+                            </view>
+                            
+                        </view>
+            </view>
+        </view>
+
+        <view class="weui-cells__title">资料库图片</view>
+        <view class="weui-cells weui-cells_after-title">
+            <view class="weui-cell">
+                <view class="weui-uploader__bd">
+                            <view class="weui-uploader__files" id="uploaderFiles">
+                                 <block wx:for="{{product.zlkUrls}}" wx:key="*this">
+                                    <view class="weui-uploader__file"  bindtap="previewZlkImage" id="image_{{index}}">
+                                        <image  class="weui-uploader__img" src="{{item}}" mode="aspectFill" />
+                                    </view>
+                                </block>
+                            </view>
+                            
+                        </view>
+            </view>
+        </view>
+
         <view class="weui-btn-area">
             <button class="weui-btn" type="primary" hover-class='other-button-hover'  bindtap="bindSubmitTap">提交</button>
         </view>
+
+        <view class="weui-btn-area" >
+            <button type="default" hover-class='other-button-hover'  bindtap="bindModifyZlkImagesTap">修改资料库图片</button>
+          </view> 
     </view>
 </view>

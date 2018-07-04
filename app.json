@@ -19,10 +19,19 @@
     "example/assignlist/assignlist",
     "example/notcompletelist/notcompletelist",
     "example/contractsofitem/contractsofitem",
-    "example/contractsofitem2/contractsofitem2"
+    "example/contractsofitem2/contractsofitem2",
+    "example/all/all",
+    "example/productlist/productlist",
+    "example/uploadbeforeassign/uploadbeforeassign"
   ],
   "tabBar": {
     "list": [
+      {
+        "pagePath": "example/all/all",
+        "iconPath": "example/icons/3_2.png",
+        "selectedIconPath": "example/icons/3.png",
+        "text": "资料库"
+      },
       {
         "pagePath": "example/assignlist/assignlist",
         "iconPath": "example/icons/1_2.png",
@@ -35,12 +44,6 @@
         "iconPath": "example/icons/2_2.png",
         "selectedIconPath": "example/icons/2.png",
         "text": "待验货"
-      },
-      {
-        "pagePath": "example/notcompletelist/notcompletelist",
-        "iconPath": "example/icons/3_2.png",
-        "selectedIconPath": "example/icons/3.png",
-        "text": "未完成"
       },
       {
         "pagePath": "example/checklist/checklist",

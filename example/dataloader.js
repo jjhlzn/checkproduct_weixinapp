@@ -16,7 +16,7 @@ let reset = function(page) {
   self.setData({
     request: {
       pageNo: 0,
-      pageSize: 10,
+      pageSize: 100,
     },
     totalCount: 0,
     items: [],

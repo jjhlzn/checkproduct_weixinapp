@@ -1,61 +1,46 @@
 let service = require('../service').Service;
 let uploadFiles = require('../logic/upload').uploadFiles;
 let utils = require('../utils').utils;
-let reloadOrder = require('../dataloader').reloadOrder
 import { checkPermission } from '../model/user.js';
 
 Page({
   data: {
-    maxUploadCount: 3,
-    lock: false,     
-    uploadedCount: 0,
-    radioItems: [
-      { name: '合格', value: '合格', checked: true  },
-      { name: '不合格', value: '不合格'},
-      { name: '待定', value: '待定' }
-    ],
-    ticketNo: "",
-    contractNo: "",
-    productNo: "",
-    spid: "",
-    product: {
 
-    },
+    maxUploadCount: 3,
+    lock: false,
+    uploadedCount: 0,
+    
+    ticketNo: "",
+    spid: "",
+    reloadFather: false,
+
     files: [],
     deleteImages: [],
-    addImages: [],   //[{fileName: '', orginName: '', hasAddToDB: true}]
+    addImages: [],
     uploadImageError: false,
-    focusList: [false, false, false]
+
+    isCheckResultChange: false
   },
 
   onLoad: function (options) {
     console.log('options: ' + JSON.stringify(options))
 
+
     this.setData({
       ticketNo: options.ticketNo,
-      contractNo: options.contractNo,
-      productNo: options.productNo,
-      spid: options.spid
+      spid: options.spid,
+      reloadFather: options.reloadFather
     })
+    
+    var self = this;
     wx.showLoading({
       title: '加载中',
     })
-    this.loadProduct()
-  },
-
-  reload: function() {
-    this.loadProduct()
-  },
-
-  loadProduct: function() {
-    var self = this;
     wx.request({
       url: service.getProductInfoUrl(),
       data: {
         ticketNo: self.data.ticketNo,
-        contractNo: self.data.contractNo,
-        productNo: self.data.productNo,
-        spid: self.data.spid
+        spid: self.data.spid,
       },
       header: {
         'content-type': 'application/json'
@@ -70,40 +55,14 @@ Page({
           return;
         }
 
-        let found = false;
-        self.data.radioItems.forEach(item => {
-          if (item.value == res.data.product.checkResult) {
-            item.checked = true;
-            found = true;
-          } else {
-            delete item.checked;
-          }
-        });
+        
 
-        if (!found) {
-          console.log("can't find")
-          self.data.radioItems[0].checked = true;
-        }
-
-        let sizeObj = utils.extractSize(res.data.product.boxSize);
-        res.data.product.sizeObj = sizeObj;
-
-        let files = res.data.product.pictureUrls;
+        let files = res.data.product.zlkUrls;
         let urls = files.map(file => service.makeImageUrl(file));
-
-        res.data.product.zlkUrls = res.data.product.zlkUrls.map(file => service.makeImageUrl(file));
-        res.data.product.productUrls = res.data.product.productUrls.map(file => service.makeProductImageUrl(file));
-
         self.setData({
-          product: res.data.product,
-          files: urls,
-          radioItems: self.data.radioItems
+          files: urls
         })
 
-        if (!found) {
-          console.log("can't find")
-          self.data.product.checkResult = "合格"
-        }
       },
       fail: function (err) {
         wx.hideLoading()
@@ -114,53 +73,27 @@ Page({
     })
   },
 
-  setPickCount: function(e) {
-    this.data.product.pickCount = e.detail.value;
-  },
-  setLong: function (e) {
-    var lastValue = this.data.product.sizeObj.long
-    this.data.product.sizeObj.long = e.detail.value;
-    if (lastValue[lastValue.length - 1] == '.' && e.detail.value[e.detail.value.length - 2] == '.') {
-      this.setData({
-        focusList: [false, true, false]
-      })
-    }
-  },
-  setWidth: function (e) {
-    var lastValue = this.data.product.sizeObj.width
-    this.data.product.sizeObj.width = e.detail.value;
-    if (lastValue[lastValue.length - 1] == '.' && e.detail.value[e.detail.value.length - 2] == '.') {
-      this.setData({
-        focusList: [false, false, true]
-      })
-    }
-  },
-  setHeight: function (e) {
-    this.data.product.sizeObj.height = e.detail.value;
-  },
-  setGrossWeight: function (e) {
-    this.data.product.grossWeight = e.detail.value;
-  },
-  setNetWeight: function (e) {
-    this.data.product.netWeight = e.detail.value;
-  },
   setCheckMemo: function (e) {
-    this.data.product.checkMemo = e.detail.value;
+    this.data.checkMemo = e.detail.value;
   },
+
 
   /**
    * 生命周期函数--监听页面显示
    */
   onShow: function () {
     wx.setNavigationBarTitle({
-      title: '验货',
+      title: '上传图片',
     })
     checkPermission()
   },
 
   radioChange: function (e) {
     console.log('radio发生change事件，携带value值为：', e.detail.value);
-    this.data.product.checkResult = e.detail.value;
+    if (this.data.checkResult != e.detail.value) {
+      this.data.isCheckResultChange = true;
+    }
+    this.data.checkResult = e.detail.value;
     var radioItems = this.data.radioItems;
     for (var i = 0, len = radioItems.length; i < len; ++i) {
       radioItems[i].checked = radioItems[i].value == e.detail.value;
@@ -184,7 +117,6 @@ Page({
       }
     })
   },
-
   previewImage: function (e) {
     if (this.data.lock) {
       return;
@@ -198,26 +130,6 @@ Page({
     })
   },
 
-  previewZlkImage: function (e) {
-    let id = e.currentTarget.id;
-    let index = parseInt(id.replace('image_', ''));
-    console.log("index = " + index);
-    wx.previewImage({
-      current: this.data.product.zlkUrls[index], // 当前显示图片的http链接
-      urls: this.data.product.zlkUrls // 需要预览的图片http链接列表
-    })
-  },
-
-  previewProductImage: function (e) {
-    let id = e.currentTarget.id;
-    let index = parseInt(id.replace('image_', ''));
-    console.log("index = " + index);
-    wx.previewImage({
-      current: this.data.product.productUrls[index], // 当前显示图片的http链接
-      urls: this.data.product.productUrls // 需要预览的图片http链接列表
-    })
-  },
-
   touchend: function (e) {
     if (this.data.lock) {
       setTimeout(() => {
@@ -228,7 +140,7 @@ Page({
     }
   },
 
-  getImageUrl: function(event) {
+  getImageUrl: function (event) {
     let e = event;
     let id = e.currentTarget.id;
     let index = parseInt(id.replace('image_', ''));
@@ -281,92 +193,55 @@ Page({
   },
 
   checkBeforeTap: function () {
-    let self = this;
-    
-    if (!utils.isInt(self.data.product.pickCount)) {
-      return "抽箱数必须是整数";
-    }
-    if (!utils.isFloat(self.data.product.grossWeight)) {
-      return "单件毛重必须是数字";
-    }
-    if (!utils.isFloat(self.data.product.netWeight)) {
-      return "单件净重必须是数字";
-    }
-
     return "";
   },
 
-  getBoxSizeStr: function() {
-    return this.data.product.sizeObj.long + 'x' +  this.data.product.sizeObj.width + 'x'
-      + this.data.product.sizeObj.height;
-  },
-
-
-  uploadCompleteHandler: function() {
-    
+  uploadCompleteHandler: function () {
     let self = this;
+
     let addImageUrls = self.data.addImages.filter(item => { return !item.hasAddToDB }).map(item => item.fileName);
-    
+
     console.log('addImages:' + addImageUrls);
     console.log('deleteImages: ' + self.data.deleteImages);
 
-    let queryParams = {
+    var formData = {
       ticketNo: self.data.ticketNo,
-      contractNo: self.data.contractNo,
-      productNo: self.data.productNo,
       spid: self.data.spid,
-
-      checkResult: self.data.product.checkResult,
-      pickCount: parseInt(self.data.product.pickCount),
-      boxSize: self.getBoxSizeStr(),
-      grossWeight: parseFloat(self.data.product.grossWeight),
-      netWeight: parseFloat(self.data.product.netWeight),
-      checkMemo: self.data.product.checkMemo,
-
       username: utils.getMyUserName(),
-
       addImages: utils.combineImageUrls(addImageUrls),
       deleteImages: utils.combineImageUrls(self.data.deleteImages)
     }
-    console.log(queryParams)
+    console.log(JSON.stringify(formData))
     wx.request({
-      url: service.checkProductUrl(),
-      data: queryParams,
+      url: service.saveZiliaoUrl(),
+      data: formData,
       header: {
         'content-type': 'application/json'
       },
       success: function (res) {
-        let items = self.data.items;
-        console.log("checkproduct response:", res);
+        //let items = self.data.items;
+        console.log("save zlk image response:", res);
         wx.hideLoading();
         if (res.data.status != 0) {
           wx.showToast({
-            title: '验货失败',
+            title: '保存失败',
             duration: 3000
           })
         } else {
           wx.showToast({
-            title: '验货成功',
+            title: '保存成功',
             duration: 3000
           })
 
-          self.data.addImages.forEach(item => {
-            item.hasAddToDB = true;
-          })
-
-          self.data.deleteImages = [];
-
-          //把审核的结果传递回前一个页面
-          let pages = getCurrentPages();
-          let curPage = pages[pages.length - 2];
-          curPage.updateCheckResult(self.data.productNo, self.data.product.checkResult);
-
-          let prevPage = pages[0];
-          reloadOrder(prevPage, self.data.ticketNo)
+          if (self.data.reloadFather) {
+            let pages = getCurrentPages();
+            let curPage = pages[pages.length - 2];
+            curPage.reload();
+          }
 
           wx.navigateBack({
-            isCheckSuccess: true
-          });
+            
+          })
         }
       },
       fail: function (err) {
@@ -399,21 +274,21 @@ Page({
       console.log("item: " + item);
     })
     let needUploadFiles = this.data.files
-            .filter((item) => { 
-              return item.startsWith('http://tmp/') || item.startsWith('wxfile://') 
-            })
-            .filter((item) => {
-              let needAdd = true;
-              self.data.addImages.forEach( x => {
-                console.log("item: " + item);
-                console.log("x.originName: " + x.originName);
-                if (item == x.originName && x.hasAddToDB) {
-                  needAdd = false;
-                }
-              })
-              return needAdd;
-            });
-    
+      .filter((item) => {
+        return item.startsWith('http://tmp/') || item.startsWith('wxfile://')
+      })
+      .filter((item) => {
+        let needAdd = true;
+        self.data.addImages.forEach(x => {
+          console.log("item: " + item);
+          console.log("x.originName: " + x.originName);
+          if (item == x.originName && x.hasAddToDB) {
+            needAdd = false;
+          }
+        })
+        return needAdd;
+      });
+
     console.log("needUploadFiles: " + needUploadFiles);
 
     let imageCount = needUploadFiles.length;
@@ -426,10 +301,6 @@ Page({
     uploadFiles(needUploadFiles, this, this.uploadCompleteHandler);
   },
 
-  bindModifyZlkImagesTap: function(e) {
 
-    wx.navigateTo({
-      url: '../uploadbeforeassign/uploadbeforeassign?ticketNo=' + this.data.ticketNo + '&spid=' + this.data.spid + '&reloadFather=true',
-    })
-  }
+
 });

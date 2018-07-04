@@ -9,7 +9,7 @@ function handleImageUploadFail() {
 }
 
 
-function uploadFiles(files, controller, uploadCompleteHandler) {
+function uploadFiles(files, controller, uploadCompleteHandler, formData) {
   let self = controller;
   self.data.uploadedCount = 0;
 
@@ -22,15 +22,15 @@ function uploadFiles(files, controller, uploadCompleteHandler) {
   }
 }
 
-function upload(files, index, controller, uploadCompleteHandler) {
-
+function upload(files, index, controller, uploadCompleteHandler, formData) {
+  formData = formData ? formData : {};
   var self = controller;
   //console.log("self: " + self);
   wx.uploadFile({
     url: service.uploadFileUrl(),
     filePath: files[index],
     name: files[index],
-    formData: {}, 
+    formData: formData, 
     success: function (res) {
       console.log(res);
       

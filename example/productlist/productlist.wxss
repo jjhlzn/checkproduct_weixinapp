@@ -1,0 +1,9 @@
+/* example/productlist/productlist.wxss */
+
+.hasZlkImage {
+  color: blue;
+}
+
+.noZlkImage {
+
+}
