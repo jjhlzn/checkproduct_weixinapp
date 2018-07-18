@@ -4,6 +4,17 @@
  * Licensed under the MIT license
  */
 
+.flex-view-item {
+  /* 多行显示、并加省略号 */
+  display: -webkit-box;
+  word-break: break-all;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 3;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+
 page {
   line-height: 1.6;
   font-family: -apple-system-font, Helvetica Neue, sans-serif;

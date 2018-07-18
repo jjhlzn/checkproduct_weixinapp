@@ -9,14 +9,14 @@
                <view class="flex-row {{item.zlkImagesCount > 0 ? 'hasZlkImage' : 'noZlkImage'}}" style="display: flex;flex-direction: row; align-items: left; justify-content: space-between;">
 
 
-                  <view class="flex-view-item firstColumn" > 
+                  <view class="flex-view-item firstColumn " > 
                           <view style="flex-direction:column;">
                               <view class="flex-view-item ">{{item.contractNo}}</view>
                               <view class="flex-view-item ">{{item.productNo}}</view>
                             </view>
                       </view>
 
-                  <view class="flex-view-item " > 
+                  <view class="flex-view-item secondColumn" > 
                         {{item.name}}
                   </view> 
               </view>

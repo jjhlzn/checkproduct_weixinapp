@@ -1,4 +1,13 @@
 /* example/productlist/productlist.wxss */
+.firstColumn {
+  width: 40%;
+   text-align: left;
+}
+
+.secondColumn {
+  width: 60%;
+   text-align: right;
+}
 
 .hasZlkImage {
   color: blue;

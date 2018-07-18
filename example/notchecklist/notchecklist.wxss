@@ -4,18 +4,14 @@
   width: 33%;
 }
 
-.checkItemCellCenter {
-  width: 33%;
-  text-align: center;
-}
-
 .checkItemCellLeft {
-  width: 33%;
+  width: 60%;
    text-align: left;
 }
 
 .checkItemCellRight {
-  width: 50%;
+  width: 40%;
    text-align: right;
 }
+
 
