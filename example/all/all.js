@@ -80,6 +80,13 @@ Page({
     wx.setNavigationBarTitle({
       title: '资料库',
     })
+
+    wx.setTabBarStyle({
+      color: "#6d6d6d",
+      selectedColor: '#3AA5C8',
+      backgroundColor: '#FEFFFF',
+      borderStyle: 'black'
+    })
   },
 
   /**

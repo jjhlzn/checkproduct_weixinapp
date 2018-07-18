@@ -37,13 +37,15 @@
                 </view>
 
                 <view bindtap="bindItemTap" data-id="{{item.ticketNo}}"  class=" weui-media-box weui-media-box_text" wx:for="{{items}}" wx:key="item_{{index}}">
-                    <view class="flex-row" style="display: flex;flex-direction: row; align-items: left; justify-content: space-between;">
+                    <view class="flex-row" style="display: flex;flex-direction: row; align-items: left; ">
                       <view class="flex-view-item checkItemCellLeft">{{item.ticketNo}}  </view>
 
                       <view class="flex-view-item checkItemCellRight">验货员 <span class="peopleName">{{item.checker}}</span></view>
                     </view>
-                    <view class="flex-row" style="display: flex;flex-direction: row; align-items: left; justify-content: space-between;">
-                      <view class="flex-view-item checkItemCellLeft">{{item.jinCangNo ? item.jinCangNo  : '--'}}  </view>
+                    <view class="flex-row" style="display: flex;flex-direction: row; align-items: left; ">
+                      <view class="flex-view-item checkItemCellLeft">
+                      {{item.jinCangNo ? item.jinCangNo : '--'}}  
+                      </view>
                       <view class="flex-view-item checkItemCellRight">商品数 <span class="peopleName">{{item.checkedProductCount + "/" + item.productCount}}</span>   </view>
                     </view>  
                 </view>
