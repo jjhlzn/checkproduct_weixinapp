@@ -121,8 +121,8 @@ Page({
       console.log(this.data);
     } else {
       console.log("date:", new moment().format('YYYY-MM-DD'));
-      var endDate = new moment().format('YYYY-MM-DD');
-      var startDate = new moment().subtract(30, 'day').format('YYYY-MM-DD');
+      var endDate = utils.getEndDate();
+      var startDate = utils.getStartDate();
       this.setData({
         startDate: startDate,
         endDate: endDate,

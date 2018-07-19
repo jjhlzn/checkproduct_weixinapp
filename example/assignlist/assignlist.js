@@ -52,8 +52,8 @@ Page({
    * 生命周期函数--监听页面加载
    */
   onLoad: function (options) {
-    var endDate = new moment().format('YYYY-MM-DD');
-    var startDate = new moment().subtract(30, 'day').format('YYYY-MM-DD');
+    var endDate = utils.getEndDate();
+    var startDate = utils.getStartDate();
     this.setData({
       queryParams: {
         startDate: startDate,

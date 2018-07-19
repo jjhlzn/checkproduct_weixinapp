@@ -1,3 +1,5 @@
+let moment = require('./lib/moment.js');
+
 let utils = {
   isFloat: isFloat,
   isInt: isInt,
@@ -11,6 +13,8 @@ let utils = {
   extractSize: extractSize,
   isCheckerManager: isCheckerManager,
   sortImages: sortImages,
+  getStartDate: getStartDate,
+  getEndDate: getEndDate,
 };
 
 function isFloat(value) {
@@ -123,6 +127,13 @@ function sortImages(images) {
   return images.sort(compare);
 }
 
+function getStartDate() {
+  return new moment().subtract(30 * 3, 'day').format('YYYY-MM-DD')
+}
+
+function getEndDate() {
+  return new moment().add(1, 'day').format('YYYY-MM-DD')
+}
 
 
 module.exports = {
