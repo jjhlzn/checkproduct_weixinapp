@@ -50,7 +50,8 @@ function upload(files, index, controller, uploadCompleteHandler, formData) {
       let newItem = {
         originName: json.orginNames[0],
         fileName: json.fileNames[0],
-        hasAddToDB: false
+        hasAddToDB: false,
+        index: index
       }
       self.data.addImages.push(newItem);
       self.data.uploadedCount++;

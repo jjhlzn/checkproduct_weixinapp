@@ -224,7 +224,7 @@ Page({
 
   uploadCompleteHandler: function () {
     let self = this;
-
+    self.data.addImages = utils.sortImages(self.data.addImages);
     let addImageUrls = self.data.addImages.filter(item => { return !item.hasAddToDB }).map(item => item.fileName);
 
     console.log('addImages:' + addImageUrls);

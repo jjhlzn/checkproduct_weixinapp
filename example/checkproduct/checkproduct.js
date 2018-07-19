@@ -305,8 +305,10 @@ Page({
   uploadCompleteHandler: function() {
     
     let self = this;
+    //console.log('addImages:' + JSON.stringify(self.data.addImages ));
+    self.data.addImages = utils.sortImages(self.data.addImages);
     let addImageUrls = self.data.addImages.filter(item => { return !item.hasAddToDB }).map(item => item.fileName);
-    
+    //console.log('addImages:' + JSON.stringify(self.data.addImages));
     console.log('addImages:' + addImageUrls);
     console.log('deleteImages: ' + self.data.deleteImages);
 

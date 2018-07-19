@@ -10,6 +10,7 @@ let utils = {
   getMyUserName: getMyUserName,
   extractSize: extractSize,
   isCheckerManager: isCheckerManager,
+  sortImages: sortImages,
 };
 
 function isFloat(value) {
@@ -109,6 +110,17 @@ function onShowHandler(page, isReloadKey, reset, loadData) {
       }
     }
   }
+}
+
+function sortImages(images) {
+  let  compare = (a, b) => {
+    if (a.index < b.index)
+      return -1;
+    if (a.index > b.index)
+      return 1;
+    return 0;
+  }
+  return images.sort(compare);
 }
 
 
