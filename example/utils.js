@@ -76,7 +76,8 @@ function extractSize(sizeStr) {
   if (!sizeStr) {
     return defaultResult;
   }
-  let regex = new RegExp('(.+)x(.+)x(.+)');
+  console.log(sizeStr)
+  let regex = /(.+)(?:x|X|\*)(.+)(?:x|X|\*)(.+)/;
   let result = regex.exec(sizeStr);
   if (!result) {
     return defaultResult;
