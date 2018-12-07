@@ -15,8 +15,9 @@ class Service {
       this.prefix = '.aspx'
     } else {
       this.http = "http";
-      this.host = "10.211.55.3";
-      this.port = ":80";
+      this.host = "10.211.55.6";
+      this.port = ":80"; 
+
       this.prefix = '.aspx'
     } 
    }
@@ -96,6 +97,10 @@ class Service {
 
    getCheckOrderInfoUrl() {
      return `${this.http}://${this.host}${this.port}/getcheckorderinfo${this.prefix}`
+   }
+
+   clearCheckResultUrl() {
+     return `${this.http}://${this.host}${this.port}/clearproductcheckresult${this.prefix}`
    }
 
    saveZiliaoUrl() {

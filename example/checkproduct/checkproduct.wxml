@@ -156,6 +156,10 @@
             <button class="weui-btn" type="primary" hover-class='other-button-hover'  bindtap="bindSubmitTap">提交</button>
         </view>
 
+        <view class="weui-btn-area">
+            <button class="weui-btn" style='background-color: #e64340;' type="warn" hover-class='other-button-hover'  bindtap="bindDeleteCheckResultTap">清除验货结果</button>
+        </view>
+
         <view class="weui-btn-area" >
             <button type="default" hover-class='other-button-hover'  bindtap="bindModifyZlkImagesTap">修改资料库图片</button>
           </view> 

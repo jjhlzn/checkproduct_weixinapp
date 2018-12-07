@@ -31,6 +31,8 @@ Page({
     }
   },
 
+  
+
   removeItem: function (ticketNo) {
     let items = this.data.items;
     console.log(this.data.items);

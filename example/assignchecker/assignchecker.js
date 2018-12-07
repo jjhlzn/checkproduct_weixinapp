@@ -1,6 +1,7 @@
 // assignchecker.js
 import { checkPermission } from '../model/user.js';
 let service = require('../service').Service;
+let utils = require('../utils').utils;
 
 Page({
 
@@ -116,6 +117,13 @@ Page({
           if (prevPage.removeItem) {
             prevPage.removeItem(self.data.ticketNo);
           }
+
+          prevPage = pages[pages.length - 3];
+          if (prevPage && prevPage.removeItem) {
+            prevPage.removeItem(self.data.ticketNo);
+          }
+
+
 
 
         } else {

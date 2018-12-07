@@ -280,6 +280,65 @@ Page({
     })
   },
 
+  bindDeleteCheckResultTap: function() {
+    var self = this;
+    wx.showModal({
+      title: '提示',
+      content: '确定要清除验货结果吗？',
+      success: function (sm) {
+        if (sm.confirm) {
+
+          wx.request({
+            url: service.clearCheckResultUrl(),
+            data: {
+              ticketNo: self.data.ticketNo,
+              contractNo: self.data.contractNo,
+              productNo: self.data.productNo,
+              spid: self.data.spid
+            },
+            header: {
+              'content-type': 'application/json'
+            },
+            complete: function (res) {
+              wx.hideLoading()
+              console.log(res);
+              if (res.data.status != 0) {
+                wx.showToast({
+                  title: '加载失败',
+                })
+                return;
+              }
+
+              //把审核的结果传递回前一个页面
+              let pages = getCurrentPages();
+              let curPage = pages[pages.length - 2];
+              curPage.updateCheckResult(self.data.productNo, "");
+
+              let prevPage = pages[0];
+              reloadOrder(prevPage, self.data.ticketNo)
+
+              wx.navigateBack({
+                isCheckSuccess: true
+              });
+              
+            },
+            fail: function (err) {
+              wx.hideLoading()
+              wx.showToast({
+                title: '加载失败',
+              })
+            }
+          })
+          
+        } else if (sm.cancel) {
+          console.log('用户点击取消')
+        }
+      }
+    })
+
+    
+  },
+
   checkBeforeTap: function () {
     let self = this;
     

@@ -112,7 +112,8 @@ Page({
     let spid = productNoAndSpid.split('###')[1]
 
     console.log('productNo: ' + productNo);
-    let product = this.data.products.filter(product => product.productNo == productNo)[0]
+    //console.log(JSON.stringify(this.data.products))
+    let product = this.data.products.filter(product => product.productNo == productNo && product.spid == spid)[0]
     console.log(JSON.stringify(product));
 
     if (!product.contractNo) {
