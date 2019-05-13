@@ -93,7 +93,7 @@ Page({
 
         res.data.product.zlkUrls = res.data.product.zlkUrls.map(file => service.makeImageUrl(file));
         res.data.product.productUrls = res.data.product.productUrls.map(file => service.makeProductImageUrl(file));
-
+        console.log(res.data.product.productUrls)
         self.setData({
           product: res.data.product,
           files: urls,

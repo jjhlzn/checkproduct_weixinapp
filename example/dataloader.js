@@ -37,6 +37,7 @@ let loadData = function (page, pageNo) {
 
   self.setData({ loading: true });
   self.data.loading = true;
+  console.log(service.getCheckOrdersUrl())
   wx.request({
     url: service.getCheckOrdersUrl(),
     data: {
